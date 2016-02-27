@@ -126,8 +126,8 @@ AABB.prototype = {
         return Math.inRange(this.minX(), this.maxX(), pos.x()) && Math.inRange(this.minY(), this.maxY(), pos.y());
     },
 
-    collides: function(aabb, cb){
-		
+    deepEqual: function(aabb){
+		return (this.min().deepEqual(aabb.min()) && this.max().deepEqual(aabb.max()));
     }
 };
 
