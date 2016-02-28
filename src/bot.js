@@ -1,3 +1,4 @@
+'use strict';
 class Bot{
 	constructor(player, skin, name, code){
 		this.player = player;

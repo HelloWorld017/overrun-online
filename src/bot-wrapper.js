@@ -43,4 +43,8 @@ class BotWraper{
 	getCode(){
 		return this.getBot().code;
 	}
+
+	getPlayer(){
+		return this.getBot().player;
+	}
 }

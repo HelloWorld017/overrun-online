@@ -78,7 +78,12 @@ class OverrunGame{
 					}
 
 					turnLog.final = {
-						content: 'turn.attack.win'
+						content: 'turn.win',
+						data: {
+							type: 'attack',
+							player: bot.getPlayer().getName(),
+							bot: bot.getName()
+						}
 					};
 					cb(new Error());
 					return;
@@ -109,7 +114,12 @@ class OverrunGame{
 		}, (err) => {
 			if(!err){
 				turnLog.final = {
-					content: 'turn.defence.win'
+					content: 'turn.win',
+					data: {
+						type: 'defence',
+						player: bot.getPlayer().getName(),
+						bot: bot.getName()
+					}
 				};
 			}
 
@@ -118,15 +128,15 @@ class OverrunGame{
 	}
 
 	start(){
+		var gameLog = [];
 		async.eachSeries(Library.rangeOf(TURN_COUNT), (k, cb) => {
 			processRound((k % 2), (log) => {
-
+				gameLog[k] = log;
+				cb(null);
 			});
-		});
-	}
-
-	getPlayerByName(name){
-		return this.players[name];
+		}, (e) => {
+			handleWin(gameLog);
+		)};
 	}
 
 	getEvaluator(bot, logObject, isDefence){
@@ -240,7 +250,7 @@ class OverrunGame{
 		};
 	}
 
-	handleWin(turnLog){
+	handleWin(gameLog){
 
 	}
 }
