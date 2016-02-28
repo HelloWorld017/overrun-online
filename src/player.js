@@ -6,20 +6,19 @@ const callbacks = [
 var Server = require('./server');
 
 class Player{
-	constructor(socket, name){
+	constructor(socket, data){
 		this.socket = socket;
-		this.name = name;
-		this.stat = {
-			win: 0,
-			defeat: 0,
-			draw: 0
-		};
+		this.name = data.name;
+		this.stat = data.stat;
+
 		//TODO Integrate with mongodb!
 		callbacks.forEach((k) => {
 			this.socket.on(k, (data) => {
 				Server.trigger(k, data);
 			});
 		});
+
+		this.bots = data.bots.map((v) => return new Bot(this, v.skin, v.name, v.code)));
 
 		this.currentGame = undefined;
 	}
@@ -36,3 +35,5 @@ class Player{
 		return this.socket;
 	}
 }
+
+module.exports = Player;

@@ -2,8 +2,12 @@
 var OverrunGame = require('./ovverun-game');
 
 class OverrunRankedGame extends OverrunGame{
-    constructor(p1, p2, bot1, bot2){
-        super(bot1, bot2, [p1, p2]);
+    constructor(gid, p1, p2, bot1, bot2){
+        super(gid, bot1, bot2, [p1, p2]);
+
+        this.players.forEach((v) => {
+            v.currentGame = this;
+        });
     }
 
     handleWin(gameLog){
@@ -62,3 +66,5 @@ class OverrunRankedGame extends OverrunGame{
         });
     }
 }
+
+module.exports = OverrunRankedGame;

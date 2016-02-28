@@ -1,47 +1,56 @@
-var app = require('../app');
 var debug = require('debug')('overrun-online:server');
 var http = require('http');
+var MongoClient = require('mongodb').MongoClient;
+var Server = require('./src/server');
 
-global.games = [];
-global.players = [];
+global.config = require('./resources/server');
+global.mongo = undefined;
+global.server = undefined;
 
-var port = ((val) => {
-	var portNumber = parseInt(val, 10);
+var url = "mongodb://" + global.config['db-address'] + ":" + global.config['db-port'] + "/" + global.config['db-name'];
+MongoClient.connect(url, (err, client) => {
+	global.mongo = client;
+	global.server = new Server();
 
-  	if(isNaN(portNumber)){
-      	return val;
-  	}
+	var app = require('./app');
+	var port = ((val) => {
+		var portNumber = parseInt(val, 10);
 
-  	if(portNumber >= 0){
-  	  return portNumber;
-  	}
+	  	if(isNaN(portNumber)){
+	      	return val;
+	  	}
 
-  	return false;
-})(process.env.PORT || '3000');
+	  	if(portNumber >= 0){
+	  	  return portNumber;
+	  	}
 
-app.set('port', port);
+	  	return false;
+	})(process.env.PORT || '3000');
 
-var httpServer = http.createServer(app);
-httpServer.listen(port);
-httpServer.on('error', (err) => {
-	if(err.syscall !== 'listen') throw err;
-	var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+	app.set('port', port);
 
-	switch(err.code){
-		case 'EACCES':
-			console.error(bind + ' requires elevated priviledges');
-			process.exit(1);
-			return;
+	var httpServer = http.createServer(app);
+	httpServer.listen(port);
+	httpServer.on('error', (err) => {
+		if(err.syscall !== 'listen') throw err;
+		var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
-		case 'EADDRINUSE':
-			console.error(bind + ' is already in use');
-			process.exit(1);
-			return;
-	}
+		switch(err.code){
+			case 'EACCES':
+				console.error(bind + ' requires elevated priviledges');
+				process.exit(1);
+				return;
 
-	throw error;
-});
-httpServer.on('listening', () => {
-	var addr = server.address();
-	debug('Listening on ' + ((typeof addr === 'string') ? 'pipe ' + addr : 'port ' + addr.port));
+			case 'EADDRINUSE':
+				console.error(bind + ' is already in use');
+				process.exit(1);
+				return;
+		}
+
+		throw error;
+	});
+	httpServer.on('listening', () => {
+		var addr = server.address();
+		debug('Listening on ' + ((typeof addr === 'string') ? 'pipe ' + addr : 'port ' + addr.port));
+	});
 });

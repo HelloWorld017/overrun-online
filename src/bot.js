@@ -6,5 +6,4 @@ class Bot{
 		this.name = name;
 		this.code = code;
 	}
-
 }

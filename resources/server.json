@@ -1,0 +1,7 @@
+{
+    "db-address": "localhost",
+    "db-port": "27017",
+    "db-name": "overrun",
+
+    "collection-user": "users"
+}

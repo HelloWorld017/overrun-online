@@ -16,8 +16,8 @@ const START_POS = {
 };
 
 class OverrunGame{
-
-	constructor(bot1, bot2, players){
+	constructor(gid, bot1, bot2, players){
+		this.gameId = gid;
 		this.players = players;
 		this.bots = [new BotWrapper(bot1), new BotWrapper(bot2)];
 
@@ -135,6 +135,10 @@ class OverrunGame{
 				cb(null);
 			});
 		}, (e) => {
+			this.players.forEach((v) => {
+				v.currentGame = undefined;
+			});
+
 			handleWin(gameLog);
 		)};
 	}
@@ -254,3 +258,5 @@ class OverrunGame{
 
 	}
 }
+
+module.exports = OverrunGame;
