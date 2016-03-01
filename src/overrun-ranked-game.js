@@ -2,8 +2,8 @@
 var OverrunGame = require('./ovverun-game');
 
 class OverrunRankedGame extends OverrunGame{
-    constructor(gid, p1, p2, bot1, bot2){
-        super(gid, bot1, bot2, [p1, p2]);
+    constructor(gid, bot1, bot2, server){
+        super(gid, bot1, bot2, [bot1.player, bot2.player], server);
 
         this.players.forEach((v) => {
             v.currentGame = this;
@@ -14,6 +14,7 @@ class OverrunRankedGame extends OverrunGame{
         var playerScore = 0;
         var playerName = this.players[0].getName();
 
+        this.server.removeGame(this.gameId);
         async.each(gameLog, (v, cb) => {
             if(v.final.data.player === playerName){
                 playerScore++;
@@ -31,26 +32,30 @@ class OverrunRankedGame extends OverrunGame{
 
                 if(playerStatus > 0){
                     p1.getStat().win++;
+                    p1.point += Math.clamp(1, 30, Math.round(Math.pow(Math.log(Math.clamp(-49, 50, p2.getPoint() - p1.getPoint()) + 50) * 2, 2) / 3));
                     p1.getSocket().emit('game.win');
 
                     p2.getStat().defeat++;
+                    p2.point -= Math.clamp(5, 100, Math.pow((Math.clamp(-50, 50, p2.getPoint() - p1.getPoint()) + 50) / 10, 2));
                     p2.getSocket().emit('game.defeat');
                     return;
                 }
 
                 if(playerStatus === 0){
-                    p1.getStatus().draw++;
+                    p1.getStat().draw++;
                     p1.getSocket().emit('game.draw');
 
-                    p2.getStatus().draw++;
+                    p2.getStat().draw++;
                     p2.getSocket().emit('game.draw');
                     return;
                 }
 
-                p1.getStatus().defeat++;
+                p1.getStat().defeat++;
+                p1.point -= Math.clamp(5, 100, Math.pow((Math.clamp(-50, 50, p2.getPoint() - p1.getPoint()) + 50) / 10, 2));
                 p1.getSocket().emit('game.defeat');
 
-                p2.getSocket().win++;
+                p2.getStat().win++;
+                p2.point += Math.clamp(1, 30, Math.round(Math.pow(Math.log(Math.clamp(-49, 50, p2.getPoint() - p1.getPoint()) + 50) * 2, 2) / 3));
                 p2.getSocket().emit('game.win');
             });
         });

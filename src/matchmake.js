@@ -3,19 +3,31 @@
 const TICK = 5000;
 
 class MatchMaker{
-    constructor(){
+    constructor(server){
         this.pool = {};
+        this.server = server;
         this.intervalId = undefined;
     }
 
-    entry(player, rank){
+    entry(player, bot){
         if(player.currentGame !== undefined) return;
 
-        this.pool[player.getName()] = player;
+        this.pool.push({
+            player: player,
+            bot: bot
+        });
     }
 
     onRun(){
+        this.pool.sort((a, b) => {
+            return (a.getPoint() - b.getPoint());
+        });
 
+        for(var i = 0; i < this.pool.length; i += 2){
+            if(this.pool.hasOwnProperty(i) && this.pool.hasOwnProperty(i + 1)){
+                this.server.registerGame(new OverrunRankedGame(this.server.getGameId(), this.pool[i].bot, this.pool[i + 1].bot, this.server));
+            }
+        }
     }
 
     remove(){
@@ -23,7 +35,8 @@ class MatchMaker{
     }
 }
 
-MatchMake.newInstance = () => {
+module.exports = () => {
     var matchmaker = new MatchMaker();
     matchmaker.intervalId = setInterval(matchmaker.onRun, TICK);
+    return matchmaker;
 };

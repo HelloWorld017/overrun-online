@@ -1,9 +1,13 @@
 'use strict';
+var matchmake = require('./matchmake');
+
 class Server{
 	constructor(){
 		this.callbacks = [];
 		this.players = {};
 		this.games = {};
+		this.gameCounts = 0;
+		this.matchmaker = matchmake();
 	}
 
 	trigger(name, data){
@@ -22,6 +26,14 @@ class Server{
 
 	removeGame(gid){
 		this.games[gid] = undefined;
+	}
+
+	registerGame(game){
+		this.games[game.gameId] = game;
+	}
+
+	getGameId(){
+		return this.gameCounts++;
 	}
 };
 

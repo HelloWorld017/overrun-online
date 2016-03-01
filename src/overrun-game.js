@@ -16,10 +16,11 @@ const START_POS = {
 };
 
 class OverrunGame{
-	constructor(gid, bot1, bot2, players){
+	constructor(gid, bot1, bot2, players, server){
 		this.gameId = gid;
 		this.players = players;
 		this.bots = [new BotWrapper(bot1), new BotWrapper(bot2)];
+		this.server = server;
 
 		this.round = 0;
 		this.turn = 0;
@@ -154,7 +155,7 @@ class OverrunGame{
 		var customLog = 0;
 		var log = (content, data, isCustom) => {
 			if(isCustom){
-				if((customLog < 128 && typeof data === 'string') && data.length < 256){
+				if((customLog < 64 && typeof data === 'string') && data.length < 256){
 					customLog++;
 					logObject.push({
 						content: content,

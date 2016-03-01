@@ -10,6 +10,7 @@ class Player{
 		this.socket = socket;
 		this.name = data.name;
 		this.stat = data.stat;
+		this.point = data.point;
 
 		//TODO Integrate with mongodb!
 		callbacks.forEach((k) => {
@@ -25,6 +26,10 @@ class Player{
 
 	getStat(){
 		return this.stat;
+	}
+
+	getPoint(){
+		return this.point;
 	}
 
 	getName(){
