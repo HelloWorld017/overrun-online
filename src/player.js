@@ -1,16 +1,20 @@
 'use strict';
-const callbacks = [
-	'code', 'ready', 'join', 'entry'
-];
+
+var errors = require('./errors');
 
 var Server = require('./server');
 
+var EmailNotVerifiedError = errors.EmailNotVerifiedError;
+var PasswordNotEqualError = errors.PasswordNotEqualError;
+
 class Player{
-	constructor(socket, data){
-		this.socket = socket;
+	constructor(data){
 		this.name = data.name;
 		this.stat = data.stat;
 		this.point = data.point;
+		this.pw = data.pw;
+		this.emailVerified = data.emailVerified;
+		this.unregistered = data.unregistered;
 
 		//TODO Integrate with mongodb!
 		callbacks.forEach((k) => {
@@ -38,6 +42,33 @@ class Player{
 
 	getSocket(){
 		return this.socket;
+	}
+
+	auth(pw){
+		if(this.unregistered){
+			cb(new PasswordNotEqualError(), false);
+			return;
+		}
+
+		bcrypt.compare(pw, this.encryptedPw, (err, res) => {
+			if(err){
+				cb(err);
+				return;
+			}
+
+			if(!res){
+				cb(new PasswordNotEqualError(), false);
+				return;
+			}
+
+			if(!this.emailVerified){
+				cb(new EmailNotVerifiedError());
+				return;
+			}
+
+			this.token = createToken(1024);
+			cb(undefined, this.token);
+		});
 	}
 }
 

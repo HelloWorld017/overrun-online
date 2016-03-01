@@ -1,9 +1,13 @@
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var crypto = require('crypto');
 var express = require('express');
-var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var path = require('path');
+var session = require('express-session');
+
+var MongoStore = require('connect-mongo')(session);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -19,6 +23,36 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+	secret: global.config['session-secret'],
+	saveUninitialized: false,
+	resave: false,
+	store: new MongoStore({
+		url: 'mongodb://' + global.config['db-address'] + ':' + global.config['db-port'] + '/' + global.config['db-session-name'],
+		ttl: 3600 * 24 * 7,
+		touchAfter: 3 * 3600
+	})
+}));
+
+app.use((req, res, next) => {
+    res.locals.user = (global.users[req.session.userid]);
+	res.locals.auth = (res.locals.user !== undefined);
+    res.locals.email = (res.locals.auth) ? crypto.createHash('md5').update(res.locals.user.email.toLowerCase()).digest('hex') : '';
+
+    //Anti SQL Injection
+    async.map(req.body, (v, cb) => {
+		cb(null, (typeof v === 'string' || typeof v === 'number') ? v : '');
+	}, (err, result) => {
+		req.body = result;
+		async.map(req.query, (v, cb) => {
+			cb(null, (typeof v === 'string' || typeof v === 'number') ? v : "");
+		}, (err2, result2) => {
+            req.query = result2;
+            next();
+        }
+    });
+});
+
 app.use('/', routes);
 app.use('/users', users);
 
@@ -30,7 +64,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     console.error(err.toString());
-    
+
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,

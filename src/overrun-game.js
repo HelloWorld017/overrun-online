@@ -184,11 +184,15 @@ class OverrunGame{
 
 			move: function(){
 				var err = check(1);
+				
+				if((bot.getBoundBox().maxX() >= BOARD_SIZE || bot.getBoundBox().minX() <= 0) || (bot.getBoundBox().maxY() >= BOARD_SIZE || bot.getBoundBox().minY() <= 0)){
+					err = new Error('turn.bot.over.board');
+				}
+
 				if(err){
 					log('turn.err', err, true);
 					return false;
 				}
-
 				bot.metadata.currentMovement--;
 				bot.metadata.overallMovement--;
 				bot.move();

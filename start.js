@@ -6,6 +6,7 @@ var Server = require('./src/server');
 global.config = require('./resources/server');
 global.mongo = undefined;
 global.server = undefined;
+global.users = undefined;
 
 var url = "mongodb://" + global.config['db-address'] + ":" + global.config['db-port'] + "/" + global.config['db-name'];
 MongoClient.connect(url, (err, client) => {
