@@ -11,6 +11,17 @@ class HttpError extends Error{
 	}
 }
 
+class RedirectError extends HttpError{
+	constructor(message, status, redirect){
+		super(message, status);
+		this.redirect = redirect;
+	}
+
+	getRedirect(){
+		return this.redirect;
+	}
+}
+
 class AlreadyLoggedInError extends HttpError{
 	constructor(){
 		super(global.translation['error-alreadyloggedin'], 400);
@@ -47,9 +58,9 @@ class NoPermissionError extends HttpError{
 	}
 }
 
-class NotLoggedInError extends HttpError{
+class NotLoggedInError extends RedirectError{
 	constructor(){
-		super(global.translation['error-notloggedin'], 401);
+		super(global.translation['error-notloggedin'], 401, '/login');
 	}
 }
 
@@ -59,9 +70,27 @@ class PasswordNotEqualError extends HttpError{
 		}
 }
 
+class SameIdAlreadyJoinedError extends HttpError{
+	constructor(){
+		super(global.translation['error-sameidalreadyjoined'], 400);
+	}
+}
+
 class ServerError extends HttpError{
 	constructor(){
 		super(global.translation['error-internalserver'], 500);
+	}
+}
+
+class TooLongCodeError extends HttpError{
+	constructor(){
+		super(global.translation['error-toolongcode'], 400);
+	}
+}
+
+class TooManyBotsError extends HttpError{
+	constructor(){
+		super(global.translation['error-toomanybots'], 403);
 	}
 }
 
@@ -71,14 +100,9 @@ class WrongSessionError extends HttpError{
 	}
 }
 
-class SameIdAlreadyJoinedError extends HttpError{
-	constructor(){
-		super(global.translation['error-sameidalreadyjoined'], 400);
-	}
-}
-
 module.exports = {
 	HttpError: HttpError,
+	RedirectError: RedirectError,
 	AlreadyLoggedInError: AlreadyLoggedInError,
 	CaptchaError: CaptchaError,
 	EmailNotVerifiedError: EmailNotVerifiedError,
@@ -87,7 +111,9 @@ module.exports = {
 	NoPermissionError: NoPermissionError,
 	NotLoggedInError: NotLoggedInError,
 	PasswordNotEqualError: PasswordNotEqualError,
+	SameIdAlreadyJoinedError: SameIdAlreadyJoinedError,
 	ServerError: ServerError,
+	TooLongCodeError: TooLongCodeError,
+	TooManyBotsError: TooManyBotsError,
 	WrongSessionError: WrongSessionError,
-	SameIdAlreadyJoinedError: SameIdAlreadyJoinedError
 };

@@ -30,7 +30,7 @@ router.all('/', (req, res, next) => {
 		var password = new NodeRSA(req.session.rsa).decrypt(req.body.password);
 
 		global.mongo
-		.collection(global.config['db-user-name'])
+		.collection(global.config['collection-user'])
 		.find({id: id})
 		.limit(1)
 		.toArray((err, results) => {

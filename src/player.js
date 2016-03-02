@@ -11,6 +11,8 @@ class Player{
 	constructor(data){
 		this.name = data.name;
 		this.stat = data.stat;
+		this.skins = data.skins;
+		this.money = data.money;
 		this.point = data.point;
 		this.pw = data.pw;
 		this.emailVerified = data.emailVerified;
@@ -69,6 +71,11 @@ class Player{
 			this.token = createToken(1024);
 			cb(undefined, this.token);
 		});
+	}
+
+	saveBots(){
+		global.mongo
+			.collection(global.config['db-'])
 	}
 }
 
