@@ -1,4 +1,4 @@
-var router = require('express').Router;
+var router = require('express').Router();
 var errors = require('../src/errors');
 
 var InvalidDataError = errors.InvalidDataError;
@@ -7,7 +7,7 @@ var TooManyBotsError = errors.TooManyBotsError;
 
 router.all((req, res, next) => {
 	if(req.method === 'POST'){
-		if(!req.locals.auth){
+		if(!res.locals.auth){
 			next(new NotLoggedInError());
 			return;
 		}
@@ -22,13 +22,13 @@ router.all((req, res, next) => {
 			return;
 		}
 
-		if(!req.locals.user.skins.inclues(req.body.skin)){
+		if(!res.locals.user.skins.inclues(req.body.skin)){
 			//TODO update user.skins
 			next(new InvalidDataError());
 			return;
 		}
 
-		if(req.locals.user.bots.length > global.config['max-bot-count']){
+		if(res.locals.user.bots.length > global.config['max-bot-count']){
 			next(new TooManyBotsError());
 			return;
 		}
@@ -38,13 +38,13 @@ router.all((req, res, next) => {
 			return;
 		}
 
-		var bot = new Bot(req.locals.user, req.body.skin, req.body.name, req.body.code);
+		var bot = new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code);
 		res.redirect('/bots');
 		return;
 	}
 
 	res.render('build', {
-		skin: req.locals.user.skins
+		skin: res.locals.user.skins
 	});
 });
 

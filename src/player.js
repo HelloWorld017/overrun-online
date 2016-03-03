@@ -28,6 +28,7 @@ class Player{
 		this.bots = data.bots.map((v) => return new Bot(this, v.skin, v.name, v.code)));
 
 		this.currentGame = undefined;
+		this.lastGame = undefined;
 	}
 
 	getStat(){
@@ -76,6 +77,11 @@ class Player{
 	saveBots(){
 		global.mongo
 			.collection(global.config['db-'])
+	}
+
+	gameEnd(){
+		this.lastGame = this.currentGame;
+		this.currentGame = undefined;
 	}
 }
 

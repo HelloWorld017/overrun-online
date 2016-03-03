@@ -36,8 +36,10 @@ app.use(session({
 
 app.use((req, res, next) => {
     res.locals.user = (global.users[req.session.userid]);
+	if(res.locals.user.unregistered) res.locals.user = undefined;
 	res.locals.auth = (res.locals.user !== undefined);
     res.locals.email = (res.locals.auth) ? crypto.createHash('md5').update(res.locals.user.email.toLowerCase()).digest('hex') : '';
+
 
     //Anti SQL Injection
     async.map(req.body, (v, cb) => {
