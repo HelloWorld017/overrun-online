@@ -6,7 +6,7 @@ var InvalidDataError = errors.InvalidDataError;
 var NotLoggedInError = errors.NotLoggedInError;
 var ServerError = errors.ServerError;
 
-router.all((req, res, next) => {
+router.all('/', (req, res, next) => {
     if(req.method === 'POST'){
         if(!req.body.token){
             next(new InvalidDataError());

@@ -1,4 +1,5 @@
 'use strict';
+var async = require('async');
 
 const TICK = 5000;
 
@@ -12,10 +13,16 @@ class MatchMaker{
     entry(player, bot){
         if(player.currentGame !== undefined) return;
 
-        this.pool.push({
-            player: player,
-            bot: bot
-        });
+		async.every(this.pool, (poolEntry, cb) => {
+			cb(null, poolEntry.player.getName() !== player.getName());
+		}, (err, res) => {
+			if(res){
+				this.pool.push({
+		            player: player,
+		            bot: bot
+		        });
+			}
+		});
     }
 
     onRun(){

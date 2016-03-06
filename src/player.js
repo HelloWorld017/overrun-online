@@ -76,7 +76,18 @@ class Player{
 
 	saveBots(){
 		global.mongo
-			.collection(global.config['db-'])
+			.collection(global.config['collection-user'])
+			.findOneAndUpdate({id: this.name}, {
+				$set: {
+					bots: this.bots.map((v) => {
+						return {
+							skin: v.skin,
+							name: v.name,
+							code: v.code
+						};
+					})
+				}
+			});
 	}
 
 	gameEnd(){

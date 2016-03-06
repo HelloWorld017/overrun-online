@@ -28,6 +28,12 @@ class RedirectError extends HttpError{
 	}
 }
 
+class AlreadyEntriedError extends HttpError{
+	constructor(){
+		super(global.translation['error-alreadyentried'], 400);
+	}
+}
+
 class AlreadyLoggedInError extends HttpError{
 	constructor(){
 		super(global.translation['error-alreadyloggedin'], 400);
@@ -116,6 +122,7 @@ module.exports = {
 	HttpError: HttpError,
 	RedirectError: RedirectError,
 	StatusError: StatusError,
+	AlreadyEntriedError: AlreadyEntriedError,
 	AlreadyLoggedInError: AlreadyLoggedInError,
 	CaptchaError: CaptchaError,
 	EmailNotVerifiedError: EmailNotVerifiedError,
