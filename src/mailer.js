@@ -1,5 +1,5 @@
 module.exports = {
-	send: (template, sendTo, content) => {
+	send: (subject, sendTo, template, content) => {
 
 	}
 }

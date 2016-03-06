@@ -1,12 +1,16 @@
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var crypto = require('crypto');
+var errors = require('./src/errors');
 var express = require('express');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var path = require('path');
 var session = require('express-session');
 
+var HttpError = errors.HttpError;
+var RedirectError = errors.RedirectError;
+var StatusError = errors.StatusError;
 var MongoStore = require('connect-mongo')(session);
 
 var routes = require('./routes/index');
@@ -28,7 +32,7 @@ app.use(session({
 	saveUninitialized: false,
 	resave: false,
 	store: new MongoStore({
-		url: 'mongodb://' + global.config['db-address'] + ':' + global.config['db-port'] + '/' + global.config['db-session-name'],
+		url: 'mongodb://' + global.config['db-address'] + ':' + global.config['db-port'] + '/' + global.config['collection-session'],
 		ttl: 3600 * 24 * 7,
 		touchAfter: 3 * 3600
 	})
@@ -65,9 +69,30 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+	if(err instanceof HttpError){
+		if(err instanceof RedirectError){
+			res.render('alert', {
+				redirect: err.redirect,
+				message: err.message
+			});
+			return;
+		}
+
+		if(err instanceof StatusError){
+			res.end();
+			return;
+		}
+
+		res.render('alert', {
+			redirect: undefined,
+			message: err.message
+		});
+		return;
+	}
+
     console.error(err.toString());
 
-    res.status(err.status || 500);
     res.render('error', {
         message: err.message,
         error: {}

@@ -3,7 +3,9 @@ var http = require('http');
 var MongoClient = require('mongodb').MongoClient;
 var Server = require('./src/server');
 
+//TODO Add default configuration
 global.config = require('./resources/server');
+global.translation = require('./resources/translation');
 global.mongo = undefined;
 global.server = undefined;
 global.users = undefined;

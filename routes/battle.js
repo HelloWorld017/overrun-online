@@ -2,6 +2,7 @@ var router = require('express').Router;
 var errors = require('../src/errors');
 
 var AlreadyEntriedError = errors.AlreadyEntriedError;
+var EntryFirstError = errors.EntryFirstError;
 var InvalidDataError = errors.InvalidDataError;
 var NotLoggedInError = errors.NotLoggedInError;
 
