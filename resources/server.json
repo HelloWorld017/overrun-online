@@ -3,6 +3,7 @@
     "db-port": "27017",
     "db-name": "overrun",
 
+    "collection-auth": "auth",
     "collection-user": "users",
 	"collection-reset": "reset",
 	"collection-session": "session"

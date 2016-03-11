@@ -43,7 +43,7 @@ router.all('/', (req, resp, next) => {
 
 		global.mongo
 			.collection(global.config['collection-user'])
-			.find({id: id})
+			.find({name: id})
 			.toArray((dberr, res) => {
 				if(dberr){
 					console.error(dberr.message);

@@ -18,7 +18,7 @@ router.post('/password', (req, res, next) => {
 
 	global.mongo
 		.collection(global.config['collection-user'])
-		.find({id: id})
+		.find({name: id})
 		.limit(1)
 		.toArray((err, results) => {
 			if(err){
@@ -128,10 +128,11 @@ router.post('/id', (req, res, next) => {
 				next(new PasswordNotEqualError());
 				return;
 			}
+
+			res.render('id-missing-result', {
+				id: results[0].name
+			});
 		});
-	res.render('id-missing-result', {
-		id:
-	});
 });
 
 router.get('/', (req, res, next) => {

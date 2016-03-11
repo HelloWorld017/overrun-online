@@ -4,7 +4,7 @@ var router = express.Router();
 router.get('/:user', (req, res, next) => {
 	global.mongo
 		.collection(global.config['collection-user'])
-		.find({id: req.params.user})
+		.find({name: req.params.user})
 		.toArray((err, arr) => {
 			if(err){
 				next(new ServerError());

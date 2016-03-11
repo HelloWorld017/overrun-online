@@ -9,9 +9,9 @@ var PasswordNotEqualError = errors.PasswordNotEqualError;
 class Player{
 	constructor(data){
 		this.name = data.name;
+		this.nickname = data.nickname;
 		this.email = data.email;
 		this.pw = data.pw;
-		this.authToken = data.authToken;
 		this.stat = data.stat;
 		this.skins = data.skins;
 		this.money = data.money;
@@ -102,9 +102,9 @@ Player.register = (data) => {
 		.collection(global.config['collection-user'])
 		.insert({
 			name: data.id,
+			nickname: data.name,
 			email: data.email,
 			pw: data.password,
-			authToken: data.authToken,
 			unregistered: false,
 			emailVerified: false,
 			bot: [],
@@ -116,6 +116,13 @@ Player.register = (data) => {
 			},
 			point: 0,
 			money: 0
+		});
+
+	global.mongo
+		.collection(global.config['collection-auth'])
+		.insert({
+			id: data.id,
+			authToken: data.authToken
 		});
 };
 
