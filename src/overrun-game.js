@@ -3,7 +3,7 @@ var Player = require('./player');
 var Library = require('./library');
 var localeval = require('localeval');
 
-const BOARD_SIZE = 5;
+const BOARD_SIZE = 6;
 const TURN_COUNT = 40;
 const ROUND_COUNT = 2;
 const MAX_ACTION_AMOUNT = 4;
@@ -28,7 +28,12 @@ class OverrunGame{
 
 		this.roundTick = 0;
 		this.gameLog = [];
+		this.gameName = "OVERRUN";
 		resetRound();
+	}
+
+	getName(){
+		return this.gameName;
 	}
 
 	resetRound(){

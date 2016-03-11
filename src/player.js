@@ -1,7 +1,6 @@
 'use strict';
 
 var errors = require('./errors');
-
 var Server = require('./server');
 
 var EmailNotVerifiedError = errors.EmailNotVerifiedError;
@@ -10,21 +9,15 @@ var PasswordNotEqualError = errors.PasswordNotEqualError;
 class Player{
 	constructor(data){
 		this.name = data.name;
+		this.email = data.email;
+		this.pw = data.pw;
+		this.authToken = data.authToken;
 		this.stat = data.stat;
 		this.skins = data.skins;
 		this.money = data.money;
 		this.point = data.point;
-		this.pw = data.pw;
 		this.emailVerified = data.emailVerified;
 		this.unregistered = data.unregistered;
-
-		//TODO Integrate with mongodb!
-		callbacks.forEach((k) => {
-			this.socket.on(k, (data) => {
-				Server.trigger(k, data);
-			});
-		});
-
 		this.bots = data.bots.map((v) => return new Bot(this, v.skin, v.name, v.code)));
 
 		this.currentGame = undefined;
@@ -41,10 +34,6 @@ class Player{
 
 	getName(){
 		return this.name;
-	}
-
-	getSocket(){
-		return this.socket;
 	}
 
 	auth(pw){
@@ -74,6 +63,18 @@ class Player{
 		});
 	}
 
+	saveStat(){
+		global.mongo
+			.collection(global.config['collection-user'])
+			.findOneAndUpdate({id: this.name}, {
+				$set: {
+					money: this.money,
+					point: this.point,
+					stat: this.stat
+				}
+			});
+	}
+
 	saveBots(){
 		global.mongo
 			.collection(global.config['collection-user'])
@@ -95,5 +96,27 @@ class Player{
 		this.currentGame = undefined;
 	}
 }
+
+Player.register = (data) => {
+	global.mongo
+		.collection(global.config['collection-user'])
+		.insert({
+			name: data.id,
+			email: data.email,
+			pw: data.password,
+			authToken: data.authToken,
+			unregistered: false,
+			emailVerified: false,
+			bot: [],
+			skins: [],
+			stat: {
+				win: 0,
+				defeat: 0,
+				draw: 0
+			},
+			point: 0,
+			money: 0
+		});
+};
 
 module.exports = Player;

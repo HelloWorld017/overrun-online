@@ -97,7 +97,7 @@ router.all('/', (req, resp, next) => {
 										});
 
 										mailer.send(global.translation['subject-verify-email'], 'verify-email', email, {
-											authToken: authToken;
+											authToken: authToken
 										});
 
 										resp.redirect('/login');

@@ -6,7 +6,7 @@ var EntryFirstError = errors.EntryFirstError;
 var InvalidDataError = errors.InvalidDataError;
 var NotLoggedInError = errors.NotLoggedInError;
 
-router.post('/entry/:bot', (req, res, next) => {
+router.post('/entry/:game/:bot', (req, res, next) => {
 	if(!res.locals.auth){
 		next(new NotLoggedInError());
 		return;
@@ -23,6 +23,7 @@ router.post('/entry/:bot', (req, res, next) => {
 			return;
 		}
 
+		switch()
 		global.server.matchmaker.entry(res.locals.user, res.locals.user.bots[req.params.bot]);
 		res.render('in-entry');
 		return;
