@@ -11,6 +11,7 @@ class Player{
 		this.name = data.name;
 		this.nickname = data.nickname;
 		this.email = data.email;
+		this.friends = [];
 		this.pw = data.pw;
 		this.stat = data.stat;
 		this.skins = data.skins;
@@ -105,6 +106,7 @@ Player.register = (data) => {
 			nickname: data.name,
 			email: data.email,
 			pw: data.password,
+			friends: [],
 			unregistered: false,
 			emailVerified: false,
 			bot: [],

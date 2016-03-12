@@ -23,8 +23,13 @@ router.post('/entry/:game/:bot', (req, res, next) => {
 			return;
 		}
 
-		switch()
-		global.server.matchmaker.entry(res.locals.user, res.locals.user.bots[req.params.bot]);
+		var game = req.params.game.replace(/[^A-Z0-9-]/g, '');
+		if(global.server.matchmakers[game] === undefined){
+			next(new InvalidDataError());
+			return;
+		}
+
+		global.server.matchmakers[game].entry(res.locals.user, res.locals.user.bots[req.params.bot]);
 		res.render('in-entry');
 		return;
 	}

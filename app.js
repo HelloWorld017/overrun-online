@@ -39,37 +39,46 @@ app.use(session({
 }));
 
 app.use((req, res, next) => {
-    res.locals.user = (global.users[req.session.userid]);
+	res.locals.user = (global.users[req.session.userid]);
+	if(req.session.token !== res.locals.user.token) res.locals.user = undefined;
 	if(res.locals.user.unregistered) res.locals.user = undefined;
+
 	res.locals.auth = (res.locals.user !== undefined);
-    res.locals.email = (res.locals.auth) ? crypto.createHash('md5').update(res.locals.user.email.toLowerCase()).digest('hex') : '';
+	res.locals.email = (res.locals.auth) ? crypto.createHash('md5').update(res.locals.user.email.toLowerCase()).digest('hex') : '';
+	res.locals.logout = (cb, req, res, next) => {
+	    req.session.userid = undefined;
+	    req.session.token = undefined;
+	    req.session.save((err) => {
+	        cb(err);
+	    });
+	};
 
 
-    //Anti SQL Injection
-    async.map(req.body, (v, cb) => {
+	//Anti SQL Injection
+	async.map(req.body, (v, cb) => {
 		cb(null, (typeof v === 'string' || typeof v === 'number') ? v : '');
 	}, (err, result) => {
 		req.body = result;
 		async.map(req.query, (v, cb) => {
 			cb(null, (typeof v === 'string' || typeof v === 'number') ? v : "");
 		}, (err2, result2) => {
-            req.query = result2;
-            next();
-        }
-    });
+			req.query = result2;
+			next();
+		}
+	});
 });
 
 app.use('/', routes);
 app.use('/users', users);
 
 app.use((req, res, next) => {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
 });
 
 app.use((err, req, res, next) => {
-    res.status(err.status || 500);
+	res.status(err.status || 500);
 	if(err instanceof HttpError){
 		if(err instanceof RedirectError){
 			res.render('alert', {
@@ -91,12 +100,12 @@ app.use((err, req, res, next) => {
 		return;
 	}
 
-    console.error(err.toString());
+	console.error(err.toString());
 
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+	res.render('error', {
+		message: err.message,
+		error: {}
+	});
 });
 
 

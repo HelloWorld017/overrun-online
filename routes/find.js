@@ -15,7 +15,7 @@ router.post('/password', (req, res, next) => {
 
 	var id = req.body.id;
 	var email = req.body.email;
-
+	//TODO recaptcha
 	global.mongo
 		.collection(global.config['collection-user'])
 		.find({name: id})
@@ -83,16 +83,60 @@ router.post('/password/auth/:token', (req, res, next) => {
 		return;
 	}
 
-	var password = new NodeRSA(req.session.rsa).decrypt(req.body.password);
+	var rsa = new NodeRSA(req.session.rsa);
+	var password = rsa.decrypt(req.body.password);
 
-	if(password !== req.body['password-check']){
+	if(password !== rsa.decrypt(req.body['password-check'])){
 		next(new PasswordNotEqualError());
 		return;
 	}
 
 	global.mongo
 		.collection(global.config['collection-reset'])
-		.find({id: id})
+		.find({reset_token: req.params.token})
+		.toArray((err, result) => {
+			if(err || result.length === 0){
+				next(new InvalidDataError());
+				return;
+			}
+
+			if(result.valid_until > Date.now() || result.reset_token !== req.params.token){
+				next(new InvalidTokenError());
+				return;
+			}
+
+			bcrypt.genSalt(8, (err, salt) => {
+				if(err){
+					next(new ServerError());
+					return;
+				}
+
+				bcrypt.hash(password, salt, (err, hash) => {
+					if(err){
+						next(new ServerError());
+						return;
+					}
+
+					global.mongo
+						.collection(global.config['collection-user'])
+						.findOneAndUpdate({name: results[0].id}, {
+							$set: {
+								pw: hash
+							}
+						}).then(() => {
+							global.mongo
+								.collection(global.config['collection-reset'])
+								.findOneAndUpdate({reset_token: req.params.token}, {
+									$set: {
+										valid_until: 0
+									}
+								}).then(() => {
+									res.redirect('/');
+								});
+						});
+				});
+			});
+		});
 });
 
 router.get('/password/auth/:token', (req, res, next) => {
