@@ -11,6 +11,12 @@ class HttpError extends Error{
 	}
 }
 
+class StatusError extends HttpError{
+	constructor(message, status){
+		super(message, status);
+	}
+}
+
 class RedirectError extends HttpError{
 	constructor(message, status, redirect){
 		super(message, status);
@@ -19,6 +25,12 @@ class RedirectError extends HttpError{
 
 	getRedirect(){
 		return this.redirect;
+	}
+}
+
+class AlreadyEntriedError extends HttpError{
+	constructor(){
+		super(global.translation['error-alreadyentried'], 400);
 	}
 }
 
@@ -31,6 +43,12 @@ class AlreadyLoggedInError extends HttpError{
 class CaptchaError extends HttpError{
 	constructor(){
 		super(global.translation['error-captcha'], 403);
+	}
+}
+
+class EntryFirstError extends StatusError{
+	constructor(){
+		super(global.translation['error-entryfirst'], 204);
 	}
 }
 
@@ -103,9 +121,12 @@ class WrongSessionError extends HttpError{
 module.exports = {
 	HttpError: HttpError,
 	RedirectError: RedirectError,
+	StatusError: StatusError,
+	AlreadyEntriedError: AlreadyEntriedError,
 	AlreadyLoggedInError: AlreadyLoggedInError,
 	CaptchaError: CaptchaError,
 	EmailNotVerifiedError: EmailNotVerifiedError,
+	EntryFirstError: EntryFirstError,
 	InvalidDataError: InvalidDataError,
 	InvalidTokenError: InvalidTokenError,
 	NoPermissionError: NoPermissionError,

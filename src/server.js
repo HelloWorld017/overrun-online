@@ -6,8 +6,7 @@ class Server{
 		this.callbacks = [];
 		this.players = {};
 		this.games = {};
-		this.gameCounts = 0;
-		this.matchmaker = matchmake();
+		this.matchmakers = {};
 	}
 
 	trigger(name, data){
@@ -18,6 +17,10 @@ class Server{
 
 	bind(callback){
 		this.callbacks.push(callback);
+	}
+
+	addMatchMaker(game){
+		this.matchmakers[game.getName()] = matchmake(this, game);
 	}
 
 	login(user){

@@ -31,7 +31,7 @@ router.all('/', (req, res, next) => {
 
 		global.mongo
 		.collection(global.config['collection-user'])
-		.find({id: id})
+		.find({name: id})
 		.limit(1)
 		.toArray((err, results) => {
 			if(err){

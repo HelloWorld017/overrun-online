@@ -3,7 +3,7 @@ var Player = require('./player');
 var Library = require('./library');
 var localeval = require('localeval');
 
-const BOARD_SIZE = 5;
+const BOARD_SIZE = 6;
 const TURN_COUNT = 40;
 const ROUND_COUNT = 2;
 const MAX_ACTION_AMOUNT = 4;
@@ -27,7 +27,13 @@ class OverrunGame{
 		this.attack = 0;
 
 		this.roundTick = 0;
+		this.gameLog = [];
+		this.gameName = "OVERRUN";
 		resetRound();
+	}
+
+	getName(){
+		return this.gameName;
 	}
 
 	resetRound(){
@@ -136,8 +142,9 @@ class OverrunGame{
 				cb(null);
 			});
 		}, (e) => {
+			this.gameLog = gameLog;
 			this.players.forEach((v) => {
-				v.currentGame = undefined;
+				v.gameEnd();
 			});
 
 			handleWin(gameLog);
@@ -184,7 +191,7 @@ class OverrunGame{
 
 			move: function(){
 				var err = check(1);
-				
+
 				if((bot.getBoundBox().maxX() >= BOARD_SIZE || bot.getBoundBox().minX() <= 0) || (bot.getBoundBox().maxY() >= BOARD_SIZE || bot.getBoundBox().minY() <= 0)){
 					err = new Error('turn.bot.over.board');
 				}
