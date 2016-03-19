@@ -1,0 +1,15 @@
+<div class="background-div-wrapper">
+	<div class="background-div" style="background-color: <%= global.config['background-0'] %>">
+	</div>
+
+	<div class="background-div" style="background-color: <%= global.config['background-1'] %>">
+	</div>
+
+	<div class="parallax" style="background: url(<%= global.config['parallax'] %>) cover;">
+	</div>
+</div>
+
+<script>
+	$('.parallax').parallax();
+</script>
+

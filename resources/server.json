@@ -1,10 +1,14 @@
 {
-    "db-address": "localhost",
-    "db-port": "27017",
-    "db-name": "overrun",
+	"db-address": "localhost",
+	"db-port": "27017",
+	"db-name": "overrun",
 
-    "collection-auth": "auth",
-    "collection-user": "users",
+	"background-0": "#202020",
+	"background-1": "rgba(0, 0, 0, 0)",
+	"parallax": "/resources/parallax.png",
+
+	"collection-auth": "auth",
+	"collection-user": "users",
 	"collection-reset": "reset",
 	"collection-session": "session"
 }
