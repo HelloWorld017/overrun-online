@@ -31,7 +31,8 @@ class OverrunRankedGame extends OverrunGame{
             getPlayerByName(playerName, (p1) => {
                 var p2 = this.players.filter((v) => {
                     return v.getName() !== playerName;
-                });
+                })[0];
+
                 if(playerStatus === 0){
                     p1.getStat().draw++;
                     p2.getStat().draw++;
@@ -40,11 +41,9 @@ class OverrunRankedGame extends OverrunGame{
                     var defeat;
 
                     if(playerStatus > 0){
-                        win = p1;
-                        defeat = p2;
+						[win, defeat] = [p1, p2];
                     }else{
-                        win = p2;
-                        defeat = p1;
+						[win, defeat] = [p2, p1];
                     }
 
                     win.point += PointCalculator.win(win.getPoint(), defeat.getPoint());
