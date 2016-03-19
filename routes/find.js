@@ -84,13 +84,12 @@ router.post('/password/auth/:token', (req, res, next) => {
 		return;
 	}
 
-	var rsa = new NodeRSA(req.session.rsa);
-	var password = rsa.decrypt(req.body.password);
-
-	if(password !== rsa.decrypt(req.body['password-check'])){
+	if(req.body.password !== req.body['password-check']){
 		next(new PasswordNotEqualError());
 		return;
 	}
+
+	var password = global.key.decrypt(req.body.password);
 
 	global.mongo
 		.collection(global.config['collection-reset'])
@@ -141,10 +140,8 @@ router.post('/password/auth/:token', (req, res, next) => {
 });
 
 router.get('/password/auth/:token', (req, res, next) => {
-	var key = new NodeRSA({b: 4096});
-	res.session.rsa = key.exportKey('pkcs1-private');
 	res.render('password-missing-reset', {
-		rsa: key.exportKey('pkcs8-public')
+		rsa: global.key.exportKey('pkcs8-public')
 	});
 });
 

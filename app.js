@@ -1,3 +1,4 @@
+var async = require('async');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var crypto = require('crypto');
@@ -51,8 +52,8 @@ app.use(session({
 
 app.use((req, res, next) => {
 	res.locals.user = (global.users[req.session.userid]);
-	if(req.session.token !== res.locals.user.token) res.locals.user = undefined;
-	if(res.locals.user.unregistered) res.locals.user = undefined;
+	if(res.locals.user && (req.session.token !== res.locals.user.token)) res.locals.user = undefined;
+	if(res.locals.user && res.locals.user.unregistered) res.locals.user = undefined;
 
 	res.locals.url = global.config['url'] + req.originalUrl;
 	res.locals.auth = (res.locals.user !== undefined);
@@ -64,7 +65,6 @@ app.use((req, res, next) => {
 	        cb(err);
 	    });
 	};
-
 
 	//Anti SQL Injection
 	async.map(req.body, (v, cb) => {
@@ -122,8 +122,6 @@ app.use((err, req, res, next) => {
 		});
 		return;
 	}
-
-	console.error(err.toString());
 
 	res.render('error', {
 		message: err.message,

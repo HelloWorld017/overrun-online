@@ -14,38 +14,24 @@
 <link rel="stylesheet" type="text/css" href="/resources/css/main.css">
 
 <style>
-	nav{
-		background: <%= global['main-color'] %>;
-		color: #FFFFFF;
+	nav {
+		background: <%= global.theme['background-0'] %>;
+		color: <%= global.theme['foreground-0'] %>;
 	}
 
-	.nav-wrapper{
+	.nav-wrapper {
 		max-width: 942px;
 		margin: 0 auto;
 	}
 
-	.ach{
-		vertical-align: middle;
-		margin-right: 10px;
-	}
-
-	.doc-info{
-		color: darkgray;
-		font-size: 0.8em;
-	}
-
-	.doc-info:after{
-		content: ' | ';
-	}
-
-	.doc-info:last-child:after{
-		display: none;
-		content: '';
+	@media (min-width: 1050px) {
+		.main-section {
+			background: <%= global.theme['background-2'] %>;
+		}
 	}
 </style>
 
 <script src="/resources/js/jquery-2.1.4.min.js"></script>
-<script src="/resources/js/jquery.validate.min.js"></script>
 <script src="/resources/js/materialize.min.js"></script>
 
 <script>

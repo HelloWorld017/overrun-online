@@ -17,7 +17,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-
+	res.render('me');
 });
 
 router.get('/update', (req, res, next) => {
@@ -65,10 +65,8 @@ router.post('/update', (req, res, next) => {
 });
 
 router.get('/update/password', (req, res, next) => {
-	var key = new NodeRSA({b: 4096});
-	res.session.rsa = key.exportKey('pkcs1-private');
 	res.render('update-password', {
-		rsa: key.exportKey('pkcs8-public')
+		rsa: global.key.exportKey('pkcs8-public')
 	});
 });
 
@@ -78,14 +76,13 @@ router.post('/update/password', (req, res, next) => {
 		return;
 	}
 
-	var rsa = new NodeRSA(req.session.rsa);
-	var originalPw = rsa.decrypt(req.body.original);
-	var newPw = rsa.decrypt(req.body.new);
-
-	if(newPw !== rsa.decrypt(req.body.new_check)){
+	var originalPw = global.key.decrypt(req.body.original);
+	if(req.body.newPw !== req.body.new_check){
 		next(new PasswordNotEqualError());
 		return;
 	}
+
+	var newPw = global.key.decrypt(req.body.new);
 
 	bcrypt.compare(originalPw, res.locals.user.pw, (err, res) => {
 		if(err){

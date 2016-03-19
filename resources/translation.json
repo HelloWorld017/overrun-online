@@ -3,6 +3,15 @@
 	"index.motd": "Welcome to overrun-online!",
 	"index.continue": "Touch anywhere to continue.",
 
+	"login.title": "Login",
+	"login.id": "Username",
+	"login.password": "Password",
+	"login.submit": "Login",
+
+	"join.title": "Register",
+
+	"find.title": "Find",
+
 	"email.verify.subject": "Please verify your email.",
 
 	"desc": "overrun-online is a game which creates algorithm and fighting against."

@@ -1,7 +1,6 @@
 var bcrypt = require('bcrypt-nodejs');
 var createToken = require('../src/create-token');
 var errors = require('../src/errors');
-var NodeRSA = require('node-rsa');
 var recaptcha = require('../src/recaptcha-verify');
 var router = require('express').Router();
 var mailer = require('../src/mailer');
@@ -31,16 +30,16 @@ router.all('/', (req, resp, next) => {
 			return;
 		}
 
-		var rsa = new NodeRSA(req.session.rsa);
 		var id = req.body.id;
-		var password = rsa.decrypt(req.body.password);
 		var name = req.body.name;
 		var email = req.body.email;
 
-		if(password !== rsa.decrypt(req.body['password-check'])){
+		if(req.body.password !== req.body['password-check']){
 			next(new PasswordNotEqualError());
 			return;
 		}
+
+		var password = global.key.decrypt(req.body.password);
 
 		global.mongo
 			.collection(global.config['collection-user'])
@@ -111,8 +110,6 @@ router.all('/', (req, resp, next) => {
 					});
 			});
 	}else{
-		var key = new NodeRSA({b: 4096});
-		res.session.rsa = key.exportKey('pkcs1-private'); //Session is saved in server.
 		resp.render('register', {
 			rsa: key.exportKey('pkcs8-public')
 		});

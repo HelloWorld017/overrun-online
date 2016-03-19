@@ -1,70 +1,109 @@
 @font-face {
-    font-family: 'Spoqa Han Sans';
-    font-weight: 700;
-    src:
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Bold/SpoqaHanSans-Bold.eot?#iefix') format('eot'),
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Bold/SpoqaHanSans-Bold.svg') format('svg'),
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Bold/SpoqaHanSans-Bold.ttf') format('truetype'),
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Bold/SpoqaHanSans-Bold.woff') format('woff');
+	font-family: 'Spoqa Han Sans';
+	font-weight: 700;
+	src:
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Bold/SpoqaHanSans-Bold.eot?#iefix') format('eot'),
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Bold/SpoqaHanSans-Bold.svg') format('svg'),
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Bold/SpoqaHanSans-Bold.ttf') format('truetype'),
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Bold/SpoqaHanSans-Bold.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Spoqa Han Sans';
-    font-weight: 400;
-    src:
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Regular/SpoqaHanSans-Regular.eot?#iefix') format('eot'),
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Regular/SpoqaHanSans-Regular.svg') format('svg'),
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Regular/SpoqaHanSans-Regular.ttf') format('truetype'),
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Regular/SpoqaHanSans-Regular.woff') format('woff');
+	font-family: 'Spoqa Han Sans';
+	font-weight: 400;
+	src:
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Regular/SpoqaHanSans-Regular.eot?#iefix') format('eot'),
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Regular/SpoqaHanSans-Regular.svg') format('svg'),
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Regular/SpoqaHanSans-Regular.ttf') format('truetype'),
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Regular/SpoqaHanSans-Regular.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Spoqa Han Sans';
-    font-weight: 200;
-    src:
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Thin/SpoqaHanSans-Thin.eot?#iefix') format('eot'),
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Thin/SpoqaHanSans-Thin.svg') format('svg'),
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Thin/SpoqaHanSans-Thin.ttf') format('truetype'),
-        url('../font/spoqa-han-sans-kr/SpoqaHanSans-Thin/SpoqaHanSans-Thin.woff') format('woff');
+	font-family: 'Spoqa Han Sans';
+	font-weight: 200;
+	src:
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Thin/SpoqaHanSans-Thin.eot?#iefix') format('eot'),
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Thin/SpoqaHanSans-Thin.svg') format('svg'),
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Thin/SpoqaHanSans-Thin.ttf') format('truetype'),
+		url('../font/spoqa-han-sans-kr/SpoqaHanSans-Thin/SpoqaHanSans-Thin.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Spoqa Han Sans JP';
-    font-weight: 700;
-    src:
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Bold/SpoqaHanSansJP-Bold.eot?#iefix') format('eot'),
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Bold/SpoqaHanSansJP-Bold.svg') format('svg'),
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Bold/SpoqaHanSansJP-Bold.ttf') format('truetype'),
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Bold/SpoqaHanSansJP-Bold.woff') format('woff');
+	font-family: 'Spoqa Han Sans JP';
+	font-weight: 700;
+	src:
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Bold/SpoqaHanSansJP-Bold.eot?#iefix') format('eot'),
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Bold/SpoqaHanSansJP-Bold.svg') format('svg'),
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Bold/SpoqaHanSansJP-Bold.ttf') format('truetype'),
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Bold/SpoqaHanSansJP-Bold.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Spoqa Han Sans JP';
-    font-weight: 400;
-    src:
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Regular/SpoqaHanSansJP-Regular.eot?#iefix') format('eot'),
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Regular/SpoqaHanSansJP-Regular.svg') format('svg'),
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Regular/SpoqaHanSansJP-Regular.ttf') format('truetype'),
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Regular/SpoqaHanSansJP-Regular.woff') format('woff');
+	font-family: 'Spoqa Han Sans JP';
+	font-weight: 400;
+	src:
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Regular/SpoqaHanSansJP-Regular.eot?#iefix') format('eot'),
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Regular/SpoqaHanSansJP-Regular.svg') format('svg'),
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Regular/SpoqaHanSansJP-Regular.ttf') format('truetype'),
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Regular/SpoqaHanSansJP-Regular.woff') format('woff');
 }
 
 @font-face {
-    font-family: 'Spoqa Han Sans JP';
-    font-weight: 200;
-    src:
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Thin/SpoqaHanSansJP-Thin.eot?#iefix') format('eot'),
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Thin/SpoqaHanSansJP-Thin.svg') format('svg'),
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Thin/SpoqaHanSansJP-Thin.ttf') format('truetype'),
-        url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Thin/SpoqaHanSansJP-Thin.woff') format('woff');
+	font-family: 'Spoqa Han Sans JP';
+	font-weight: 200;
+	src:
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Thin/SpoqaHanSansJP-Thin.eot?#iefix') format('eot'),
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Thin/SpoqaHanSansJP-Thin.svg') format('svg'),
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Thin/SpoqaHanSansJP-Thin.ttf') format('truetype'),
+		url('../font/spoqa-han-sans-jp/SpoqaHanSansJP-Thin/SpoqaHanSansJP-Thin.woff') format('woff');
 }
 
 * {
-    font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', '맑은고딕', sans-serif;
-    -webkit-font-smoothing: antialiased;
+	font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', '맑은고딕', sans-serif;
+	-webkit-font-smoothing: antialiased;
 }
 
 .main-section {
-    max-width: 992px;
-    margin: 0 auto;
-    padding-left: 10px;
+	max-width: 992px;
+	margin: 0 auto;
+	padding-left: 10px;
+	z-index: 2;
+}
+
+.background-div {
+	height: 50vh;
+}
+
+.background-div-wrapper {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow-x: hidden;
+}
+
+@media (max-width: 1050px){
+	.background-div-wrapper{
+		display: none;
+	}
+}
+
+@media (min-width: 1050px){
+	.main-section {
+		position: relative;
+		float: right;
+		top: 10rem;
+		width: 992px;
+		min-height: 30rem;
+		padding-left: 10px;
+		margin-right: 7rem;
+		box-shadow: 0 0 5px 3px #808080;
+	}
+}
+
+@media (min-width: 1050px) and (max-width: 1192px){
+	.main-section {
+		margin-right: 0;
+	}
 }

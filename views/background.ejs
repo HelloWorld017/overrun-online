@@ -1,17 +1,9 @@
 <div class="background-div-wrapper">
-	<div class="background-div" style="background-color: <%= global.config['background-0'] %>">
+	<div class="background-div" style="background-color: <%= global.theme['background-0'] %>">
+
 	</div>
 
-	<div class="background-div" style="background-color: <%= global.config['background-1'] %>">
-	</div>
+	<div class="background-div" style="background-color: <%= global.theme['background-1'] %>">
 
-	<div class="parallax-container">
-		<div class="parallax">
-			<img src="<%= global.config['parallax'] %>">
-		</div>
 	</div>
 </div>
-
-<script>
-	$('.parallax').parallax();
-</script>
