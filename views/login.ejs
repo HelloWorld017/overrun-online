@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head>
+		<%- include('./header', {title: global.translator('login.title')}); %>
+
+		<script src="/resources/js/jsencrypt.min.js"></script>
+
+		<script>
+			var encrypt = new JSEncrypt();
+			encrypt.setPublicKey("<%= rsa.replace(/\n/g, '\\n') %>");
+
+			$(document).ready(function(){
+				$('form').submit(function(){
+					$('#password').val(encrypt.encrypt($('#password').val()));
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+		<section class="main-section">
+			<h2><%= global.translator('login.title') %></h2>
+			<form method="post" action="" class="col s12 m6 offset-m3">
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="id"><%= global.translator('login.id') %></label>
+						<input id="id" name="id" type="text">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="password"><%= global.translator('login.password') %></label>
+						<input id="password" name="password" type="password">
+					</div>
+				</div>
+
+				<div class="row">
+					<button class="btn waves-effect waves-lignt" type="submit">
+						<%= global.translator('login.submit') %>
+						<i class="fa fa-sign-in right"></i>
+					</button>
+
+					<a class="btn waves-effect waves-lignt" href="/register">
+						<%= global.translator('join.title') %>
+						<i class="fa fa-user-plus right"></i>
+					</a>
+
+					<a class="btn waves-effect waves-lignt" href="/find">
+						<%= global.translator('find.title') %>
+						<i class="fa fa-question right"></i>
+					</a>
+				</div>
+			</form>
+		</section>
+
+		<% include ./footer %>
+	</body>
+</html>

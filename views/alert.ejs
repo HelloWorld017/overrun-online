@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+			alert('<%- error.message %>');
+			<% if(error.redirect !== undefined){
+				%>
+				location.href = "<%= error.redirect %>";
+				<%
+			}else{
+				%>
+				history.go(-1);
+				<%
+			} %>
+		</script>
+	</head>
+</html>

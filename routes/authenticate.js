@@ -1,4 +1,8 @@
+var errors = require('../src/errors');
 var router = require('express').Router();
+
+var InvalidTokenError = errors.InvalidTokenError;
+var ServerError = errors.ServerError;
 
 router.post('/:token/', (req, res, next) => {
     global.mongo
@@ -26,3 +30,5 @@ router.post('/:token/', (req, res, next) => {
             res.render('authenticate-finish');
         });
 });
+
+module.exports = router;

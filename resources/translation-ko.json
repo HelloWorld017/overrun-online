@@ -1,0 +1,49 @@
+{
+	"index.title": "Welcome to overrun-online!",
+	"index.motd": "Welcome to overrun-online!",
+	"index.continue": "아무데나 터치하세요.",
+
+	"login.title": "로그인",
+	"login.id": "이름",
+	"login.password": "비밀번호",
+	"login.submit": "로그인",
+
+	"join.title": "가입",
+
+	"find.title": "아이디/비밀번호 찾기",
+
+	"email.verify.subject": "이메일을 인증해주세요.",
+
+	"join.title": "가입",
+	"join.name": "닉네임",
+	"join.id": "이름",
+	"join.email": "이메일",
+	"join.password": "비밀번호",
+	"join.password.check": "비밀번호 확인",
+	"join.submit": "가입",
+
+	"validate.email": "이메일 주소가 잘못되었습니다.",
+	"validate.equal.to": "비밀번호가 서로 같지 않습니다.",
+	"validate.minlength": "{0}글자 이상이어야 합니다.",
+	"validate.regex": "부적절한 문자를 포함하고 있습니다.",
+	"validate.required": "필수적인 항목입니다.",
+	"validate.remote.id": "이름이 중복되었습니다.",
+	"validate.remote.email": "이메일이 중복되었습니다.",
+
+	"error.alreadyentried": "이미 참가하였습니다.",
+	"error.alreadyloggedin": "이미 로그인이 되어있습니다.",
+	"error.captcha": "CAPTCHA를 확인해주세요.",
+	"error.entryfirst": "참가신청을 먼저 하셔야 합니다.",
+	"error.invaliddata": "기입하신 정보가 잘못되었습니다.",
+	"error.invalidtoken": "토큰이 잘못되었습니다.",
+	"error.nopermission": "권한이 없습니다.",
+	"error.notloggedin": "로그인을 먼저 해주세요.",
+	"error.passwordnotequal": "이름과 비밀번호를 다시 한번 확인해주세요.",
+	"error.sameidalreadyjoined": "동일한 이름이나 이메일이 이미 존재합니다.",
+	"error.internalserver": "서버측에서 오류가 발생하였습니다.",
+	"error.toolongcode": "코드가 너무나도 깁니다!",
+	"error.toomanybots": "봇을 너무 많이 소유중입니다!",
+	"error.wrongsession": "세션이 잘못되었습니다.",
+
+	"desc": "overrun-online은 알고리즘을 작성해 서로 싸우는 게임입니다."
+}

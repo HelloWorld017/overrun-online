@@ -1,10 +1,12 @@
 var createToken = require('../src/create-token');
-var errors = reuire('../src/errors');
+var bcrypt = require('bcrypt-nodejs');
+var errors = require('../src/errors');
 var mailer = require('../src/mailer');
 var router = require('express').Router();
 
 var AlreadyLoggedInError = errors.AlreadyLoggedInError;
 var PasswordNotEqualError = errors.PasswordNotEqualError;
+var InvalidDataError = errors.InvalidDataError;
 var ServerError = errors.ServerError;
 
 router.post('/password', (req, res, next) => {
@@ -83,11 +85,15 @@ router.post('/password/auth/:token', (req, res, next) => {
 		return;
 	}
 
-	var rsa = new NodeRSA(req.session.rsa);
-	var password = rsa.decrypt(req.body.password);
-
-	if(password !== rsa.decrypt(req.body['password-check'])){
+	if(req.body.password !== req.body['password-check']){
 		next(new PasswordNotEqualError());
+		return;
+	}
+
+	try{
+		var password = global.key.decrypt(req.body.password, 'utf8');
+	}catch(err){
+		next(new InvalidDataError());
 		return;
 	}
 
@@ -111,7 +117,7 @@ router.post('/password/auth/:token', (req, res, next) => {
 					return;
 				}
 
-				bcrypt.hash(password, salt, (err, hash) => {
+				bcrypt.hash(password, salt, undefined, (err, hash) => {
 					if(err){
 						next(new ServerError());
 						return;
@@ -140,10 +146,8 @@ router.post('/password/auth/:token', (req, res, next) => {
 });
 
 router.get('/password/auth/:token', (req, res, next) => {
-	var key = new NodeRSA({b: 4096});
-	res.session.rsa = key.exportKey('pkcs1-private');
 	res.render('password-missing-reset', {
-		rsa: key.exportKey('pkcs8-public')
+		rsa: global.key.exportKey('pkcs8-public')
 	});
 });
 

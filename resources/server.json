@@ -1,10 +1,24 @@
 {
-    "db-address": "localhost",
-    "db-port": "27017",
-    "db-name": "overrun",
+	"lang": "ko",
 
-    "collection-auth": "auth",
-    "collection-user": "users",
+	"db-address": "localhost",
+	"db-port": "27017",
+	"db-name": "overrun",
+
+	"collection-auth": "auth",
+	"collection-user": "users",
 	"collection-reset": "reset",
-	"collection-session": "session"
+	"collection-session": "session",
+
+	"url": "https://or.khinenw.tk",
+	"title": "Overrun",
+	"icon": "/resources/image/icon.png",
+
+	"google-analytics": "",
+	"recaptcha-public": "",
+	"recaptcha-secret": "",
+	"session-secret": "",
+
+	"max-bot-count": 5,
+	"max-code-length": 10000
 }

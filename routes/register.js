@@ -1,7 +1,6 @@
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 var createToken = require('../src/create-token');
 var errors = require('../src/errors');
-var NodeRSA = require('node-rsa');
 var recaptcha = require('../src/recaptcha-verify');
 var router = require('express').Router();
 var mailer = require('../src/mailer');
@@ -16,7 +15,7 @@ var InvalidDataError = errors.InvalidDataError;
 
 router.all('/', (req, resp, next) => {
 	if(req.method === 'POST'){
-		if(req.locals.auth){
+		if(resp.locals.auth){
 			next(new AlreadyLoggedInError());
 			return;
 		}
@@ -31,14 +30,21 @@ router.all('/', (req, resp, next) => {
 			return;
 		}
 
-		var rsa = new NodeRSA(req.session.rsa);
 		var id = req.body.id;
-		var password = rsa.decrypt(req.body.password);
 		var name = req.body.name;
 		var email = req.body.email;
 
-		if(password !== rsa.decrypt(req.body['password-check'])){
+		if(req.body.password !== req.body['password-check']){
 			next(new PasswordNotEqualError());
+			return;
+		}
+
+		try{
+			var password = global.key.decrypt(req.body.password, 'utf8');
+		}catch(err){
+			console.log(err.toString());
+			console.log(req.body.password);
+			next(new InvalidDataError());
 			return;
 		}
 
@@ -77,14 +83,14 @@ router.all('/', (req, resp, next) => {
 								return;
 							}
 
-							bcrypt.genSalt(8, function(err1, salt) {
+							bcrypt.genSalt(8, (err1, salt) => {
 						        if(err1){
 									console.error(err1.message);
 									next(new ServerError());
 									return;
 								}
 
-						        bcrypt.hash(password, salt, function(err2, hash) {
+						        bcrypt.hash(password, salt, undefined, (err2, hash) => {
 									if(err2){
 										console.error(err2.message);
 										next(new ServerError());
@@ -109,11 +115,8 @@ router.all('/', (req, resp, next) => {
 							});
 						});
 					});
-				});
 			});
 	}else{
-		var key = new NodeRSA({b: 4096});
-		res.session.rsa = key.exportKey('pkcs1-private'); //Session is saved in server.
 		resp.render('register', {
 			rsa: key.exportKey('pkcs8-public')
 		});

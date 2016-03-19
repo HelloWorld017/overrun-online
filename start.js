@@ -1,14 +1,17 @@
-var debug = require('debug')('overrun-online:server');
 var http = require('http');
+var objectMerge = require('object-merge');
 var MongoClient = require('mongodb').MongoClient;
+var NodeRSA = require('node-rsa');
 var Server = require('./src/server');
 
-//TODO Add default configuration
-global.config = require('./resources/server');
-global.translation = require('./resources/translation');
+global.config = objectMerge(require('./resources/server'), require('./server'));
+global.translation = objectMerge(require('./resources/translation-' + global.config.lang), require('./translation-' + global.config.lang));
+global.theme = objectMerge(require('./resources/theme'), require('./theme'));
+global.translator = require('./src/translator');
+global.key = (process.env.NODE_ENV || 'development') === 'development' ? new NodeRSA({b: 512}, {encryptionScheme: 'pkcs1'}) : new NodeRSA({b: 4096});
 global.mongo = undefined;
 global.server = undefined;
-global.users = undefined;
+global.users = {};
 
 var url = "mongodb://" + global.config['db-address'] + ":" + global.config['db-port'] + "/" + global.config['db-name'];
 MongoClient.connect(url, (err, client) => {
@@ -52,8 +55,9 @@ MongoClient.connect(url, (err, client) => {
 
 		throw error;
 	});
+
 	httpServer.on('listening', () => {
-		var addr = server.address();
-		debug('Listening on ' + ((typeof addr === 'string') ? 'pipe ' + addr : 'port ' + addr.port));
+		var addr = httpServer.address();
+		console.log('Listening on ' + ((typeof addr === 'string') ? 'pipe ' + addr : 'port ' + addr.port));
 	});
 });

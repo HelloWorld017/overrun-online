@@ -1,0 +1,52 @@
+<meta charset="utf-8">
+<title><%= title %></title>
+
+<meta name="description" content="<%= global.translator('desc') %>">
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<meta property="og:title" content="<%= title %>">
+<meta property="og:site_name" content="<%= global.config['title'] %>">
+<meta property="og:type" content="game">
+<meta property="og:url" content="<%= url %>">
+<meta property="og:image" content="<%= global.config['url'] + global.config['icon'] %>">
+
+<link rel="stylesheet" type="text/css" href="/resources/css/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/main.css">
+
+<style>
+	nav {
+		background: <%= global.theme['background-0'] %>;
+		color: <%= global.theme['foreground-0'] %>;
+	}
+
+	.nav-wrapper {
+		max-width: 942px;
+		margin: 0 auto;
+	}
+
+	@media (min-width: 1050px) {
+		.main-section {
+			background: <%= global.theme['background-2'] %>;
+		}
+	}
+</style>
+
+<script src="/resources/js/jquery-2.1.4.min.js"></script>
+<script src="/resources/js/materialize.min.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$('.button-collapse').sideNav();
+		$('.dropdown-button').dropdown();
+	});
+</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', '<%= global.config['google-analytics'] %>', 'auto');
+	ga('send', 'pageview');
+</script>

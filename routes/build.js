@@ -4,8 +4,8 @@ var errors = require('../src/errors');
 
 var InvalidDataError = errors.InvalidDataError;
 var InvalidTokenError = errors.InvalidTokenError;
-var NotLoggedInError = erros.NotLoggedInError;
-var ServerError = erros.ServerError;
+var NotLoggedInError = errors.NotLoggedInError;
+var ServerError = errors.ServerError;
 var TooManyBotsError = errors.TooManyBotsError;
 
 router.all('/edit/:id', (req, res, next) => {
@@ -30,7 +30,7 @@ router.all('/edit/:id', (req, res, next) => {
 			return;
 		}
 
-		if(!/[A-Za-z0-9가-힣ㄱ-ㅎ-+_()]{3,20}/.test(req.body.name){
+		if(!/[A-Za-z0-9가-힣ㄱ-ㅎ-+_()]{3,20}/.test(req.body.name)){
 			next(new InvalidDataError());
 			return;
 		}
@@ -50,7 +50,8 @@ router.all('/edit/:id', (req, res, next) => {
 		return;
 	}
 
-	req.session.token = createToken(1024);
+	var token = createToken(1024);
+	req.session.token = token;
 	req.session.save((err) => {
 		if(err){
 			next(new ServerError());
@@ -60,10 +61,9 @@ router.all('/edit/:id', (req, res, next) => {
 		res.render('build', {
 			skin: res.locals.user.skins,
 			bot: res.locals.user.bots[req.params.id],
-			token:
+			token: token
 		});
 	});
-
 });
 
 router.all('/build', (req, res, next) => {
@@ -78,12 +78,12 @@ router.all('/build', (req, res, next) => {
 			return;
 		}
 
-		if(!/[A-Za-z0-9가-힣ㄱ-ㅎ-+_()]{3,20}/.test(req.body.name){
+		if(!/[A-Za-z0-9가-힣ㄱ-ㅎ-+_()]{3,20}/.test(req.body.name)){
 			next(new InvalidDataError());
 			return;
 		}
 
-		if(!res.locals.user.skins.inclues(req.body.skin)){
+		if(!res.locals.user.skins.includes(req.body.skin)){
 			//TODO update user.skins
 			next(new InvalidDataError());
 			return;

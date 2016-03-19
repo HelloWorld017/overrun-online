@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head>
+		<%- include('./header', {title: global.translator('join.title')}); %>
+		<%- include('./validator', {no_remote: false}); %>
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+		<script src="/resources/js/jsencrypt.min.js"></script>
+		<script>
+			var encrypt = new JSEncrypt();
+			encrypt.setPublicKey("<%= rsa.replace(/\n/g, '\\n') %>");
+
+			function encryptPw(){
+				if($('#password').val() !== $('#password-check').val()) return false;
+
+				$('#password').val(encrypt.encrypt($('#password').val()));
+				$('#password-check').val($('#password').val());
+				return true;
+			}
+		</script>
+	</head>
+
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+
+		<section class="main-section">
+			<h2><%= global.translator('join.title') %></h2>
+			<form method="post" class="validate-form" novalidate="novalidate" onsubmit="return encryptPw()">
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="id"><%= global.translator('join.id') %></label>
+						<input id="id" name="id" type="text">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="name"><%= global.translator('join.name') %></label>
+						<input id="name" name="name" type="text">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="email"><%= global.translator('join.email') %></label>
+						<input id="email" name="email" type="email">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="password"><%= global.translator('join.password') %></label>
+						<input id="password" name="password" type="password">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="password-check"><%= global.translator('join.password.check') %></label>
+						<input id="password-check" name="password-check" type="password">
+					</div>
+				</div>
+
+				<div class="g-recaptcha" data-sitekey="<%= global.config['recaptcha-public'] %>">
+
+				</div>
+
+				<br>
+
+				<div class="row">
+					<div class="col s12">
+						<button class="btn waves-effect waves-lignt" type="submit">
+							<%= global.translator('join.submit') %>
+							<i class="fa fa-user-plus right"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</section>
+
+		<% include ./footer %>
+	</body>
+</html>

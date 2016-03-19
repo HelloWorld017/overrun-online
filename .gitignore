@@ -32,3 +32,9 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# Setting files
+/server.json
+/translation-en.json
+/translation-ko.json
+/theme.json

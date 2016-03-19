@@ -1,4 +1,12 @@
+var bcrypt = require('bcrypt-nodejs');
+var errors = require('../src/errors');
+var mailer = require('../src/mailer');
 var router = require('express').Router();
+
+var InvalidDataError = errors.InvalidDataError;
+var NotLoggedInError = errors.NotLoggedInError;
+var PasswordNotEqualError = errors.PasswordNotEqualError;
+var ServerError = errors.ServerError;
 
 router.use((req, res, next) => {
 	if(!res.locals.auth){
@@ -9,7 +17,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-
+	res.render('me');
 });
 
 router.get('/update', (req, res, next) => {
@@ -41,14 +49,14 @@ router.post('/update', (req, res, next) => {
 		.collection(global.config['collection-user'])
 		.findOneAndUpdate({name: user.name}, {
 			$set: {
-				nickname: user.nickname
+				nickname: user.nickname,
 				email: user.email,
 				emailVerified: emailVerified
 			}
 		});
 
 	if(user.emailVerified === false){
-		mailer.send(global.translation['subject-verify-email'], 'verify-email', email, {
+		mailer.send(global.translator('email.verify.subject'), 'verify-email', email, {
 			authToken: authToken
 		});
 	}
@@ -57,10 +65,8 @@ router.post('/update', (req, res, next) => {
 });
 
 router.get('/update/password', (req, res, next) => {
-	var key = new NodeRSA({b: 4096});
-	res.session.rsa = key.exportKey('pkcs1-private');
 	res.render('update-password', {
-		rsa: key.exportKey('pkcs8-public');
+		rsa: global.key.exportKey('pkcs8-public')
 	});
 });
 
@@ -70,12 +76,16 @@ router.post('/update/password', (req, res, next) => {
 		return;
 	}
 
-	var rsa = new NodeRSA(req.session.rsa);
-	var originalPw = rsa.decrypt(req.body.original);
-	var newPw = rsa.decrypt(req.body.new);
-
-	if(newPw !== rsa.decrypt(req.body.new_check)){
+	if(req.body.newPw !== req.body.new_check){
 		next(new PasswordNotEqualError());
+		return;
+	}
+
+	try{
+		var originalPw = global.key.decrypt(req.body.original, 'utf8');
+		var newPw = global.key.decrypt(req.body.new, 'utf8');
+	}catch(err){
+		next(new InvalidDataError());
 		return;
 	}
 
@@ -98,7 +108,7 @@ router.post('/update/password', (req, res, next) => {
 				return;
 			}
 
-			bcrypt.hash(newPw, salt, (err, hash) => {
+			bcrypt.hash(newPw, salt, undefined, (err, hash) => {
 				if(err){
 					console.error(err.toString());
 					next(new ServerError());

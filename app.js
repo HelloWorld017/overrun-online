@@ -1,3 +1,4 @@
+var async = require('async');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var crypto = require('crypto');
@@ -13,8 +14,20 @@ var RedirectError = errors.RedirectError;
 var StatusError = errors.StatusError;
 var MongoStore = require('connect-mongo')(session);
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var authenticate = require('./routes/authenticate');
+var battle = require('./routes/battle');
+var build = require('./routes/build');
+var find = require('./routes/find');
+var friends = require('./routes/friends');
+var index = require('./routes/index');
+var login = require('./routes/login');
+var logout = require('./routes/logout');
+var me = require('./routes/me');
+var rank = require('./routes/rank');
+var register = require('./routes/register');
+var unregister = require('./routes/unregister');
+var user = require('./routes/user');
+var validate = require('./routes/validate');
 
 var app = express();
 
@@ -40,9 +53,10 @@ app.use(session({
 
 app.use((req, res, next) => {
 	res.locals.user = (global.users[req.session.userid]);
-	if(req.session.token !== res.locals.user.token) res.locals.user = undefined;
-	if(res.locals.user.unregistered) res.locals.user = undefined;
+	if(res.locals.user && (req.session.token !== res.locals.user.token)) res.locals.user = undefined;
+	if(res.locals.user && res.locals.user.unregistered) res.locals.user = undefined;
 
+	res.locals.url = global.config['url'] + req.originalUrl;
 	res.locals.auth = (res.locals.user !== undefined);
 	res.locals.email = (res.locals.auth) ? crypto.createHash('md5').update(res.locals.user.email.toLowerCase()).digest('hex') : '';
 	res.locals.logout = (cb, req, res, next) => {
@@ -52,7 +66,6 @@ app.use((req, res, next) => {
 	        cb(err);
 	    });
 	};
-
 
 	//Anti SQL Injection
 	async.map(req.body, (v, cb) => {
@@ -64,12 +77,24 @@ app.use((req, res, next) => {
 		}, (err2, result2) => {
 			req.query = result2;
 			next();
-		}
+		});
 	});
 });
 
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', index);
+app.use('/authenticate', authenticate);
+app.use('/battle', battle);
+app.use('/build', build);
+app.use('/find', find);
+app.use('/friends', friends);
+app.use('/login', login);
+app.use('/logout', logout);
+app.use('/me', me);
+app.use('/rank', rank);
+app.use('/register', register);
+app.use('/unregister', unregister);
+app.use('/user', user);
+app.use('/validate', validate);
 
 app.use((req, res, next) => {
 	var err = new Error('Not Found');
@@ -80,33 +105,21 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
 	res.status(err.status || 500);
 	if(err instanceof HttpError){
-		if(err instanceof RedirectError){
-			res.render('alert', {
-				redirect: err.redirect,
-				message: err.message
-			});
-			return;
-		}
-
 		if(err instanceof StatusError){
 			res.end();
 			return;
 		}
 
 		res.render('alert', {
-			redirect: undefined,
-			message: err.message
+			error: err
 		});
 		return;
 	}
-
-	console.error(err.toString());
 
 	res.render('error', {
 		message: err.message,
 		error: {}
 	});
 });
-
 
 module.exports = app;
