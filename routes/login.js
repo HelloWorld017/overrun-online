@@ -1,6 +1,6 @@
 var errors = require('../src/errors');
 var router = require('express').Router();
-var User = require('../src/player');
+var Player = require('../src/player');
 
 var AlreadyLoggedInError = errors.AlreadyLoggedInError;
 var InvalidDataError = errors.InvalidDataError;
@@ -9,7 +9,7 @@ var PasswordNotEqualError = errors.PasswordNotEqualError;
 var ServerError = errors.ServerError;
 
 router.post('/', (req, res, next) => {
-	if(req.local.auth){
+	if(res.locals.auth){
 		next(new AlreadyLoggedInError());
 		return;
 	}
@@ -39,7 +39,7 @@ router.post('/', (req, res, next) => {
 	.limit(1)
 	.toArray((err, results) => {
 		if(err){
-			console.log(err.message);
+			console.error(err.toString());
 			next(new ServerError());
 			return;
 		}

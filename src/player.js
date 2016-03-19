@@ -38,13 +38,13 @@ class Player{
 		return this.name;
 	}
 
-	auth(pw){
+	auth(pw, cb){
 		if(this.unregistered){
 			cb(new PasswordNotEqualError(), false);
 			return;
 		}
 
-		bcrypt.compare(pw, this.encryptedPw, (err, res) => {
+		bcrypt.compare(pw, this.pw, (err, res) => {
 			if(err){
 				cb(err);
 				return;
@@ -110,7 +110,7 @@ Player.register = (data) => {
 			friends: [],
 			unregistered: false,
 			emailVerified: false,
-			bot: [],
+			bots: [],
 			skins: [],
 			stat: {
 				win: 0,

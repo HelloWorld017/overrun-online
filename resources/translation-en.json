@@ -8,11 +8,7 @@
 	"login.password": "Password",
 	"login.submit": "Login",
 
-	"join.title": "Register",
-
 	"find.title": "Find",
-
-	"email.verify.subject": "Please verify your email.",
 
 	"join.title": "Registration",
 	"join.name": "Nickname",
@@ -21,6 +17,12 @@
 	"join.password": "Password",
 	"join.password.check": "Password confirm",
 	"join.submit": "Sign up",
+
+	"authenticate.finish.title": "Congratulations",
+	"authenticate.finish.masthead": "Your email address is successfully verified!",
+	"authenticate.finish.desc": "Now, please return to login page.",
+
+	"email.verify.subject": "Please verify your email.",
 
 	"validate.email": "Invalid email address.",
 	"validate.equal.to": "Your password does not match.",
@@ -33,6 +35,7 @@
 	"error.alreadyentried": "You already have been entried.",
 	"error.alreadyloggedin": "You are already logged in.",
 	"error.captcha": "Please verify your captcha.",
+	"error.emailnotverified": "Please verify your email address first by clicking the link in your email!",
 	"error.entryfirst": "Please entry first.",
 	"error.invaliddata": "Your entered items are invalid.",
 	"error.invalidtoken": "Your token is invalid.",

@@ -42,8 +42,6 @@ router.all('/', (req, resp, next) => {
 		try{
 			var password = global.key.decrypt(req.body.password, 'utf8');
 		}catch(err){
-			console.log(err.toString());
-			console.log(req.body.password);
 			next(new InvalidDataError());
 			return;
 		}

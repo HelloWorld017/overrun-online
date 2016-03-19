@@ -4,7 +4,7 @@ var router = require('express').Router();
 var InvalidTokenError = errors.InvalidTokenError;
 var ServerError = errors.ServerError;
 
-router.post('/:token/', (req, res, next) => {
+router.all('/:token/', (req, res, next) => {
     global.mongo
         .collection(global.config['collection-auth'])
         .find({authToken: req.params.token})

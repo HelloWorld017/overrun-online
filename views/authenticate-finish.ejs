@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head>
+		<%- include('./header', {title: global.translator('authenticate.finish.title')}); %>
+	</head>
+
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+		<section class="main-section">
+			<h2><%= global.translator('authenticate.finish.masthead') %></h2>
+			<p><%= global.translation('authenticate.finish.desc') %></p>
+		</section>
+
+		<% include ./footer %>
+	</body>
+</html>

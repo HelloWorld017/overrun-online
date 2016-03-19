@@ -8,11 +8,7 @@
 	"login.password": "비밀번호",
 	"login.submit": "로그인",
 
-	"join.title": "가입",
-
 	"find.title": "아이디/비밀번호 찾기",
-
-	"email.verify.subject": "이메일을 인증해주세요.",
 
 	"join.title": "가입",
 	"join.name": "닉네임",
@@ -21,6 +17,12 @@
 	"join.password": "비밀번호",
 	"join.password.check": "비밀번호 확인",
 	"join.submit": "가입",
+
+	"authenticate.finish.title": "축하드립니다.",
+	"authenticate.finish.masthead": "이메일이 성공적으로 인증되었습니다!",
+	"authenticate.finish.desc": "이제 로그인 페이지로 돌아가셔서 로그인해주세요.",
+
+	"email.verify.subject": "이메일을 인증해주세요.",
 
 	"validate.email": "이메일 주소가 잘못되었습니다.",
 	"validate.equal.to": "비밀번호가 서로 같지 않습니다.",
@@ -33,6 +35,7 @@
 	"error.alreadyentried": "이미 참가하였습니다.",
 	"error.alreadyloggedin": "이미 로그인이 되어있습니다.",
 	"error.captcha": "CAPTCHA를 확인해주세요.",
+	"error.emailnotverified": "이메일 인증을 먼저 해주세요!",
 	"error.entryfirst": "참가신청을 먼저 하셔야 합니다.",
 	"error.invaliddata": "기입하신 정보가 잘못되었습니다.",
 	"error.invalidtoken": "토큰이 잘못되었습니다.",
