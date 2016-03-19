@@ -6,6 +6,7 @@ var router = require('express').Router();
 
 var AlreadyLoggedInError = errors.AlreadyLoggedInError;
 var PasswordNotEqualError = errors.PasswordNotEqualError;
+var InvalidDataError = errors.InvalidDataError;
 var ServerError = errors.ServerError;
 
 router.post('/password', (req, res, next) => {
@@ -89,7 +90,12 @@ router.post('/password/auth/:token', (req, res, next) => {
 		return;
 	}
 
-	var password = global.key.decrypt(req.body.password);
+	try{
+		var password = global.key.decrypt(req.body.password, 'utf8');
+	}catch(err){
+		next(new InvalidDataError());
+		return;
+	}
 
 	global.mongo
 		.collection(global.config['collection-reset'])
@@ -111,7 +117,7 @@ router.post('/password/auth/:token', (req, res, next) => {
 					return;
 				}
 
-				bcrypt.hash(password, salt, (err, hash) => {
+				bcrypt.hash(password, salt, undefined, (err, hash) => {
 					if(err){
 						next(new ServerError());
 						return;

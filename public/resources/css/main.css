@@ -63,6 +63,10 @@
 	-webkit-font-smoothing: antialiased;
 }
 
+body{
+	overflow-x: hidden;
+}
+
 .main-section {
 	max-width: 992px;
 	margin: 0 auto;
@@ -80,7 +84,6 @@
 	top: 0;
 	width: 100vw;
 	height: 100vh;
-	overflow-x: hidden;
 }
 
 @media (max-width: 1050px){
@@ -98,6 +101,7 @@
 		min-height: 30rem;
 		padding-left: 10px;
 		margin-right: 7rem;
+		margin-bottom: 10px;
 		box-shadow: 0 0 5px 3px #808080;
 	}
 }

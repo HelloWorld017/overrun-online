@@ -25,7 +25,13 @@ router.post('/', (req, res, next) => {
 	}
 
 	var id = req.body.id;
-	var password = global.key.decrypt(req.body.password);
+
+	try{
+		var password = global.key.decrypt(req.body.password, 'utf8');
+	}catch(err){
+		next(new InvalidDataError());
+		return;
+	}
 
 	global.mongo
 	.collection(global.config['collection-user'])

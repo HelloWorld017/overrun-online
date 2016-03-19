@@ -1,0 +1,108 @@
+<script src="/resources/js/jquery.validate.min.js"></script>
+<script>
+	$.validator.setDefaults({
+		errorClass: 'invalid',
+		validClass: "valid",
+
+		errorPlacement: function (error, element){
+			$(element)
+				.closest("form")
+				.find("label[for='" + element.attr("id") + "']")
+				.text(error.text());
+		}
+	});
+
+	$.validator.addMethod("regex", function(value, element){
+		return (/^[a-zA-Z0-9][a-zA-Z0-9-_.]{4,11}$/).test(value);
+	}, "<%= global.translator('validate.regex') %>");
+
+	$.validator.addMethod("name-regex", function(value, element){
+		return (/^[a-zA-Z0-9ㄱ-ㅎ가-힣#-_.]+$/).test(value);
+	}, "<%= global.translator('validate.regex') %>");
+
+	$(document).ready(function(){
+		$(".validate-form").validate({
+			rules: {
+				id: {
+					required : true,
+					minlength: 5,
+					<% if(!no_remote){ %>
+					remote: {
+						url: '/validate/id',
+						type: "post",
+						data:{
+							val: function(){
+								return $('input[name="id"]').val();
+							}
+						}
+					},
+					<% } %>
+					regex: true
+				},
+
+				password: {
+					required: true,
+					minlength: 7
+				},
+
+				"password-check": {
+					required: true,
+					equalTo: "#password"
+				},
+
+				name: {
+					required: true,
+					minlength: 2,
+					"name-regex": true
+				},
+
+				email: {
+					required: true,
+					minlength: 5,
+					<% if(!no_remote){ %>
+					remote: {
+						url: '/validate/email',
+						type: "post",
+						data:{
+							val: function(){
+								return $('input[name="email"]').val();
+							}
+						}
+					},
+					<% } %>
+					email: true
+				}
+			},
+
+			messages : {
+				id: {
+					required: '<%= global.translator('validate.required') %>',
+					minlength: '<%= global.translator('validate.minlength') %>',
+					remote: '<%= global.translator('validate.remote.id') %>'
+				},
+
+				password: {
+					required: '<%= global.translator('validate.required') %>',
+					minlength: '<%= global.translator('validate.minlength') %>'
+				},
+
+				"password-check": {
+					required: '<%= global.translator('validate.required') %>',
+					equalTo: '<%= global.translator('validate.equal.to') %>'
+				},
+
+				name: {
+					required: '<%= global.translator('validate.required') %>',
+					minlength: '<%= global.translator('validate.minlength') %>'
+				},
+
+				email: {
+					required: '<%= global.translator('validate.required') %>',
+					minlength: '<%= global.translator('validate.minlength') %>',
+					email: '<%= global.translator('validate.email') %>',
+					remote: '<%= global.translator('validate.remote.email') %>'
+				}
+			}
+		});
+	});
+</script>

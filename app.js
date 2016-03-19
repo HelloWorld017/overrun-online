@@ -27,6 +27,7 @@ var rank = require('./routes/rank');
 var register = require('./routes/register');
 var unregister = require('./routes/unregister');
 var user = require('./routes/user');
+var validate = require('./routes/validate');
 
 var app = express();
 
@@ -93,6 +94,7 @@ app.use('/rank', rank);
 app.use('/register', register);
 app.use('/unregister', unregister);
 app.use('/user', user);
+app.use('/validate', validate);
 
 app.use((req, res, next) => {
 	var err = new Error('Not Found');
@@ -103,22 +105,13 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
 	res.status(err.status || 500);
 	if(err instanceof HttpError){
-		if(err instanceof RedirectError){
-			res.render('alert', {
-				redirect: err.redirect,
-				message: err.message
-			});
-			return;
-		}
-
 		if(err instanceof StatusError){
 			res.end();
 			return;
 		}
 
 		res.render('alert', {
-			redirect: undefined,
-			message: err.message
+			error: err
 		});
 		return;
 	}

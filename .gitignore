@@ -35,5 +35,6 @@ jspm_packages
 
 # Setting files
 /server.json
-/translation.json
+/translation-en.json
+/translation-ko.json
 /theme.json

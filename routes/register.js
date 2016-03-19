@@ -15,7 +15,7 @@ var InvalidDataError = errors.InvalidDataError;
 
 router.all('/', (req, resp, next) => {
 	if(req.method === 'POST'){
-		if(req.locals.auth){
+		if(resp.locals.auth){
 			next(new AlreadyLoggedInError());
 			return;
 		}
@@ -39,7 +39,14 @@ router.all('/', (req, resp, next) => {
 			return;
 		}
 
-		var password = global.key.decrypt(req.body.password);
+		try{
+			var password = global.key.decrypt(req.body.password, 'utf8');
+		}catch(err){
+			console.log(err.toString());
+			console.log(req.body.password);
+			next(new InvalidDataError());
+			return;
+		}
 
 		global.mongo
 			.collection(global.config['collection-user'])
@@ -76,14 +83,14 @@ router.all('/', (req, resp, next) => {
 								return;
 							}
 
-							bcrypt.genSalt(8, function(err1, salt) {
+							bcrypt.genSalt(8, (err1, salt) => {
 						        if(err1){
 									console.error(err1.message);
 									next(new ServerError());
 									return;
 								}
 
-						        bcrypt.hash(password, salt, function(err2, hash) {
+						        bcrypt.hash(password, salt, undefined, (err2, hash) => {
 									if(err2){
 										console.error(err2.message);
 										next(new ServerError());

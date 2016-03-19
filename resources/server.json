@@ -1,4 +1,6 @@
 {
+	"lang": "ko",
+
 	"db-address": "localhost",
 	"db-port": "27017",
 	"db-name": "overrun",
@@ -13,6 +15,7 @@
 	"icon": "/resources/image/icon.png",
 
 	"google-analytics": "",
+	"recaptcha-public": "",
 	"recaptcha-secret": "",
 	"session-secret": "",
 

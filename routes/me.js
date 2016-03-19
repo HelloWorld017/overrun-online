@@ -76,13 +76,18 @@ router.post('/update/password', (req, res, next) => {
 		return;
 	}
 
-	var originalPw = global.key.decrypt(req.body.original);
 	if(req.body.newPw !== req.body.new_check){
 		next(new PasswordNotEqualError());
 		return;
 	}
 
-	var newPw = global.key.decrypt(req.body.new);
+	try{
+		var originalPw = global.key.decrypt(req.body.original, 'utf8');
+		var newPw = global.key.decrypt(req.body.new, 'utf8');
+	}catch(err){
+		next(new InvalidDataError());
+		return;
+	}
 
 	bcrypt.compare(originalPw, res.locals.user.pw, (err, res) => {
 		if(err){
@@ -103,7 +108,7 @@ router.post('/update/password', (req, res, next) => {
 				return;
 			}
 
-			bcrypt.hash(newPw, salt, (err, hash) => {
+			bcrypt.hash(newPw, salt, undefined, (err, hash) => {
 				if(err){
 					console.error(err.toString());
 					next(new ServerError());

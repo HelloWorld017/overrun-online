@@ -2,7 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var MongoClient = require('mongodb').MongoClient;
 
-checkAndGenerate(['server.json', 'translation.json', 'theme.json']);
+checkAndGenerate(['server.json', 'translation-en.json', 'translation-ko.json', 'theme.json']);
 
 var config = require('object-merge')(require('./resources/server'), require('./server'));
 var url = "mongodb://" + config['db-address'] + ":" + config['db-port'] + "/" + config['db-name'];

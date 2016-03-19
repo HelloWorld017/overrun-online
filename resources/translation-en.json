@@ -1,0 +1,49 @@
+{
+	"index.title": "Welcome to overrun-online!",
+	"index.motd": "Welcome to overrun-online!",
+	"index.continue": "Touch anywhere to continue.",
+
+	"login.title": "Login",
+	"login.id": "Username",
+	"login.password": "Password",
+	"login.submit": "Login",
+
+	"join.title": "Register",
+
+	"find.title": "Find",
+
+	"email.verify.subject": "Please verify your email.",
+
+	"join.title": "Registration",
+	"join.name": "Nickname",
+	"join.id": "Username",
+	"join.email": "Email Address",
+	"join.password": "Password",
+	"join.password.check": "Password confirm",
+	"join.submit": "Sign up",
+
+	"validate.email": "Invalid email address.",
+	"validate.equal.to": "Your password does not match.",
+	"validate.minlength": "It must be at least {0} characters.",
+	"validate.regex": "It seems that it contains invalid characters.",
+	"validate.required": "This is required field.",
+	"validate.remote.id": "Your username is duplicated.",
+	"validate.remote.email": "Your email is duplicated.",
+
+	"error.alreadyentried": "You already have been entried.",
+	"error.alreadyloggedin": "You are already logged in.",
+	"error.captcha": "Please verify your captcha.",
+	"error.entryfirst": "Please entry first.",
+	"error.invaliddata": "Your entered items are invalid.",
+	"error.invalidtoken": "Your token is invalid.",
+	"error.nopermission": "You have no permission.",
+	"error.notloggedin": "You should sign in.",
+	"error.passwordnotequal": "Please check your username and password.",
+	"error.sameidalreadyjoined": "Same id or email already exists.",
+	"error.internalserver": "An unknown error is occurred",
+	"error.toolongcode": "Your code is too long!",
+	"error.toomanybots": "There are too many bots!",
+	"error.wrongsession": "Your session is invalid.",
+
+	"desc": "overrun-online is a game which creates algorithm and fighting against."
+}
