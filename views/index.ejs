@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<%- include('./header', {title: global.translator('title.index')}); %>
+		<%- include('./header', {title: global.translator('index.title')}); %>
+
+		<script src="resources/js/jquery.particleground.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$('section').particleground({
+					dotColor: '#ddd',
+					lineColor: '#ddd'
+				});
+			});
+		</script>
 	</head>
 
 	<body>
-		<div>
-			
-		</div>
+		<section>
+			<h1><%= global.translator('index.motd') %></h1>
+			<p><%= global.translator('index.continue') %></p>
+		</section>
 	</body>
 </html>

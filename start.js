@@ -10,9 +10,9 @@ checkAndGenerate('server.json');
 checkAndGenerate('translation.json');
 checkAndGenerate('theme.json');
 
-global.config = objectMerge(require('.resources/server'), require('./server'));
-global.translation = objectMerge(require('.resources/translation'), require('./translation'));
-global.theme = objectMerge(require('.resources/theme'), require('./theme'));
+global.config = objectMerge(require('./resources/server'), require('./server'));
+global.translation = objectMerge(require('./resources/translation'), require('./translation'));
+global.theme = objectMerge(require('./resources/theme'), require('./theme'));
 global.translator = require('./src/translator');
 global.mongo = undefined;
 global.server = undefined;
@@ -61,7 +61,7 @@ MongoClient.connect(url, (err, client) => {
 		throw error;
 	});
 	httpServer.on('listening', () => {
-		var addr = server.address();
+		var addr = httpServer.address();
 		debug('Listening on ' + ((typeof addr === 'string') ? 'pipe ' + addr : 'port ' + addr.port));
 	});
 });
@@ -72,9 +72,7 @@ function checkAndGenerate(target){
 	}catch(err){
 		if(err){
 			fs.writeFileSync(path.join('./', target), fs.readFileSync(path.join('./resources', target)));
-			console.log(global.translator('server.conf.load', {
-				name: target
-			}));
+			console.log(`Created configuration file: ${target}`);
 		}
 	}
 }

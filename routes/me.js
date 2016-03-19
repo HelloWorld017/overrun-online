@@ -1,4 +1,12 @@
+var bcrypt = require('bcrypt-nodejs');
+var errors = require('../src/errors');
+var mailer = require('../src/mailer');
 var router = require('express').Router();
+
+var InvalidDataError = errors.InvalidDataError;
+var NotLoggedInError = errors.NotLoggedInError;
+var PasswordNotEqualError = errors.PasswordNotEqualError;
+var ServerError = errors.ServerError;
 
 router.use((req, res, next) => {
 	if(!res.locals.auth){
@@ -41,14 +49,14 @@ router.post('/update', (req, res, next) => {
 		.collection(global.config['collection-user'])
 		.findOneAndUpdate({name: user.name}, {
 			$set: {
-				nickname: user.nickname
+				nickname: user.nickname,
 				email: user.email,
 				emailVerified: emailVerified
 			}
 		});
 
 	if(user.emailVerified === false){
-		mailer.send(global.translation['subject-verify-email'], 'verify-email', email, {
+		mailer.send(global.translator('email.verify.subject'), 'verify-email', email, {
 			authToken: authToken
 		});
 	}
@@ -60,7 +68,7 @@ router.get('/update/password', (req, res, next) => {
 	var key = new NodeRSA({b: 4096});
 	res.session.rsa = key.exportKey('pkcs1-private');
 	res.render('update-password', {
-		rsa: key.exportKey('pkcs8-public');
+		rsa: key.exportKey('pkcs8-public')
 	});
 });
 

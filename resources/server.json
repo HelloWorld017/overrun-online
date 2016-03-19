@@ -10,5 +10,12 @@
 
 	"url": "https://or.khinenw.tk",
 	"title": "Overrun",
-	"icon": "/resources/image/icon.png"
+	"icon": "/resources/image/icon.png",
+
+	"google-analytics": "",
+	"recaptcha-secret": "",
+	"session-secret": "",
+
+	"max-bot-count": 5,
+	"max-code-length": 10000
 }

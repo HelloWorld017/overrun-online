@@ -5,7 +5,7 @@ var User = require('../src/player');
 
 var AlreadyLoggedInError = errors.AlreadyLoggedInError;
 var InvalidDataError = errors.InvalidDataError;
-var InvalidTokenError = erros.InvalidTokenError;
+var InvalidTokenError = errors.InvalidTokenError;
 var PasswordNotEqualError = errors.PasswordNotEqualError;
 var ServerError = errors.ServerError;
 
@@ -16,10 +16,10 @@ router.all('/', (req, res, next) => {
 			return;
 		}
 
-        if(!req.session.rsa){
-            next(new InvalidTokenError());
-            return;
-        }
+		if(!req.session.rsa){
+		    next(new InvalidTokenError());
+		    return;
+		}
 
 		if(!req.body.id || !req.body.password){
 			next(new InvalidDataError());

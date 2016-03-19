@@ -1,5 +1,9 @@
 {
-    "server.conf.load": "Created configuration file: %name%",
+	"index.title": "Welcome to overrun-online!",
+	"index.motd": "Welcome to overrun-online!",
+	"index.continue": "Touch anywhere to continue.",
 
-	"title.index": "Welcome to overrun-online!"
+	"email.verify.subject": "Please verify your email.",
+
+	"desc": "overrun-online is a game which creates algorithm and fighting against."
 }

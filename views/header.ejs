@@ -1,13 +1,17 @@
 <meta charset="utf-8">
 <title><%= title %></title>
 
-<meta name="description" content="<%= global.translation['page-description'] %>">
-
+<meta name="description" content="<%= global.translator('desc') %>">
 <meta name="viewport" content="width=device-width, user-scalable=no">
+<meta property="og:title" content="<%= title %>">
+<meta property="og:site_name" content="<%= global.config['title'] %>">
+<meta property="og:type" content="game">
+<meta property="og:url" content="<%= url %>">
+<meta property="og:image" content="<%= global.config['url'] + global.config['icon'] %>">
 
-<link rel="stylesheet" type="text/css" href="/css/materialize.min.css">
-<link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="/css/main.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/main.css">
 
 <style>
 	nav{
@@ -40,9 +44,9 @@
 	}
 </style>
 
-<script src="/js/jquery-2.1.4.min.js"></script>
-<script src="/js/jquery.validate.min.js"></script>
-<script src="/js/materialize.min.js"></script>
+<script src="/resources/js/jquery-2.1.4.min.js"></script>
+<script src="/resources/js/jquery.validate.min.js"></script>
+<script src="/resources/js/materialize.min.js"></script>
 
 <script>
 	$(document).ready(function(){
@@ -60,9 +64,3 @@
 	ga('create', '<%= global.config['google-analytics'] %>', 'auto');
 	ga('send', 'pageview');
 </script>
-
-<meta property="og:title" content="<%= title %>">
-<meta property="og:site_name" content="<%= global.config['title'] %>">
-<meta property="og:type" content="game">
-<meta property="og:url" content="<%= url %>">
-<meta property="og:image" content="<%= global.config['url'] + global.config['icon'] %>">

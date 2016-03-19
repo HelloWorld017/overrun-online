@@ -1,4 +1,4 @@
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 var createToken = require('../src/create-token');
 var errors = require('../src/errors');
 var NodeRSA = require('node-rsa');
@@ -109,7 +109,6 @@ router.all('/', (req, resp, next) => {
 							});
 						});
 					});
-				});
 			});
 	}else{
 		var key = new NodeRSA({b: 4096});

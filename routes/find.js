@@ -1,5 +1,6 @@
 var createToken = require('../src/create-token');
-var errors = reuire('../src/errors');
+var bcrypt = require('bcrypt-nodejs');
+var errors = require('../src/errors');
 var mailer = require('../src/mailer');
 var router = require('express').Router();
 

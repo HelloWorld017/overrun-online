@@ -13,8 +13,19 @@ var RedirectError = errors.RedirectError;
 var StatusError = errors.StatusError;
 var MongoStore = require('connect-mongo')(session);
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var authenticate = require('./routes/authenticate');
+var battle = require('./routes/battle');
+var build = require('./routes/build');
+var find = require('./routes/find');
+var friends = require('./routes/friends');
+var index = require('./routes/index');
+var login = require('./routes/login');
+var logout = require('./routes/logout');
+var me = require('./routes/me');
+var rank = require('./routes/rank');
+var register = require('./routes/register');
+var unregister = require('./routes/unregister');
+var user = require('./routes/user');
 
 var app = express();
 
@@ -65,12 +76,23 @@ app.use((req, res, next) => {
 		}, (err2, result2) => {
 			req.query = result2;
 			next();
-		}
+		});
 	});
 });
 
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', index);
+app.use('/authenticate', authenticate);
+app.use('/battle', battle);
+app.use('/build', build);
+app.use('/find', find);
+app.use('/friends', friends);
+app.use('/login', login);
+app.use('/logout', logout);
+app.use('/me', me);
+app.use('/rank', rank);
+app.use('/register', register);
+app.use('/unregister', unregister);
+app.use('/user', user);
 
 app.use((req, res, next) => {
 	var err = new Error('Not Found');
@@ -108,6 +130,5 @@ app.use((err, req, res, next) => {
 		error: {}
 	});
 });
-
 
 module.exports = app;
