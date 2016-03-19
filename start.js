@@ -1,11 +1,19 @@
 var debug = require('debug')('overrun-online:server');
+var fs = require('fs');
 var http = require('http');
+var path = require('path');
+var objectMerge = require('object-merge');
 var MongoClient = require('mongodb').MongoClient;
 var Server = require('./src/server');
 
-//TODO Add default configuration
-global.config = require('./resources/server');
-global.translation = require('./resources/translation');
+checkAndGenerate('server.json');
+checkAndGenerate('translation.json');
+checkAndGenerate('theme.json');
+
+global.config = objectMerge(require('.resources/server'), require('./server'));
+global.translation = objectMerge(require('.resources/translation'), require('./translation'));
+global.theme = objectMerge(require('.resources/theme'), require('./theme'));
+global.translator = require('./src/translator');
 global.mongo = undefined;
 global.server = undefined;
 global.users = undefined;
@@ -57,3 +65,16 @@ MongoClient.connect(url, (err, client) => {
 		debug('Listening on ' + ((typeof addr === 'string') ? 'pipe ' + addr : 'port ' + addr.port));
 	});
 });
+
+function checkAndGenerate(target){
+	try{
+		fs.accessSync(path.join('./', target), fs.F_OK);
+	}catch(err){
+		if(err){
+			fs.writeFileSync(path.join('./', target), fs.readFileSync(path.join('./resources', target)));
+			console.log(global.translator('server.conf.load', {
+				name: target
+			}));
+		}
+	}
+}

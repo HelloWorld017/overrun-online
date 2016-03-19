@@ -3,12 +3,12 @@
 	"db-port": "27017",
 	"db-name": "overrun",
 
-	"background-0": "#202020",
-	"background-1": "rgba(0, 0, 0, 0)",
-	"parallax": "/resources/parallax.png",
-
 	"collection-auth": "auth",
 	"collection-user": "users",
 	"collection-reset": "reset",
-	"collection-session": "session"
+	"collection-session": "session",
+
+	"url": "https://or.khinenw.tk",
+	"title": "Overrun",
+	"icon": "/resources/image/icon.png"
 }

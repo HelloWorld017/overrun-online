@@ -5,11 +5,13 @@
 	<div class="background-div" style="background-color: <%= global.config['background-1'] %>">
 	</div>
 
-	<div class="parallax" style="background: url(<%= global.config['parallax'] %>) cover;">
+	<div class="parallax-container">
+		<div class="parallax">
+			<img src="<%= global.config['parallax'] %>">
+		</div>
 	</div>
 </div>
 
 <script>
 	$('.parallax').parallax();
 </script>
-

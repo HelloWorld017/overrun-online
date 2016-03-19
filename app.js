@@ -43,6 +43,7 @@ app.use((req, res, next) => {
 	if(req.session.token !== res.locals.user.token) res.locals.user = undefined;
 	if(res.locals.user.unregistered) res.locals.user = undefined;
 
+	res.locals.url = global.config['url'] + req.originalUrl;
 	res.locals.auth = (res.locals.user !== undefined);
 	res.locals.email = (res.locals.auth) ? crypto.createHash('md5').update(res.locals.user.email.toLowerCase()).digest('hex') : '';
 	res.locals.logout = (cb, req, res, next) => {
