@@ -2,10 +2,12 @@
 	"background-0": "#202020",
 	"background-1": "#00C0A0",
 	"background-2": "#FFF",
+	"background-3": "#00C0A0",
 	"foreground-0": "#FFFFFF",
 
 	"splash-dot": "#ddd",
 	"splash-line": "#ddd",
+	"splash-density": 5000,
 
 	"parallax": "/resources/image/parallax.png"
 }

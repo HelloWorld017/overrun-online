@@ -1,6 +1,7 @@
 'use strict';
 
 var bcrypt = require('bcrypt-nodejs');
+var createToken = require('./create-token');
 var errors = require('./errors');
 var Server = require('./server');
 
@@ -21,6 +22,7 @@ class Player{
 		this.emailVerified = data.emailVerified;
 		this.unregistered = data.unregistered;
 		this.bots = data.bots.map((v) => {return new Bot(this, v.skin, v.name, v.code);});
+		this.github = data.github || "";
 
 		this.currentGame = undefined;
 		this.lastGame = undefined;

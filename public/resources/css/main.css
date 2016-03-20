@@ -86,6 +86,11 @@ body{
 	height: 100vh;
 }
 
+.user-icon{
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
 @media (max-width: 1050px){
 	.background-div-wrapper{
 		display: none;
@@ -103,6 +108,11 @@ body{
 		margin-right: 7rem;
 		margin-bottom: 10px;
 		box-shadow: 0 0 5px 3px #808080;
+	}
+
+	nav {
+		position: absolute;
+		z-index: 3;
 	}
 }
 

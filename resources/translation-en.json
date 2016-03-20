@@ -10,6 +10,8 @@
 
 	"find.title": "Find",
 
+	"unregister.title": "Unregister",
+
 	"join.title": "Registration",
 	"join.name": "Nickname",
 	"join.id": "Username",
@@ -17,6 +19,19 @@
 	"join.password": "Password",
 	"join.password.check": "Password confirm",
 	"join.submit": "Sign up",
+
+	"update.title": "Update user information",
+	"update.name": "Nickname",
+	"update.id": "Username",
+	"update.email": "Email Address",
+	"update.password": "Password",
+	"update.password.check": "Password confirm",
+	"update.github": "Github Account",
+	"update.submit": "Update",
+
+	"me.title": "My Page",
+
+	"logout.title": "Logout",
 
 	"authenticate.finish.title": "Congratulations",
 	"authenticate.finish.masthead": "Your email address is successfully verified!",

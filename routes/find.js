@@ -2,9 +2,11 @@ var createToken = require('../src/create-token');
 var bcrypt = require('bcrypt-nodejs');
 var errors = require('../src/errors');
 var mailer = require('../src/mailer');
+var recaptcha = require('../src/recaptcha-verify');
 var router = require('express').Router();
 
 var AlreadyLoggedInError = errors.AlreadyLoggedInError;
+var CaptchaError = errors.CaptchaError;
 var PasswordNotEqualError = errors.PasswordNotEqualError;
 var InvalidDataError = errors.InvalidDataError;
 var ServerError = errors.ServerError;
@@ -15,67 +17,80 @@ router.post('/password', (req, res, next) => {
 		return;
 	}
 
-	var id = req.body.id;
-	var email = req.body.email;
-	//TODO recaptcha
-	global.mongo
-		.collection(global.config['collection-user'])
-		.find({name: id})
-		.limit(1)
-		.toArray((err, results) => {
-			if(err){
-				console.log(err.message);
-				next(new ServerError());
-				return;
-			}
+	recaptcha.verify(req, (err, recaptchaVerified) => {
+		if(err){
+			console.error(err.toString());
+			next(new ServerError());
+			return;
+		}
 
-			if(results.length <= 0){
-				next(new PasswordNotEqualError());
-				return;
-			}
+		if(!recaptchaVerified){
+			next(new CaptchaError());
+			return;
+		}
 
-			if(email === results[0].email){
-				var generatedToken = createToken(512);
+		var id = req.body.id;
+		var email = req.body.email;
 
-				global.mongo
-					.collection(global.config['collection-reset'])
-					.find({id: id})
-					.toArray((err, res) => {
-						if(err){
-							next(new ServerError());
-							return;
-						}
+		global.mongo
+			.collection(global.config['collection-user'])
+			.find({name: id})
+			.limit(1)
+			.toArray((err, results) => {
+				if(err){
+					console.error(err.message);
+					next(new ServerError());
+					return;
+				}
 
-						if(res.length === 0){
-							global.mongo
-								.collection(global.config['collection-reset'])
-								.insert({
-									id: id,
-									reset_token: generatedToken,
-									valid_until: Date.now() + 3600
-								});
+				if(results.length <= 0){
+					next(new PasswordNotEqualError());
+					return;
+				}
 
-						}else{
-							global.mongo
-								.collection(global.config['collection-reset'])
-								.findOneAndUpdate({id: id}, {
-									$set: {
+				if(email === results[0].email){
+					var generatedToken = createToken(512);
+
+					global.mongo
+						.collection(global.config['collection-reset'])
+						.find({id: id})
+						.toArray((err, res) => {
+							if(err){
+								next(new ServerError());
+								return;
+							}
+
+							if(res.length === 0){
+								global.mongo
+									.collection(global.config['collection-reset'])
+									.insert({
+										id: id,
 										reset_token: generatedToken,
 										valid_until: Date.now() + 3600
-									}
-								});
-						}
+									});
 
-						mailer.send(global.translation['subject-find-email'], req.body.email, 'find-password', {
-							reset_token: generatedToken
+							}else{
+								global.mongo
+									.collection(global.config['collection-reset'])
+									.findOneAndUpdate({id: id}, {
+										$set: {
+											reset_token: generatedToken,
+											valid_until: Date.now() + 3600
+										}
+									});
+							}
+
+							mailer.send(global.translation['subject-find-email'], req.body.email, 'find-password', {
+								reset_token: generatedToken
+							});
 						});
-					});
-			}
-		});
+				}
+			});
 
-	res.render('alert', {
-		redirect: undefined,
-		message: global.translation['alert-checkemail']
+		res.render('alert', {
+			redirect: undefined,
+			message: global.translation['alert-checkemail']
+		});
 	});
 });
 

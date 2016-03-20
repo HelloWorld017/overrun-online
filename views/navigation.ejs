@@ -1,1 +1,44 @@
+<% function drawUserDropdown(activator){ %>
+	<li>
+		<% if(auth){ %>
+			<a class="dropdown-button" href="#!" data-activates="<%= activator %>">
+				<img src="http://www.gravatar.com/avatar/<%= emailHash %>?s=50" alt="" class="user-icon circle">
+				<span class="user-name"><%= user.nickname %></span>
+			</a>
+		<% }else{ %>
+			<a href="/login">
+				<i class="user-icon fa fa-user"></i>
+				<span class="user-name"><%= global.translator('login.title') %></span>
+			</a>
+		<% } %>
+	</li>
+<% } %>
 
+<% function createUserDropdown(elementId){ %>
+	<ul id="<%= elementId %>" class="dropdown-content">
+		<li><a href="/me"><%= global.translator('me.title') %></a></li>
+		<li><a href="/logout"><%= global.translator('logout.title') %></a></li>
+	</ul>
+<% }; %>
+
+<% if(auth){
+	createUserDropdown("user-dropdown");
+	createUserDropdown("user-dropdown-mobile");
+} %>
+
+<nav style="background-color: <%= global.theme['background-3'] %>">
+	<div class="nav-wrapper">
+		<a class="brand-logo" href="/"><%= global.translation['index-title'] %></a>
+		<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="fa fa-bars"></i></a>
+
+		<ul class="right hide-on-med-and-down">
+			<% drawUserDropdown("user-dropdown") %>
+		</ul>
+
+		<ul class="side-nav" id="nav-mobile">
+			<li>
+				<% drawUserDropdown("user-dropdown-mobile") %>
+			</li>
+		</ul>
+	</div>
+</nav>

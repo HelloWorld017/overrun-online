@@ -58,13 +58,13 @@ app.use((req, res, next) => {
 
 	res.locals.url = global.config['url'] + req.originalUrl;
 	res.locals.auth = (res.locals.user !== undefined);
-	res.locals.email = (res.locals.auth) ? crypto.createHash('md5').update(res.locals.user.email.toLowerCase()).digest('hex') : '';
-	res.locals.logout = (cb, req, res, next) => {
-	    req.session.userid = undefined;
-	    req.session.token = undefined;
-	    req.session.save((err) => {
-	        cb(err);
-	    });
+	res.locals.emailHash = (res.locals.auth) ? crypto.createHash('md5').update(res.locals.user.email.toLowerCase()).digest('hex') : '';
+	res.locals.logout = (cb) => {
+		req.session.userid = undefined;
+		req.session.token = undefined;
+		req.session.save((err) => {
+			(cb || () => {})(err);
+		});
 	};
 
 	//Anti SQL Injection

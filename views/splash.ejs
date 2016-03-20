@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head>
+		<%- include('./header', {title: global.translator('index.title')}); %>
+
+		<script src="resources/js/jquery.particleground.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$('section').particleground({
+					dotColor: '<%= global.theme['splash-dot'] %>',
+					lineColor: '<%= global.theme['splash-line'] %>',
+					density: <%= global.theme['splash-density'] %>,
+				});
+			});
+		</script>
+
+		<style>
+			.splash, .splash-wrapper {
+				width: 100vw;
+				height: 100vh;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+
+			.splash {
+				background-color: <%= global.theme['background-0'] %>;
+				z-index: 1;
+			}
+
+			.splash-wrapper {
+				display: table;
+				z-index: 2;
+			}
+
+			.splash-inner-wrapper {
+				display: table-cell;
+				vertical-align: middle;
+				text-align: center;
+			}
+
+			.splash-content {
+				width: 100vw;
+				color: <%= global.theme['foreground-0'] %>;
+			}
+
+			.splash-content p {
+				position: relative;
+				bottom: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<section class="splash">
+			<a class="splash-wrapper" href="/login">
+				<div class="splash-inner-wrapper">
+					<div class="splash-content">
+						<h1><%= global.translator('index.motd') %></h1>
+						<p><%= global.translator('index.continue') %></p>
+					</div>
+				</div>
+			</a>
+		</section>
+	</body>
+</html>

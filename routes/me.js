@@ -24,7 +24,8 @@ router.get('/update', (req, res, next) => {
 	res.render('update', {
 		id: res.locals.user.name,
 		name: res.locals.user.nickname,
-		email: res.locals.user.email
+		email: res.locals.user.email,
+		github: res.locals.user.github
 	});
 });
 
@@ -36,7 +37,7 @@ router.post('/update', (req, res, next) => {
 		return;
 	}
 
-	if(!(/(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/.test(req.body.email) && /^[a-zA-Z0-9ㄱ-ㅎ가-힣#-_.]{2,11}$/.test(req.body.name))){
+	if(!(/(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/.test(req.body.email) && /^[a-zA-Z0-9ㄱ-ㅎ가-힣#-_.]{2,11}$/.test(req.body.name) && /^(([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])|([a-zA-Z0-9]+))$/.test(req.body.github))){
 		next(new InvalidDataError());
 		return;
 	}
@@ -44,14 +45,16 @@ router.post('/update', (req, res, next) => {
 	user.emailVerified = (user.emailVerified && (user.email === req.body.email));
 	user.nickname = req.body.name;
 	user.email = req.body.email;
+	user.github = req.body.github;
 
 	global.mongo
 		.collection(global.config['collection-user'])
 		.findOneAndUpdate({name: user.name}, {
 			$set: {
 				nickname: user.nickname,
+				github: user.github,
 				email: user.email,
-				emailVerified: emailVerified
+				emailVerified: user.emailVerified
 			}
 		});
 
@@ -59,9 +62,13 @@ router.post('/update', (req, res, next) => {
 		mailer.send(global.translator('email.verify.subject'), 'verify-email', email, {
 			authToken: authToken
 		});
+
+		res.locals.logout();
+		res.redirect('/');
+		return;
 	}
 
-	res.redirect('/update');
+	res.redirect('/me');
 });
 
 router.get('/update/password', (req, res, next) => {

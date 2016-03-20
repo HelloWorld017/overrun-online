@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head>
+		<%- include('./header', {title: global.translator('update.title')}); %>
+		<%- include('./validator', {no_remote: true}); %>
+	</head>
+
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+
+		<section class="main-section">
+			<h1><%= global.translation['update-title'] %></h1>
+			<form method="post" action="" class="validate-form">
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="id"><%= global.translator('update.id') %></label>
+						<input id="id" name="id" type="text" value="<%= id %>" disabled>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="name"><%= global.translator('update.name') %></label>
+						<input id="name" name="name" type="text" value="<%= name %>">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="email"><%= global.translator('update.email') %></label>
+						<input id="email" name="email" type="email" class="validate" value="<%= email %>">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="password"><%= global.translator('update.password') %></label>
+						<input id="password" name="password" type="password" value="bokumachi" disabled>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="password-check"><%= global.translator('update.password.check') %></label>
+						<input id="password-check" name="password-check" type="password" value="bokumachi" disabled>
+					</div>
+				</div>
+
+				<%# These password field is needed because of validator %>
+
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="github"><%= global.translator('update.github') %></label>
+						<input id="github" name="github" type="text" value="<%= github %>">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col s6">
+						<button class="btn waves-effect waves-lignt" type="submit">
+							<%= global.translator('update.submit') %>
+							<i class="fa fa-user right"></i>
+						</button>
+
+						<a class="btn waves-effect waves-lignt red" href="/unregister">
+							<%= global.translator('unregister.title') %>
+							<i class="fa fa-user-times right"></i>
+						</a>
+					</div>
+				</div>
+			</form>
+		</section>
+
+		<% include ./footer %>
+	</body>
+</html>
