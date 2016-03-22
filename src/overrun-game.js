@@ -76,7 +76,7 @@ class OverrunGame{
 				});
 
 				//deepEqual is okay because this moves on 5*5 grid and size of bots are same
-				if(attack.boundBox.deepEqual(defece.boundBox)){
+				if(attack.boundBox.min().deepEqual(defece.boundBox.min())){
 					if(defence.defence !== undefined && defence.defence > 0){
 						turnLog[i].push({
 							content: 'turn.defence'
