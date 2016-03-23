@@ -19,6 +19,12 @@
 	"recaptcha-secret": "",
 	"session-secret": "",
 
+	"gmail-id": "",
+	"gmail-pw": "",
+
+	"email-from": "overrun-online (no reply)",
+	"email-from-address": "no-reply@khinenw.tk",
+
 	"max-bot-count": 5,
 	"max-code-length": 10000
 }
