@@ -37,7 +37,9 @@
 	"authenticate.finish.masthead": "이메일이 성공적으로 인증되었습니다!",
 	"authenticate.finish.desc": "이제 로그인 페이지로 돌아가셔서 로그인해주세요.",
 
-	"email.verify.subject": "이메일을 인증해주세요.",
+	"email.verify.title": "이메일을 인증해주세요.",
+	"email.verify.masthead": "overrun-online에 가입하시려면 이메일 인증이 필요합니다.",
+	"email.verify.desc": "하단의 링크를 클릭해서 이매일 인증을 완료해주세요. 만일, 가입하신 적이 없으시다면 이 이메일을 무시해주세요.",
 
 	"validate.email": "이메일 주소가 잘못되었습니다.",
 	"validate.equal.to": "비밀번호가 서로 같지 않습니다.",

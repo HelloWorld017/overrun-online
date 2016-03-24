@@ -37,7 +37,9 @@
 	"authenticate.finish.masthead": "Your email address is successfully verified!",
 	"authenticate.finish.desc": "Now, please return to login page.",
 
-	"email.verify.subject": "Please verify your email.",
+	"email.verify.title": "Please verify your email.",
+	"email.verify.masthead": "You have to verify your email to sign up for overrun-online.",
+	"email.verify.desc": "Please click the link below. If you didn't signed up, please ignore this email.",
 
 	"validate.email": "Invalid email address.",
 	"validate.equal.to": "Your password does not match.",
