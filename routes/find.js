@@ -80,7 +80,7 @@ router.post('/password', (req, res, next) => {
 									});
 							}
 
-							mailer.send(global.translation['subject-find-email'], req.body.email, 'find-password', {
+							mailer.send(global.translator('subject-find-email'), req.body.email, 'find-password-email', {
 								reset_token: generatedToken
 							});
 						});

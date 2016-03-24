@@ -104,7 +104,7 @@ router.all('/', (req, resp, next) => {
 										authToken: authToken
 									});
 
-									mailer.send(global.translation['subject-verify-email'], email, 'verify-email', {
+									mailer.send(global.translator('subject-verify-email'), email, 'verify-email', {
 										authToken: authToken
 									});
 

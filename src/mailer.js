@@ -12,7 +12,12 @@ module.exports = {
 		var mail = bodyTemplate;
 		mail.subject = subject;
 		mail.to = sendTo;
-		fs.readFile('/views/' + template + '.ejs', (err, res) => {
+		fs.readFile('./views/' + template + '.ejs','utf8',  (err, res) => {
+			if(err){
+				console.error(err.toString());
+				return;
+			}
+
 			mail.html = ejs.render(res, content);
 			transporter.sendMail(mail);
 		});
