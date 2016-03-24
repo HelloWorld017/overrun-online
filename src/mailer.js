@@ -19,7 +19,11 @@ module.exports = {
 			}
 
 			mail.html = ejs.render(res, content);
-			transporter.sendMail(mail);
+			transporter.sendMail(mail, (err) => {
+				if(err){
+					console.error(err.toString());
+				}
+			});
 		});
 	}
 };
