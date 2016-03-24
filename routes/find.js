@@ -81,7 +81,7 @@ router.post('/password', (req, res, next) => {
 							}
 
 							mailer.send(global.translator('email.find.title'), req.body.email, 'find-password-email', {
-								reset_token: generatedToken
+								resetToken: generatedToken
 							});
 						});
 				}
@@ -94,7 +94,7 @@ router.post('/password', (req, res, next) => {
 	});
 });
 
-router.post('/password/auth/:token', (req, res, next) => {
+router.all('/password/auth/:token', (req, res, next) => {
 	if(!req.body.password || !req.body['password-check']){
 		next(new InvalidDataError());
 		return;
