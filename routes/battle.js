@@ -30,7 +30,13 @@ router.post('/entry/:game/:bot', (req, res, next) => {
 		return;
 	}
 
-	if(res.locals.user.bots[req.params.bot] === undefined){
+	var bot = res.locals.user.bots[parseInt(req.params.bot)];
+	if(!bot){
+		next(new InvalidDataError());
+		return;
+	}
+
+	if(bot.type !== game){
 		next(new InvalidDataError());
 		return;
 	}
@@ -41,7 +47,7 @@ router.post('/entry/:game/:bot', (req, res, next) => {
 		return;
 	}
 
-	global.server.matchmakers[game].entry(res.locals.user, res.locals.user.bots[req.params.bot]);
+	global.server.matchmakers[game].entry(res.locals.user, bot);
 	res.render('in-entry');
 	return;
 });

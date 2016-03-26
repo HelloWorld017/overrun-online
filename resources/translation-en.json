@@ -59,6 +59,7 @@
 	"error.captcha": "Please verify your captcha.",
 	"error.emailnotverified": "Please verify your email address first by clicking the link in your email!",
 	"error.entryfirst": "Please entry first.",
+	"error.insufficientmoney": "Insufficient money avaliable.",
 	"error.invaliddata": "Your entered items are invalid.",
 	"error.invalidtoken": "Your token is invalid.",
 	"error.nopermission": "You have no permission.",

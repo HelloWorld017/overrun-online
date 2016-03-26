@@ -22,7 +22,7 @@ class Player{
 		this.point = data.point;
 		this.emailVerified = data.emailVerified;
 		this.unregistered = data.unregistered;
-		this.bots = data.bots.map((v) => {return new Bot(this, v.skin, v.name, v.code);});
+		this.bots = data.bots.map((v) => {return new Bot(this, v.skin, v.name, v.code, v.type);});
 		this.github = data.github || "";
 
 		this.currentGame = undefined;
@@ -79,7 +79,8 @@ class Player{
 				$set: {
 					money: this.money,
 					point: this.point,
-					stat: this.stat
+					stat: this.stat,
+					skins: this.skins
 				}
 			});
 	}
@@ -93,7 +94,8 @@ class Player{
 						return {
 							skin: v.skin,
 							name: v.name,
-							code: v.code
+							code: v.code,
+							type: v.type
 						};
 					})
 				}

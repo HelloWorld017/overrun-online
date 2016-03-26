@@ -6,6 +6,7 @@ class Server{
 		this.callbacks = [];
 		this.players = {};
 		this.games = {};
+		this.gamePool = {};
 		this.matchmakers = {};
 	}
 
@@ -19,7 +20,8 @@ class Server{
 		this.callbacks.push(callback);
 	}
 
-	addMatchMaker(game){
+	addToPool(game){
+		this.gamePool[game.getName()] = game;
 		this.matchmakers[game.getName()] = matchmake(this, game);
 	}
 

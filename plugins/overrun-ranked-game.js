@@ -86,7 +86,7 @@ module.exports = {
 	author: 'Khinenw',
 	version: 'alpha 0.0.0 201603260001',
 	onLoad: (cb) => {
-		global.server.addMatchMaker(OverrunGame);
+		global.server.addToPool(OverrunGame);
 		cb();
 	}
 };

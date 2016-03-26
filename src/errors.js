@@ -58,6 +58,12 @@ class EmailNotVerifiedError extends HttpError{
 	}
 }
 
+class InsufficientMoneyError extends HttpError{
+	constructor(){
+		super(global.translator('error.insufficientmoney'), 403);
+	}
+}
+
 class InvalidDataError extends HttpError{
 	constructor(){
 		super(global.translator('error.invaliddata'), 400);
@@ -127,6 +133,7 @@ module.exports = {
 	CaptchaError: CaptchaError,
 	EmailNotVerifiedError: EmailNotVerifiedError,
 	EntryFirstError: EntryFirstError,
+	InsufficientMoneyError: InsufficientMoneyError,
 	InvalidDataError: InvalidDataError,
 	InvalidTokenError: InvalidTokenError,
 	NoPermissionError: NoPermissionError,

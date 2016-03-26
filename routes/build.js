@@ -52,7 +52,7 @@ router.all('/edit/:id', (req, res, next) => {
 			return;
 		}
 
-		res.locals.user.bots[req.params.id] = new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code);
+		res.locals.user.bots[req.params.id] = new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code, req.body.type);
 		res.locals.user.saveBots();
 		return;
 	}
@@ -69,7 +69,8 @@ router.all('/edit/:id', (req, res, next) => {
 			skin: res.locals.user.skins,
 			bot: res.locals.user.bots[req.params.id],
 			token: token,
-			target: '/edit/' + req.params.id
+			target: '/edit/' + req.params.id,
+			games: global.server.gamePool
 		});
 	});
 });
@@ -107,7 +108,7 @@ router.all('/build', (req, res, next) => {
 			return;
 		}
 
-		res.locals.user.bots.push(new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code));
+		res.locals.user.bots.push(new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code, req.body.type));
 		res.locals.user.saveBots();
 		res.redirect('/battle');
 		return;
@@ -116,7 +117,8 @@ router.all('/build', (req, res, next) => {
 	res.render('build', {
 		skin: res.locals.user.skins,
 		bot: undefined,
-		target: '/build'
+		target: '/build',
+		games: global.server.gamePool
 	});
 });
 

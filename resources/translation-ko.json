@@ -59,6 +59,7 @@
 	"error.captcha": "CAPTCHA를 확인해주세요.",
 	"error.emailnotverified": "이메일 인증을 먼저 해주세요!",
 	"error.entryfirst": "참가신청을 먼저 하셔야 합니다.",
+	"error.insufficientmoney": "돈이 부족합니다.",
 	"error.invaliddata": "기입하신 정보가 잘못되었습니다.",
 	"error.invalidtoken": "토큰이 잘못되었습니다.",
 	"error.nopermission": "권한이 없습니다.",
