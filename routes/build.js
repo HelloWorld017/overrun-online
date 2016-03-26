@@ -14,6 +14,13 @@ router.all('/edit/:id', (req, res, next) => {
 		return;
 	}
 
+	if(!/^[0-9]+$/.test(req.params.id)){
+		next(new InvalidDataError());
+		return;
+	}
+
+	req.params.id = parseInt(req.params.id);
+
 	if(res.locals.user.bots[req.params.id] === undefined){
 		next(new InvalidDataError());
 		return;
@@ -61,7 +68,8 @@ router.all('/edit/:id', (req, res, next) => {
 		res.render('build', {
 			skin: res.locals.user.skins,
 			bot: res.locals.user.bots[req.params.id],
-			token: token
+			token: token,
+			target: '/edit/' + req.params.id
 		});
 	});
 });
@@ -107,7 +115,8 @@ router.all('/build', (req, res, next) => {
 
 	res.render('build', {
 		skin: res.locals.user.skins,
-		bot: undefined
+		bot: undefined,
+		target: '/build'
 	});
 });
 

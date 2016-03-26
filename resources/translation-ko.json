@@ -31,6 +31,10 @@
 
 	"me.title": "개인 페이지",
 
+	"user.bots": "소유중인 봇",
+	"user.skins": "구매한 스킨",
+	"user.status": "전적",
+
 	"logout.title": "로그아웃",
 
 	"authenticate.finish.title": "축하드립니다.",
@@ -65,6 +69,12 @@
 	"error.toolongcode": "코드가 너무나도 깁니다!",
 	"error.toomanybots": "봇을 너무 많이 소유중입니다!",
 	"error.wrongsession": "세션이 잘못되었습니다.",
+
+	"server.http.eaddrinuse": "포트가 이미 사용중입니다.",
+	"server.http.eacces": "%bind%는 상승된 권한이 필요합니다.",
+	"server.listen": "%port%번 포트에서 듣고 있습니다.",
+	"server.plugin.error": "플러그인 로딩중에 오류가 발생했습니다.",
+	"server.plugin.load": "%author%(이)가 제작한 플러그인 %name% v%version%이 성공적으로 로딩되었습니다.",
 
 	"desc": "overrun-online은 알고리즘을 작성해 서로 싸우는 게임입니다."
 }

@@ -2,6 +2,7 @@
 
 var bcrypt = require('bcrypt-nodejs');
 var createToken = require('./create-token');
+var crypto = require('crypto');
 var errors = require('./errors');
 var Server = require('./server');
 
@@ -38,6 +39,10 @@ class Player{
 
 	getName(){
 		return this.name;
+	}
+
+	getHashedEmail(){
+		return crypto.createHash('md5').update(this.email.toLowerCase()).digest('hex');
 	}
 
 	auth(pw, cb){

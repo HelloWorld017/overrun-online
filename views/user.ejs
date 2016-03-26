@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head>
+		<%- include('./header', {title: user.getName()}); %>
+	</head>
+
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+
+		<section class="main-section">
+			<div class="row">
+				<div class="col s12 m7">
+					<div class="card">
+						<div class="card-image">
+							<img src="//www.gravatar.com/avatar/<%= user.getHashedEmail() %>/?s=512">
+							<span class="card-title" style="background-color: rgba(0, 0, 0, 0.5); font-size: 2rem;">
+								<%= user.getName() %>
+								<% if(user.github !== ""){ %>
+									<a href="https://github.com/<%= user.github %>"><i class="fa fa-github"></i></a>
+								<% } %>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<% if(auth && (user.getName() === localUser.getName())){ %>
+				<a class="btn" href="/me/update"><i class="fa fa-pencil"></i><%= global.translator('update.title') %></a>
+			<% } %>
+
+			<h4><%= global.translator('user.bots') %></h4>
+			<%- include('./user/bot-list', {
+				bots: user.bots
+			}); %>
+
+			<h4><%= global.translator('user.skins') %></h4>
+			<% include('./user/skin-list', {
+				skins: user.skins
+			}); %>
+
+			<h4><%= global.translator('user.status') %></h4>
+			<% include('./user/status', {
+				status: user.status
+			}); %>
+
+		</section>
+
+		<% include ./footer %>
+	</body>
+</html>

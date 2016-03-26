@@ -2,7 +2,7 @@
 	<li>
 		<% if(auth){ %>
 			<a class="dropdown-button" href="#!" data-activates="<%= activator %>">
-				<img src="http://www.gravatar.com/avatar/<%= emailHash %>?s=50" alt="" class="user-icon circle">
+				<img src="//www.gravatar.com/avatar/<%= emailHash %>?s=50" alt="" class="user-icon circle">
 				<span class="user-name"><%= user.nickname %></span>
 			</a>
 		<% }else{ %>
@@ -28,7 +28,7 @@
 
 <nav style="background-color: <%= global.theme['background-3'] %>">
 	<div class="nav-wrapper">
-		<a class="brand-logo" href="/"><%= global.translation['index-title'] %></a>
+		<a class="brand-logo" href="/"><%= global.config['title'] %></a>
 		<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="fa fa-bars"></i></a>
 
 		<ul class="right hide-on-med-and-down">

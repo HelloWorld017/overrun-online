@@ -45,6 +45,8 @@ class MatchMaker{
 
 module.exports = (server, game) => {
 	var matchmaker = new MatchMaker(server, game);
-	matchmaker.intervalId = setInterval(matchmaker.onRun, TICK);
+	matchmaker.intervalId = setInterval(() => {
+		matchmaker.onRun();
+	}, TICK);
 	return matchmaker;
 };

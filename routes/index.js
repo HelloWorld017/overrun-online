@@ -7,7 +7,12 @@ router.get('/', (req, res, next) => {
 		return;
 	}
 
-	res.render('splash');
+	if(req.cookies.developer){
+		res.render('splash');
+		return;
+	}
+
+	res.cookie('developer', true).render('developer-splash');
 });
 
 module.exports = router;

@@ -1,5 +1,11 @@
+var errors = require('../src/errors');
 var express = require('express');
 var router = express.Router();
+var Player = require('../src/player');
+
+var ServerError = errors.ServerError;
+var InvalidDataError = errors.InvalidDataError;
+
 
 router.get('/:user', (req, res, next) => {
 	global.mongo
@@ -12,12 +18,12 @@ router.get('/:user', (req, res, next) => {
 			}
 
 			if(arr.length <= 0){
-				next();
+				next(new InvalidDataError());
 				return;
 			}
 
 			res.render('user', {
-				data: arr.name
+				user: new Player(arr[0])
 			});
 		});
 });

@@ -31,6 +31,10 @@
 
 	"me.title": "My Page",
 
+	"user.bots": "Owning bots",
+	"user.skins": "Bought skins",
+	"user.status": "Match records",
+
 	"logout.title": "Logout",
 
 	"authenticate.finish.title": "Congratulations",
@@ -65,6 +69,12 @@
 	"error.toolongcode": "Your code is too long!",
 	"error.toomanybots": "There are too many bots!",
 	"error.wrongsession": "Your session is invalid.",
+
+	"server.http.eaddrinuse": "Port is already in use.",
+	"server.http.eacces": "%bind% needs elevated permission.",
+	"server.listen": "Listening on port %port%.",
+	"server.plugin.error": "Error while loading plugins.",
+	"server.plugin.load": "Successfully loaded plugin %name% v%version% by %author%.",
 
 	"desc": "overrun-online is a game which creates algorithm and fighting against."
 }

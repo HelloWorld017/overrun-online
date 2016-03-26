@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head>
+		<%- include('./header', {title: global.translator('index.title')}) %>
+		<%# <script>
+			function fullscreen(){
+				if(document.documentElement.requestFullscreen){
+					document.documentElement.requestFullscreen();
+				}else if(document.documentElement.mozRequestFullScreen){
+					document.documentElement.mozRequestFullScreen();
+				}else if(document.documentElement.webkitRequestFullscreen){
+					document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+				}
+
+				nofullscreen();
+			}
+
+			function nofullscreen(){
+				$('section').empty().append($(document.createElement('img')).css({
+					width: '100vw'
+				}).attr('class', 'valign').attr('src', '/resources/image/khinenw.svg'));
+				setTimeout(function(){
+					location.reload();
+				}, 2000);
+			}
+		</script> %>
+	</head>
+
+	<body>
+		<section class="valign-wrapper" style="height: 100vh">
+			<%#<div class="valign" style="width: 100vw">
+				<h3 class="center">< %= global.translator('index.fullscreen.desc') % ></h3>
+				<div class="center">
+					<button class="btn" onclick="fullscreen()">
+						< %= global.translator('index.fullscreen') % >
+					</button>
+
+					<button class="btn" onclick="nofullscreen()">
+						< %= global.translator('index.fullscreen.no') % >
+					</button>
+				</div>
+			</div> %>
+
+			<img class="valign" src='/resources/image/khinenw.svg' style="width: 100vw">
+
+			<script>
+				setTimeout(function(){
+					location.reload();
+				}, 2000);
+			</script>
+		</section>
+	</body>
+</html>

@@ -17,7 +17,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-	res.render('me');
+	res.render('./user');
 });
 
 router.get('/update', (req, res, next) => {

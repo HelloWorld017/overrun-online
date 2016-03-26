@@ -58,7 +58,9 @@ app.use((req, res, next) => {
 
 	res.locals.url = global.config['url'] + req.originalUrl;
 	res.locals.auth = (res.locals.user !== undefined);
-	res.locals.emailHash = (res.locals.auth) ? crypto.createHash('md5').update(res.locals.user.email.toLowerCase()).digest('hex') : '';
+	res.locals.emailHash = (res.locals.auth) ? res.locals.user.getHashedEmail() : '';
+	res.locals.localUser = res.locals.user;
+
 	res.locals.logout = (cb) => {
 		req.session.userid = undefined;
 		req.session.token = undefined;

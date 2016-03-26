@@ -26,5 +26,14 @@
 	"email-from-address": "no-reply@khinenw.tk",
 
 	"max-bot-count": 5,
-	"max-code-length": 10000
+	"max-code-length": 100000,
+
+	"shop-items": {
+		"skin": {
+			"default": {
+				"icon": "/resources/image/skins/default.svg",
+				"money": "0"
+			}
+		}
+	}
 }
