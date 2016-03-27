@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="<%= global.config.lang %>">
-	<head>
-		<%- include('./header', {title: user.getName()}); %>
+	<head prefix="og: http://ogp.me/ns# profile: http://ogp.me/ns/profile#">
+		<%- include('./header', {title: user.getName(), no_ogp: true}); %>
+		<meta property="og:title" content="user.getName()">
+		<meta property="og:site_name" content="<%= global.config['title'] %>">
+		<meta property="og:type" content="profile">
+		<meta property="og:url" content="<%= url %>">
+		<meta property="og:image" content="https://www.gravatar.com/avatar/<%= user.getHashedEmail() %>/?s=512">
+		<meta property="profile:username" content="<%= user.getName() %>">
 	</head>
 
 	<body>

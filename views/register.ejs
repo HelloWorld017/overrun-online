@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="<%= global.config.lang %>">
-	<head>
+	<head prefix="og: http://ogp.me/ns#">
 		<%- include('./header', {title: global.translator('join.title')}); %>
 		<%- include('./validator', {no_remote: false}); %>
 		<script src="https://www.google.com/recaptcha/api.js" async defer></script>

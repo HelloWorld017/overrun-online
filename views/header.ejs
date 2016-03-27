@@ -3,11 +3,14 @@
 
 <meta name="description" content="<%= global.translator('desc') %>">
 <meta name="viewport" content="width=device-width, user-scalable=no">
-<meta property="og:title" content="<%= title %>">
-<meta property="og:site_name" content="<%= global.config['title'] %>">
-<meta property="og:type" content="game">
-<meta property="og:url" content="<%= url %>">
-<meta property="og:image" content="<%= global.config['url'] + global.config['icon'] %>">
+
+<% if(typeof no_ogp === 'undefined' || !no_ogp){ %>
+	<meta property="og:title" content="<%= title %>">
+	<meta property="og:site_name" content="<%= global.config['title'] %>">
+	<meta property="og:type" content="game">
+	<meta property="og:url" content="<%= url %>">
+	<meta property="og:image" content="<%= global.config['url'] + global.config['icon'] %>">
+<% } %>
 
 <link rel="stylesheet" type="text/css" href="/resources/css/materialize.min.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/font-awesome.min.css">

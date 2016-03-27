@@ -89,7 +89,7 @@ router.post('/password', (req, res, next) => {
 
 		res.render('alert', {
 			redirect: undefined,
-			message: global.translation['alert-checkemail']
+			message: global.translator('alert-checkemail')
 		});
 	});
 });

@@ -63,7 +63,7 @@
 	-webkit-font-smoothing: antialiased;
 }
 
-body{
+body {
 	overflow-x: hidden;
 }
 
@@ -91,6 +91,16 @@ body{
 	margin-right: 10px;
 }
 
+@media (max-width: 992px){
+	.left-tri{
+		background: transparent !important;
+		width: initial !important;
+	}
+
+	.left-tri-wrapper:before{
+		display: none !important;
+	}
+}
 @media (max-width: 1050px){
 	.background-div-wrapper{
 		display: none;

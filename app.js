@@ -19,17 +19,22 @@ var battle = require('./routes/battle');
 var build = require('./routes/build');
 var find = require('./routes/find');
 var friends = require('./routes/friends');
+var image = require('./routes/image');
 var index = require('./routes/index');
 var login = require('./routes/login');
 var logout = require('./routes/logout');
 var me = require('./routes/me');
 var rank = require('./routes/rank');
 var register = require('./routes/register');
+var tutorial = require('./routes/tutorial');
 var unregister = require('./routes/unregister');
 var user = require('./routes/user');
 var validate = require('./routes/validate');
 
 var app = express();
+
+var pluginLoadCallback = [];
+var pluginLoadFinished = false;
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -89,39 +94,70 @@ app.use('/battle', battle);
 app.use('/build', build);
 app.use('/find', find);
 app.use('/friends', friends);
+app.use('/image', image);
 app.use('/login', login);
 app.use('/logout', logout);
 app.use('/me', me);
 app.use('/rank', rank);
 app.use('/register', register);
+app.use('/tutorial', tutorial);
 app.use('/unregister', unregister);
 app.use('/user', user);
 app.use('/validate', validate);
 
-app.use((req, res, next) => {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
-});
+async.forEachOf(global.plugins, (plugin, pluginName, cb) => {
+	if(plugin.routers){
+		async.forEachOf(plugin.routers, (router, routerName, callback) => {
+			app.use(routerName, router);
+			callback();
+		}, () => {
+			cb();
+		});
+	}else cb();
+}, () => {
+	app.use((req, res, next) => {
+		var err = new Error('Not Found');
+		err.status = 404;
+		next(err);
+	});
 
-app.use((err, req, res, next) => {
-	res.status(err.status || 500);
-	if(err instanceof HttpError){
-		if(err instanceof StatusError){
-			res.end();
+	app.use((err, req, res, next) => {
+		res.status(err.status || 500);
+		if(err instanceof HttpError){
+			if(err instanceof StatusError){
+				res.end();
+				return;
+			}
+
+			res.render('alert', {
+				error: err
+			});
 			return;
 		}
 
-		res.render('alert', {
-			error: err
-		});
-		return;
-	}
+		console.error(err.toString());
 
-	res.render('error', {
-		message: err.message,
-		error: {}
+		res.render('error', {
+			message: err.message,
+			error: {}
+		});
+
+	});
+
+	pluginLoadFinished = true;
+	console.log("Done loading app.");
+
+	pluginLoadCallback.forEach((v) => {
+		process.nextTick(() => {
+			v(app);
+		});
 	});
 });
 
-module.exports = app;
+module.exports = (cb) => {
+	if(pluginLoadFinished){
+		cb(app);
+	}else{
+		pluginLoadCallback.push(cb);
+	}
+};

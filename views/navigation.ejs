@@ -1,17 +1,15 @@
 <% function drawUserDropdown(activator){ %>
-	<li>
-		<% if(auth){ %>
-			<a class="dropdown-button" href="#!" data-activates="<%= activator %>">
-				<img src="//www.gravatar.com/avatar/<%= emailHash %>?s=50" alt="" class="user-icon circle">
-				<span class="user-name"><%= user.nickname %></span>
-			</a>
-		<% }else{ %>
-			<a href="/login">
-				<i class="user-icon fa fa-user"></i>
-				<span class="user-name"><%= global.translator('login.title') %></span>
-			</a>
-		<% } %>
-	</li>
+	<% if(auth){ %>
+		<a class="dropdown-button" href="#!" data-activates="<%= activator %>">
+			<img src="//www.gravatar.com/avatar/<%= emailHash %>?s=50" alt="" class="user-icon circle">
+			<span class="user-name"><%= user.nickname %></span>
+		</a>
+	<% }else{ %>
+		<a href="/login">
+			<i class="user-icon fa fa-user"></i>
+			<span class="user-name"><%= global.translator('login.title') %></span>
+		</a>
+	<% } %>
 <% } %>
 
 <% function createUserDropdown(elementId){ %>
@@ -28,11 +26,34 @@
 
 <nav style="background-color: <%= global.theme['background-3'] %>">
 	<div class="nav-wrapper">
-		<a class="brand-logo" href="/"><%= global.config['title'] %></a>
+		<div class="brand-logo left-tri-wrapper bg0">
+			<a class="brand-logo left-tri bg0" href="/">
+				<%= global.config['title'] %>
+			</a>
+		</div>
+
 		<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="fa fa-bars"></i></a>
 
 		<ul class="right hide-on-med-and-down">
-			<% drawUserDropdown("user-dropdown") %>
+			<li class="left-tri-wrapper bg2" style="left: 300px">
+				<a class="left-tri bg2" href="/battle/entry">
+					<%= global.translator('entry.title') %>
+				</a>
+			</li>
+
+			<li class="left-tri-wrapper bg3" style="left: 500px">
+				<a class="left-tri bg3" href="/">
+					<%# TODO add dropdown %>
+				</a>
+			</li>
+
+
+			<li class="left-tri-wrapper bg4" style="left: 700px">
+				<div class="left-tri bg4">
+					<% drawUserDropdown("user-dropdown") %>
+				</div>
+			</li>
+
 		</ul>
 
 		<ul class="side-nav" id="nav-mobile">
@@ -42,3 +63,40 @@
 		</ul>
 	</div>
 </nav>
+
+<style>
+	.left-tri {
+		width: 100vw;
+	}
+
+	<% for(var i = 0; i <= 4; i++){ %>
+		.bg<%= i %>{
+			background: <%= global.theme['background-' + i] %>;
+			<% if(i == 2){ %>
+				color: <%= global.theme['foreground-1'] %>;
+			<% } %>
+		}
+
+		.left-tri-wrapper.bg<%= i %>:before {
+			background: url('/image/navigation-tri/<%= global.theme['background-' + i].replace('#', '') %>');
+		}
+	<% } %>
+
+	.left-tri-wrapper{
+		position: absolute;
+	}
+
+	.left-tri-wrapper:before {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: -30px;
+		width: 30px;
+		height: 64px;
+	}
+
+	.user-dropdown {
+		z-index: 72;
+	}
+</style>

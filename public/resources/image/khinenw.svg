@@ -1,45 +1,45 @@
 <?xml version="1.0"?>
-<svg width="1350" height="180" viewPort="0 0 1350 180" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<svg width="1350" height="180" viewBox="0 0 1350 180" version="1.1" xmlns="http://www.w3.org/2000/svg">
 
 	<defs>
 		<clipPath id="h2-clip">
 			<rect x="210" y="0" width="180" height="180"/>
 		</clipPath>
-		
+
 		<clipPath id="n4-clip">
 			<rect x="540" y="0" width="180" height="180"/>
 		</clipPath>
-		
+
 		<clipPath id="e5-p1-clip">
 			<rect x="840" y="0" width="90" height="90"/>
 		</clipPath>
-		
+
 		<clipPath id="e5-p2-clip">
 			<rect x="750" y="90" width="90" height="90"/>
 		</clipPath>
-		
+
 		<clipPath id="n6-clip">
 			<rect x="960" y="0" width="180" height="180"/>
 		</clipPath>
-		
+
 		<clipPath id="w7-clip">
 			<rect x="1170" y="0" width="180" height="180"/>
 		</clipPath>
 	</defs>
-	
+
 	<!-- K1 -->
 	<polygon points="0,0 0,180 180,180" fill="#202020"/>
-	
+
 	<polygon points="0,-180 0,0 180,-180" fill="#00C0A0">
 		<animate attributeName="points" dur="200ms" to="0,0 0,180 180,0" fill="freeze"/>
 	</polygon>
-	
+
 	<!-- h2 -->
 	<polygon points="210,0 300,0 300,180 210,180" fill="#202020"/>
 	<polygon points="30,0 210,180 30,180" clip-path="url(#h2-clip)" fill="#00C0A0">
 		<animate attributeName="points" dur="200ms" begin="100ms" to="210,0 390,180 210,180" fill="freeze"/>
 	</polygon>
-	
+
 	<!-- i3 -->
 	<polygon points="420,0 510,0 510,180 420,180" fill="#202020"/>
 	<polygon points="420,-30 510,-30 510,0 420,0" fill="#00C0A0">
@@ -50,7 +50,7 @@
 	<polygon points="360,0 360,180 540,180" clip-path="url(#n4-clip)" fill="#00C0A0">
 		<animate attributeName="points" dur="200ms" begin="300ms" to="540,0 540,180 720,180" fill="freeze"/>
 	</polygon>
-	
+
 	<!-- e5 -->
 	<polygon points="750,90 840,0 840,90" fill="#202020"/>
 	<polygon points="750,0 750,90 840,90" clip-path="url(#e5-p1-clip)" fill="#202020">
@@ -59,12 +59,12 @@
 	<polygon points="750,0 840,90 840,0" clip-path="url(#e5-p2-clip)" fill="#00C0A0">
 		<animate attributeName="points" dur="200ms" begin="500ms" to="750,90 840,180 840,90" fill="freeze"/>
 	</polygon>
-	
+
 	<!-- n6 -->
 	<polygon points="880,0 880,180 960,180" clip-path="url(#n6-clip)" fill="#00C0A0">
 		<animate attributeName="points" dur="200ms" begin="600ms" to="960,0 960,180 1140,180" fill="freeze"/>
 	</polygon>
-	
+
 	<!-- w7 -->
 	<polygon points="1170,0 1170,180 1350,180" fill="#202020"/>
 	<polygon points="990,180 1170,180 1170,0" clip-path="url(#w7-clip)" fill="#00C0A0">

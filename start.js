@@ -7,6 +7,8 @@ var MongoClient = require('mongodb').MongoClient;
 var NodeRSA = require('node-rsa');
 var Server = require('./src/server');
 
+const SERVER_VERSION = "alpha 0.0.0 1603260001";
+
 global.config = objectMerge(require('./resources/server'), require('./server'));
 global.translation = objectMerge(require('./resources/translation-' + global.config.lang), require('./translation-' + global.config.lang));
 global.theme = objectMerge(require('./resources/theme'), require('./theme'));
@@ -14,16 +16,15 @@ global.translator = require('./src/translator');
 global.key = (process.env.NODE_ENV || 'development') === 'development' ? new NodeRSA({b: 512}, {encryptionScheme: 'pkcs1'}) : new NodeRSA({b: 4096});
 global.mongo = undefined;
 global.server = undefined;
+global.version = SERVER_VERSION;
+global.plugins = {};
 global.users = {};
-
-const SERVER_VERSION = "alpha 0.0.0 1603260001"
 
 var url = "mongodb://" + global.config['db-address'] + ":" + global.config['db-port'] + "/" + global.config['db-name'];
 MongoClient.connect(url, (err, client) => {
 	global.mongo = client;
 	global.server = new Server();
 
-	var app = require('./app');
 	var port = ((val) => {
 		var portNumber = parseInt(val, 10);
 
@@ -47,10 +48,13 @@ MongoClient.connect(url, (err, client) => {
 
 		async.each(files, (v, cb) => {
 			var plugin = require(path.join(__dirname, 'plugins', v));
+
 			if(!plugin.onLoad){
 				cb();
 				return;
 			}
+
+			global.plugins[plugin.name] = plugin;
 
 			plugin.onLoad(() => {
 				cb();
@@ -61,36 +65,40 @@ MongoClient.connect(url, (err, client) => {
 				}));
 			});
 		}, () => {
-			var httpServer = http.createServer(app);
-			httpServer.listen(port);
-			httpServer.on('error', (err) => {
-				if(err.syscall !== 'listen') throw err;
-				var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+			var app = require('./app')((app) => {
+				app.set('port', port);
+				
+				var httpServer = http.createServer(app);
+				httpServer.listen(port);
+				httpServer.on('error', (err) => {
+					if(err.syscall !== 'listen') throw err;
+					var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
-				switch(err.code){
-					case 'EACCES':
-						console.error(global.translator('server.http.eacces', {
-							bind: bind
-						}));
-						process.exit(1);
-						return;
+					switch(err.code){
+						case 'EACCES':
+							console.error(global.translator('server.http.eacces', {
+								bind: bind
+							}));
+							process.exit(1);
+							return;
 
-					case 'EADDRINUSE':
-						console.error(global.translator('server.http.eaddrinuse'));
-						process.exit(1);
-						return;
-				}
+						case 'EADDRINUSE':
+							console.error(global.translator('server.http.eaddrinuse'));
+							process.exit(1);
+							return;
+					}
 
-				throw error;
-			});
+					throw error;
+				});
 
-			httpServer.on('listening', () => {
-				var addr = httpServer.address();
-				console.log(global.translator('server.listen', {
-					port: (typeof addr === 'string') ? 'pipe ' + addr : 'port ' + addr.port
-				}));
+				httpServer.on('listening', () => {
+					var addr = httpServer.address();
+					console.log(global.translator('server.listen', {
+						port: (typeof addr === 'string') ? 'pipe ' + addr : 'port ' + addr.port
+					}));
+				});
+
 			});
 		});
 	});
-	app.set('port', port);
 });

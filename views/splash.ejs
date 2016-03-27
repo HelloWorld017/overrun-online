@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="<%= global.config.lang %>">
-	<head>
+	<head prefix="og: http://ogp.me/ns#">
 		<%- include('./header', {title: global.translator('index.title')}); %>
 
 		<script src="resources/js/jquery.particleground.min.js"></script>
@@ -15,6 +15,12 @@
 		</script>
 
 		<style>
+			@keyframes blink {
+				50% {
+					opacity: 0.5;
+				}
+			}
+
 			.splash, .splash-wrapper {
 				width: 100vw;
 				height: 100vh;
@@ -48,6 +54,17 @@
 				position: relative;
 				bottom: 0;
 			}
+
+			.splash-version-wrapper{
+				position: fixed;
+				right: 30px;
+				bottom: 30px;
+				z-index: 4;
+			}
+
+			.splash-version {
+				color: #FFFFFF;
+			}
 		</style>
 	</head>
 
@@ -57,10 +74,16 @@
 				<div class="splash-inner-wrapper">
 					<div class="splash-content">
 						<h1><%= global.translator('index.motd') %></h1>
-						<p><%= global.translator('index.continue') %></p>
+						<p style="animation: blink 2s linear infinite"><%= global.translator('index.continue') %></p>
 					</div>
 				</div>
 			</a>
+
+			<div class="splash-version-wrapper">
+				<a class="splash-version" href="https://github.com/HelloWorld017/overrun-online/" target="_blank">
+					<%= global.version %>
+				</a>
+			</div>
 		</section>
 	</body>
 </html>
