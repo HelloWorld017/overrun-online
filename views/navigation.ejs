@@ -24,6 +24,28 @@
 	createUserDropdown("user-dropdown-mobile");
 } %>
 
+<ul id="navigation-dropdown" class="dropdown-content">
+	<li>
+		<a href="/shop"><%= global.translator('shop.title') %></a>
+	</li>
+
+	<li>
+		<a href="/build"><%= global.translator('build.title') %></a>
+	</li>
+
+	<li>
+		<a href="/about"><%= global.translator('about.title') %></a>
+	</li>
+
+	<li>
+		<a href="/tutorial"><%= global.translator('tutorial.title') %></a>
+	</li>
+
+	<li>
+		<span class="clock"></span>
+	</li>
+</ul>
+
 <nav style="background-color: <%= global.theme['background-3'] %>">
 	<div class="nav-wrapper">
 		<div class="brand-logo left-tri-wrapper bg0">
@@ -42,8 +64,8 @@
 			</li>
 
 			<li class="left-tri-wrapper bg3" style="left: 500px">
-				<a class="left-tri bg3" href="/">
-					<%# TODO add dropdown %>
+				<a class="left-tri bg3 dropdown-button" href="#!" data-activates="navigation-dropdown">
+					<%= global.translator('navigation.dropdown') %>
 				</a>
 			</li>
 
@@ -100,3 +122,15 @@
 		z-index: 72;
 	}
 </style>
+
+<script>
+	var clock = $('.clock');
+
+	function updateClock(){
+		var date = new Date();
+		clock.text(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds());
+		setTimeout(updateClock, 500);
+	}
+
+	updateClock();
+</script>

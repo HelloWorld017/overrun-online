@@ -75,7 +75,7 @@ router.all('/edit/:id', (req, res, next) => {
 	});
 });
 
-router.all('/build', (req, res, next) => {
+router.all('/', (req, res, next) => {
 	if(!res.locals.auth){
 		next(new NotLoggedInError());
 		return;

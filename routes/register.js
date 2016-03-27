@@ -108,7 +108,7 @@ router.all('/', (req, resp, next) => {
 										authToken: authToken
 									});
 
-									resp.redirect('/login');
+									resp.redirect('/tutorial');
 								});
 							});
 						});

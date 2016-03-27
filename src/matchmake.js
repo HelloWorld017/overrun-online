@@ -11,7 +11,7 @@ class MatchMaker{
 		this.game = game;
 	}
 
-	entry(player, bot){
+	entry(player, bot, response){
 		if(player.currentGame !== undefined) return;
 
 		async.every(this.pool, (poolEntry, cb) => {
@@ -20,7 +20,8 @@ class MatchMaker{
 			if(res){
 				this.pool.push({
 		            player: player,
-		            bot: bot
+		            bot: bot,
+					response: response
 		        });
 			}
 		});
@@ -31,10 +32,23 @@ class MatchMaker{
 			return (a.getPoint() - b.getPoint());
 		});
 
+		var allMatchProcessed = true;
+
 		for(var i = 0; i < this.pool.length; i += 2){
 			if(this.pool.hasOwnProperty(i) && this.pool.hasOwnProperty(i + 1)){
-				this.server.registerGame(new this.game(this.server.getGameId(), this.pool[i].bot, this.pool[i + 1].bot, this.server));
+				this.server.registerGame(new this.game(this.server.getGameId(), this.pool[i].bot, this.pool[i + 1].bot, this.server), [
+					this.pool[i].response,
+					this.pool[i + 1].response
+				]);
+			}else{
+				allMatchProcessed = false;
 			}
+		}
+
+		if(allMatchProcessed){
+			this.pool = [];
+		}else{
+			this.pool = [this.pool[this.pool.length - 1]];
 		}
 	}
 

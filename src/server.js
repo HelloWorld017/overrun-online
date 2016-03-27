@@ -30,11 +30,20 @@ class Server{
 	}
 
 	removeGame(gid){
+		this.games[gid].responses.forEach((v) => {
+			v.json({
+				gameFinish: true
+			});
+		});
+
 		this.games[gid] = undefined;
 	}
 
-	registerGame(game){
-		this.games[game.gameId] = game;
+	registerGame(game, responses){
+		this.games[game.gameId] = {
+			game: game,
+			responses: responses
+		};
 	}
 
 	getGameId(){

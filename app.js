@@ -14,6 +14,7 @@ var RedirectError = errors.RedirectError;
 var StatusError = errors.StatusError;
 var MongoStore = require('connect-mongo')(session);
 
+var about = require('./routes/about');
 var authenticate = require('./routes/authenticate');
 var battle = require('./routes/battle');
 var build = require('./routes/build');
@@ -26,6 +27,7 @@ var logout = require('./routes/logout');
 var me = require('./routes/me');
 var rank = require('./routes/rank');
 var register = require('./routes/register');
+var shop = require('./routes/shop');
 var tutorial = require('./routes/tutorial');
 var unregister = require('./routes/unregister');
 var user = require('./routes/user');
@@ -89,6 +91,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', index);
+app.use('/about', about);
 app.use('/authenticate', authenticate);
 app.use('/battle', battle);
 app.use('/build', build);
@@ -100,6 +103,7 @@ app.use('/logout', logout);
 app.use('/me', me);
 app.use('/rank', rank);
 app.use('/register', register);
+app.use('/shop', shop);
 app.use('/tutorial', tutorial);
 app.use('/unregister', unregister);
 app.use('/user', user);
