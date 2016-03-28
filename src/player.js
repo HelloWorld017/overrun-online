@@ -24,6 +24,7 @@ class Player{
 		this.unregistered = data.unregistered;
 		this.bots = data.bots.map((v) => {return new Bot(this, v.skin, v.name, v.code, v.type);});
 		this.github = data.github || "";
+		this.entryTimer = data.entryTimer || 0;
 
 		this.currentGame = undefined;
 		this.lastGame = undefined;
@@ -75,7 +76,7 @@ class Player{
 	saveStat(){
 		global.mongo
 			.collection(global.config['collection-user'])
-			.findOneAndUpdate({id: this.name}, {
+			.findOneAndUpdate({name: this.name}, {
 				$set: {
 					money: this.money,
 					point: this.point,
@@ -84,11 +85,23 @@ class Player{
 				}
 			});
 	}
+	
+	updateTimer(){
+		this.entryTimer = Date.now() + global.config['entry-timer'];
+		
+		global.mongo
+			.collection(global.config['collection-user'])
+			.findOneAndUpdate({name: this.name}, {
+				$set: {
+					entryTimer: this.entryTimer
+				}
+			});
+	}
 
 	saveBots(){
 		global.mongo
 			.collection(global.config['collection-user'])
-			.findOneAndUpdate({id: this.name}, {
+			.findOneAndUpdate({name: this.name}, {
 				$set: {
 					bots: this.bots.map((v) => {
 						return {
