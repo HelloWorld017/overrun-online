@@ -20,9 +20,9 @@ class Server{
 		this.callbacks.push(callback);
 	}
 
-	addToPool(game){
+	addToPool(game, matchmaker){
 		this.gamePool[game.getName()] = game;
-		this.matchmakers[game.getName()] = matchmake(this, game);
+		this.matchmakers[game.getName()] = matchmaker || matchmake(this, game);
 	}
 
 	login(user){

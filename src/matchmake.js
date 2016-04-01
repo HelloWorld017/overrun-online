@@ -13,16 +13,19 @@ class MatchMaker{
 
 	entry(player, bot, response){
 		if(player.currentGame !== undefined) return;
+		if(player.entryTick < Date.now()) return;
+		
+		player.updateTimer();
 
 		async.every(this.pool, (poolEntry, cb) => {
 			cb(null, poolEntry.player.getName() !== player.getName());
 		}, (err, res) => {
 			if(res){
 				this.pool.push({
-		            player: player,
-		            bot: bot,
+					player: player,
+					bot: bot,
 					response: response
-		        });
+				});
 			}
 		});
 	}

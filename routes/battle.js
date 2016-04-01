@@ -24,7 +24,7 @@ router.get('/entry', (req, res, next) => {
 	res.render('entry');
 });
 
-router.post('/entry/:game/:bot', (req, res, next) => {
+router.post('/entry/:game/:bot/:argument', (req, res, next) => {
 	if(res.locals.user.currentGame){
 		next(new AlreadyEntriedError());
 		return;
@@ -47,7 +47,7 @@ router.post('/entry/:game/:bot', (req, res, next) => {
 		return;
 	}
 
-	global.server.matchmakers[game].entry(res.locals.user, bot);
+	global.server.matchmakers[game].entry(res.locals.user, bot, req.params.argument);
 	res.render('in-entry');
 	return;
 });

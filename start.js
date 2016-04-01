@@ -18,6 +18,7 @@ global.mongo = undefined;
 global.server = undefined;
 global.version = SERVER_VERSION;
 global.plugins = {};
+global.ejsHook = {};
 global.users = {};
 
 var url = "mongodb://" + global.config['db-address'] + ":" + global.config['db-port'] + "/" + global.config['db-name'];
@@ -56,6 +57,14 @@ MongoClient.connect(url, (err, client) => {
 
 			global.plugins[plugin.name] = plugin;
 
+			if(plugin.renderHook){
+				Object.keys(plugin.renderHook).forEach((ejs) => {
+					if(!ejsHook[ejs]) ejsHook[ejs] = [];
+
+					ejsHook[ejs].push(plugin.renderHook[ejs]);
+				});
+			}
+
 			plugin.onLoad(() => {
 				cb();
 				console.log(global.translator('server.plugin.load', {
@@ -67,7 +76,7 @@ MongoClient.connect(url, (err, client) => {
 		}, () => {
 			var app = require('./app')((app) => {
 				app.set('port', port);
-				
+
 				var httpServer = http.createServer(app);
 				httpServer.listen(port);
 				httpServer.on('error', (err) => {

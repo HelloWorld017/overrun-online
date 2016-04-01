@@ -88,6 +88,13 @@ app.use((req, res, next) => {
 			next();
 		});
 	});
+
+	var _render = res.render;
+
+	res.render = (name, options, cb) => {
+		res.locals.renderTarget = name;
+		_render.call(res, 'hook', options, cb);
+	};
 });
 
 app.use('/', index);
