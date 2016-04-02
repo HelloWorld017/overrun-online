@@ -14,11 +14,10 @@ class OverrunRankedGame extends OverrunGame{
 		this.name = GAME_NAME;
 	}
 
-	handleWin(gameLog){
+	handleWin(gameLog, callback){
 		var playerScore = 0;
 		var playerName = this.players[0].getName();
 
-		this.server.removeGame(this.gameId);
 		async.each(gameLog, (v, cb) => {
 			if(v.final.data.player === playerName){
 				playerScore++;
@@ -62,6 +61,7 @@ class OverrunRankedGame extends OverrunGame{
 
 				p1.saveStat();
 				p2.saveStat();
+				callback(true);
 			});
 		});
 	}
@@ -86,7 +86,7 @@ module.exports = {
 	author: 'Khinenw',
 	version: 'alpha 0.0.0 201603260001',
 	onLoad: (cb) => {
-		global.server.addToPool(OverrunGame);
+		global.server.addToPool(OverrunRankedGame);
 		cb();
 	}
 };

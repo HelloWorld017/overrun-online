@@ -52,14 +52,27 @@ router.post('/entry/:game/:bot/:argument', (req, res, next) => {
 	return;
 });
 
-router.get('/result', (req, res, next) => {
+router.get('/result/:id', (req, res, next) => {
 
-	if(!res.locals.user.lastGame){
-		next(new EntryFirstError());
-		return;
-	}
+	global.mongo
+		.collection(global.config['collection-battle'])
+		.find({id: req.params.id})
+		.toArray((err, battle) => {
+			if(err){
+				next(new ServerError());
+				return;
+			}
 
-	res.json(res.locals.user.lastGame.gameLog);
+			if(battle.length <= 0){
+				var error = new Error('Not Found';
+				error.status = 404;
+
+				next(error);
+				return;
+			}
+
+			res.json(battle[0]);
+		});
 });
 
 module.exports = router;

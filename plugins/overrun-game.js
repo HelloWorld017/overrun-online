@@ -1,5 +1,6 @@
 'use strict';
 var Player = require('../src/player');
+var process = require('process');
 var Library = require('../src/library');
 var localeval = require('localeval');
 
@@ -149,7 +150,23 @@ class OverrunGame{
 				v.gameEnd();
 			});
 
-			handleWin(gameLog);
+			process.nextTick(() => {
+				handleWin(gameLog, (afterHandle) => {
+					if(!afterHandle) return;
+
+					this.server.removeGame(this.gameId);
+					var date = new Date();
+
+					global.mongo
+					.collection(global.config['collection-battle'])
+					.insertOne({
+						id: `${p1.getName()}-${p2.getName()}-${date.format('yyyy-mm-dd-HH-mm-ss')}`,
+						players: [p1.getName(), p2.getName()],
+						date: date.getMilliseconds(),
+						log: gameLog,
+					});
+				});
+			});
 		});
 	}
 
@@ -268,8 +285,8 @@ class OverrunGame{
 		};
 	}
 
-	handleWin(gameLog){
-
+	handleWin(gameLog, cb){
+		cb(true);
 	}
 }
 

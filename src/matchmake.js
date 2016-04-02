@@ -8,13 +8,14 @@ class MatchMaker{
 		this.pool = [];
 		this.server = server;
 		this.intervalId = undefined;
+		this.isRemovalRequested = false;
 		this.game = game;
 	}
 
 	entry(player, bot, response){
 		if(player.currentGame !== undefined) return;
 		if(player.entryTick < Date.now()) return;
-		
+
 		player.updateTimer();
 
 		async.every(this.pool, (poolEntry, cb) => {
@@ -53,17 +54,17 @@ class MatchMaker{
 		}else{
 			this.pool = [this.pool[this.pool.length - 1]];
 		}
+
+		if(!this.isRemovalRequested) setTimeout(onRun, TICK);
 	}
 
 	remove(){
-		clearInterval(this.intervalId);
+		this.isRemovalRequested = true;
 	}
 }
 
 module.exports = (server, game) => {
 	var matchmaker = new MatchMaker(server, game);
-	matchmaker.intervalId = setInterval(() => {
-		matchmaker.onRun();
-	}, TICK);
+	matchmaker.onRun();
 	return matchmaker;
 };
