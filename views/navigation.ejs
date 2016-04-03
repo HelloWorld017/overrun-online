@@ -19,37 +19,35 @@
 	</ul>
 <% }; %>
 
-<% if(auth){
-	createUserDropdown("user-dropdown");
-	createUserDropdown("user-dropdown-mobile");
-} %>
-
 <% function createNavigationDropdown(id){ %>
-
 	<ul id="<%= id %>" class="dropdown-content">
 		<li>
 			<a href="/shop"><%= global.translator('shop.title') %></a>
 		</li>
-	
+
 		<li>
 			<a href="/build"><%= global.translator('build.title') %></a>
 		</li>
-	
+
 		<li>
 			<a href="/about"><%= global.translator('about.title') %></a>
 		</li>
-	
+
 		<li>
 			<a href="/tutorial"><%= global.translator('tutorial.title') %></a>
 		</li>
-	
+
 		<li>
 			<span class="clock"></span>
 		</li>
 	</ul>
 <% } %>
 
-<%
+<% if(auth){
+		createUserDropdown("user-dropdown");
+		createUserDropdown("user-dropdown-mobile");
+	}
+
 	createNavigationDropdown('navigation-dropdown');
 	createNavigationDropdown('navigation-dropdown-mobile');
 %>
@@ -88,13 +86,13 @@
 
 		<ul class="side-nav" id="nav-mobile">
 			<li>
-				<% drawUserDropdown("user-dropdown-mobile") %>
+				<a class="dropdown-button" href="#!" data-activates="navigation-dropdown-mobile">
+					<%= global.translator('navigation.dropdown') %>
+				</a>
 			</li>
 			
 			<li>
-				<a class="dropdown-button" href="#!" data-activates="navigation-dropdown">
-					<%= global.translator('navigation.dropdown') %>
-				</a>
+				<% drawUserDropdown("user-dropdown-mobile") %>
 			</li>
 		</ul>
 	</div>
@@ -103,6 +101,7 @@
 <style>
 	.left-tri {
 		width: 100vw;
+		height: 64px;
 	}
 
 	<% for(var i = 0; i <= 4; i++){ %>

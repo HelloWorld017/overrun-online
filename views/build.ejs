@@ -4,45 +4,71 @@
 		<%- include('./header', {title: global.translator('build.title')}) %>
 
 		<script src="/ace/ace.js"></script>
+		<style>
+			@font-face {
+				font-family: 'NanumCoding';
+				font-weight: 400;
+				src:
+					url('/resources/font/nanum-coding/NanumGothicCoding-Regular.eot?#iefix') format('eot'),
+					url('/resources/font/nanum-coding/NanumGothicCoding-Regular.ttf') format('truetype'),
+					url('/resources/font/nanum-coding/NanumGothicCoding-Regular.woff') format('woff');
+			}
+
+			#code-editor * {
+				font-family: 'NanumCoding' !important;
+			}
+		</style>
 	</head>
 
 	<body>
-		<form>
-			<div class="row">
-				<div class="input-field col s12">
-					<label for="id"><%= global.translator('build.id') %></label>
-					<input id="id" name="id" type="text">
+		<% include ./navigation %>
+		<% include ./background %>
+
+		<section class="main-section">
+			<form>
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="id"><%= global.translator('build.id') %></label>
+						<input id="id" name="id" type="text">
+					</div>
 				</div>
-			</div>
 
-			<div class="row">
-				<div class="input-field col s12">
-					<label for="skin"><%= global.translator('build.skin') %></label>
-					<select>
-						<% skins.forEach((v) => { %>
-							<option value="<%= v %>">
-								<img src="/resources/image/skins/<%= v %>.svg"><%= v %>
-							</option>
-						<% }); %>
-					</select>
+				<div class="row">
+					<div class="input-field col s12">
+						<label for="skin"><%= global.translator('build.skin') %></label>
+						<select>
+							<% skin.forEach((v) => { %>
+								<option value="<%= v %>">
+									<img src="/resources/image/skins/<%= v %>.svg"><%= v %>
+								</option>
+							<% }); %>
+						</select>
+					</div>
 				</div>
-			</div>
 
-			<div id="code-editor">
+				<div class="row">
+					<div id="code-editor">
 
-			</div>
+					</div>
+				</div>
 
-			<textarea id="code" name="code" style="display: none"></textarea>
-		</form>
+				<textarea id="code" name="code" style="display: none"></textarea>
+			</form>
 
-		<script>
-			var codeArea = $('#code');
-			var editor = ace.edit('code-editor');
-			editor.setTheme('ace/theme/monokai');
-			editor.getSession().setMode('ace/mode/javascript');
-			editor.getSession().on('change', function(){
-				codeArea.val(editor.getSession().getValue());
-			});
-		</script>
+			<script>
+				var codeArea = $('#code');
+				var editor = ace.edit('code-editor');
+				editor.setTheme('ace/theme/monokai');
+				editor.getSession().setMode('ace/mode/javascript');
+				editor.setAutoScrollEditorIntoView(true);
+				editor.setOption("maxLines", 30);
+				editor.setOption("minLines", 2);
+				editor.getSession().on('change', function(){
+					codeArea.val(editor.getSession().getValue());
+				});
+			</script>
+		</section>
+
+		<% include ./footer %>
 	</body>
 </html>

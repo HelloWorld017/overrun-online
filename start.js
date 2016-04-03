@@ -17,9 +17,11 @@ global.key = (process.env.NODE_ENV || 'development') === 'development' ? new Nod
 global.mongo = undefined;
 global.server = undefined;
 global.version = SERVER_VERSION;
-global.plugins = {};
-global.ejsHook = {};
 global.users = {};
+
+global.ejsHook = {};
+global.plugins = {};
+global.entryList = {};
 
 var url = "mongodb://" + global.config['db-address'] + ":" + global.config['db-port'] + "/" + global.config['db-name'];
 MongoClient.connect(url, (err, client) => {
@@ -47,7 +49,7 @@ MongoClient.connect(url, (err, client) => {
 			return;
 		}
 
-		async.each(files, (v, cb) => {
+		async.eachSeries(files, (v, cb) => {
 			var plugin = require(path.join(__dirname, 'plugins', v));
 
 			if(!plugin.onLoad){
@@ -63,6 +65,10 @@ MongoClient.connect(url, (err, client) => {
 
 					ejsHook[ejs].push(plugin.renderHook[ejs]);
 				});
+			}
+
+			if(plugin.entry){
+				global.entryList = global.entryList.concat(plugin.entry);
 			}
 
 			plugin.onLoad(() => {

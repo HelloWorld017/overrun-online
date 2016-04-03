@@ -32,7 +32,7 @@ router.all('/edit/:id', (req, res, next) => {
 			return;
 		}
 
-		if(req.body.token !== req.session.token){
+		if(req.body.csrftoken !== req.session.csrftoken){
 			next(new InvalidTokenError());
 			return;
 		}
@@ -58,7 +58,7 @@ router.all('/edit/:id', (req, res, next) => {
 	}
 
 	var token = createToken(1024);
-	req.session.token = token;
+	req.session.csrftoken = token;
 	req.session.save((err) => {
 		if(err){
 			next(new ServerError());

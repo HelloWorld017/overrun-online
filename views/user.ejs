@@ -31,8 +31,16 @@
 				</div>
 			</div>
 
-			<% if(auth && (user.getName() === localUser.getName())){ %>
-				<a class="btn waves-effect waves-lignt" href="/me/update"><i class="fa fa-pencil"></i><%= global.translator('update.title') %></a>
+			<% if(auth){ %>
+				<% if(user.getName() === localUser.getName()){ %>
+					<a class="btn waves-effect waves-lignt" href="/me/update"><i class="fa fa-pencil"></i><%= global.translator('update.title') %></a>
+				<% }else{ %>
+					<% if(localUser.friends.indexOf(user.getName()) === -1){ %>
+						<a class="btn waves-effect waves-light" href="/friends/add/<%= user.getName() %>"><i class="fa fa-user-plus"></i><%= global.translator('friends.add') %></a>
+					<% }else{ %>
+						<a class="btn waves-effect waves-light" href="/friends/remove/<%= user.getName() %>"><i class="fa fa-user-times"></i><%= global.translator('friends.remove') %></a>
+					<% } %>
+				<% } %>
 			<% } %>
 
 			<h4><%= global.translator('user.bots') %></h4>

@@ -55,7 +55,9 @@ class MatchMaker{
 			this.pool = [this.pool[this.pool.length - 1]];
 		}
 
-		if(!this.isRemovalRequested) setTimeout(onRun, TICK);
+		if(!this.isRemovalRequested) setTimeout(() => {
+			this.onRun();
+		}, TICK);
 	}
 
 	remove(){

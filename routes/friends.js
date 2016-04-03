@@ -19,6 +19,11 @@ router.get('/add/:user', (req, res, next) => {
 		return;
 	}
 
+	if(req.params.user === res.locals.user.getName()){
+		next(new InvalidDataError());
+		return;
+	}
+
 	global.mongo
 		.collection(global.config['collection-user'])
 		.find({name: req.params.user})

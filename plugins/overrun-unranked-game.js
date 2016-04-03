@@ -1,5 +1,4 @@
 'use strict';
-var MatchMaker = require('../src/matchmake');
 var OverrunGame = require('./overrun-game').game;
 var Player = require('../src/player');
 var PointCalculator = require('../src/calculate-point');
@@ -31,9 +30,13 @@ OverrunUnrankedGame.getName = () => {
 	return GAME_NAME;
 };
 
-class UnrankedMatchmaker extends MatchMaker{
+class UnrankedMatchmaker{
 	constructor(server, game){
-		super(server, game);
+		this.pool = [];
+		this.server = server;
+		this.intervalId = undefined;
+		this.isRemovalRequested = false;
+		this.game = game;
 	}
 
 	entry(player, bot, response, argument){
@@ -68,6 +71,10 @@ class UnrankedMatchmaker extends MatchMaker{
 				});
 			}
 		});
+	}
+
+	remove(){
+
 	}
 }
 

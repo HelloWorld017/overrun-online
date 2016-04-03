@@ -18,7 +18,7 @@ router.all('/', (req, res, next) => {
             return;
         }
 
-        if(req.session.token !== req.body.token){
+        if(req.session.csrftoken !== req.body.token){
             next(new InvalidDataError());
             return;
         }
@@ -36,7 +36,7 @@ router.all('/', (req, res, next) => {
 
     var token = createToken(1024);
 
-    req.session.token = token;
+    req.session.csrftoken = token;
     req.session.save((err) => {
         if(err){
             next(new ServerError());

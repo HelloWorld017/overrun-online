@@ -64,7 +64,7 @@ router.get('/result/:id', (req, res, next) => {
 			}
 
 			if(battle.length <= 0){
-				var error = new Error('Not Found';
+				var error = new Error('Not Found');
 				error.status = 404;
 
 				next(error);

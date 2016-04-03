@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<svg width="360" height="360" viewBox="0 0 360 360" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<path id="core-path-1" d="M120 160 L120 150 C120 120, 120 120, 150 120 H210 C240 120, 240 120, 240 150 V210 C240 240, 240 240, 210 240 H150 C120 240, 120 240, 120 210 L120 160"/>
+		<path id="core-path-2" d="M120 200 L120 150 C120 120, 120 120, 150 120 H210 C240 120, 240 120, 240 150 V210 C240 240, 240 240, 210 240 H150 C120 240, 120 240, 120 210 L120 200"/>
+
+		<path id="core-path-3" d="M200 120 H210 C240 120, 240 120, 240 150 V210 C240 240, 240 240, 210 240 H150 C120 240, 120 240, 120 210 L120 200 C120 120, 120 120, 150 120 L200 120"/>
+		<path id="core-path-4" d="M160 120 H210 C240 120, 240 120, 240 150 V210 C240 240, 240 240, 210 240 H150 C120 240, 120 240, 120 210 L120 200 C120 120, 120 120, 150 120 L160 120"/>
+
+		<path id="core-path-5" d="M240 160 V210 C240 240, 240 240, 210 240 H150 C120 240, 120 240, 120 210 L120 200 C120 120, 120 120, 150 120 H210 C240 120, 240 120, 240 150 L240 160"/>
+		<path id="core-path-6" d="M240 200 V210 C240 240, 240 240, 210 240 H150 C120 240, 120 240, 120 210 L120 200 C120 120, 120 120, 150 120 H210 C240 120, 240 120, 240 150 L240 200"/>
+
+		<path id="core-path-7" d="M200 240 H150 C120 240, 120 240, 120 210 L120 200 C120 120, 120 120, 150 120 H210 C240 120, 240 120, 240 150 V210 C240 240, 240 240, 210 240 L200 240"/>
+		<path id="core-path-8" d="M160 240 H150 C120 240, 120 240, 120 210 L120 200 C120 120, 120 120, 150 120 H210 C240 120, 240 120, 240 150 V210 C240 240, 240 240, 210 240 L160 240"/>
+	</defs>
+
+	<path id="core-path" d="M120 150 C120 120, 120 120, 150 120 H210 C240 120, 240 120, 240 150 V210 C240 240, 240 240, 210 240 H150 C120 240, 120 240, 120 210 L120 150" fill="transparent" stroke="#202020" stroke-width="10"/>
+
+	<g>
+		<line x1="0" x2="0" y1="0" y2="120" stroke="#202020" stroke-width="5">
+			<animateMotion dur="5s" from="5" repeatCount="indefinite" rotate="auto-reverse">
+				<mpath xlink:href="#core-path-1"/>
+			</animateMotion>
+		</line>
+
+		<line x1="0" x2="0" y1="0" y2="60" stroke="#202020" stroke-width="5">
+			<animateMotion dur="5s" repeatCount="indefinite" rotate="auto-reverse">
+				<mpath xlink:href="#core-path-2"/>
+			</animateMotion>
+		</line>
+
+		<line x1="0" x2="0" y1="0" y2="120" stroke="#202020" stroke-width="5">
+			<animateMotion dur="5s" repeatCount="indefinite" rotate="auto-reverse">
+				<mpath xlink:href="#core-path-3"/>
+			</animateMotion>
+		</line>
+
+		<line x1="0" x2="0" y1="0" y2="60" stroke="#202020" stroke-width="5">
+			<animateMotion dur="5s" repeatCount="indefinite" rotate="auto-reverse">
+				<mpath xlink:href="#core-path-4"/>
+			</animateMotion>
+		</line>
+
+		<line x1="0" x2="0" y1="0" y2="60" stroke="#202020" stroke-width="5">
+			<animateMotion dur="5s" repeatCount="indefinite" rotate="auto-reverse">
+				<mpath xlink:href="#core-path-5"/>
+			</animateMotion>
+		</line>
+
+		<line x1="0" x2="0" y1="0" y2="120" stroke="#202020" stroke-width="5">
+			<animateMotion dur="5s" repeatCount="indefinite" rotate="auto-reverse">
+				<mpath xlink:href="#core-path-6"/>
+			</animateMotion>
+		</line>
+
+		<line x1="0" x2="0" y1="0" y2="60" stroke="#202020" stroke-width="5">
+			<animateMotion dur="5s" repeatCount="indefinite" rotate="auto-reverse">
+				<mpath xlink:href="#core-path-7"/>
+			</animateMotion>
+		</line>
+
+		<line x1="0" x2="0" y1="0" y2="120" stroke="#202020" stroke-width="5">
+			<animateMotion dur="5s" repeatCount="indefinite" rotate="auto-reverse">
+				<mpath xlink:href="#core-path-8"/>
+			</animateMotion>
+		</line>
+	</g>
+
+	<text x="180" y="180" text-anchor="middle" alignment-baseline="middle" font-family="Exo 2" font-size="15">
+		Loading...
+	</text>
+</svg>

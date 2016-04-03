@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 
 	var token = createToken(1024);
 
-	req.session.token = token;
+	req.session.csrftoken = token;
 	req.session.save();
 
 	res.render('shop', {
@@ -29,7 +29,7 @@ router.post('/buy/:section/:item', (req, res, next) => {
 		return;
 	}
 
-	if(req.session.token !== req.body.token) return;
+	if(req.session.csrftoken !== req.body.token) return;
 
 	if(!(global.config['shop-items'][req.params.section] && global.config['shop-items'][req.params.section][req.params.item])){
 		next(new InvalidDataError());

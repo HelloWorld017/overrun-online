@@ -10,6 +10,10 @@
 
 	"find.title": "아이디/비밀번호 찾기",
 
+	"friends.title": "친구목록",
+	"friends.add": "친구추가",
+	"friends.remove": "친구해제",
+
 	"unregister.title": "회원탈퇴",
 
 	"join.title": "가입",
