@@ -1,4 +1,9 @@
+var errors = require('../src/errors');
 var router = require('express').Router();
+
+var InvalidDataError = errors.InvalidDataError;
+var NotLoggedInError = errors.NotLoggedInError;
+var ServerError = errors.ServerError;
 
 router.use((req, res, next) => {
 	if(!res.locals.auth){
@@ -10,7 +15,9 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-	res.render('friends');
+	res.render('friends', {
+		friends: res.locals.user.friends
+	});
 });
 
 router.get('/add/:user', (req, res, next) => {
@@ -20,6 +27,11 @@ router.get('/add/:user', (req, res, next) => {
 	}
 
 	if(req.params.user === res.locals.user.getName()){
+		next(new InvalidDataError());
+		return;
+	}
+
+	if(res.locals.user.friends.indexOf(req.params.user) !== -1){
 		next(new InvalidDataError());
 		return;
 	}
@@ -39,6 +51,7 @@ router.get('/add/:user', (req, res, next) => {
 			}
 
 			res.locals.user.friends.push(req.params.user);
+			res.locals.user.updateFriends();
 			res.end();
 		});
 });
@@ -52,24 +65,34 @@ router.get('/remove/:user', (req, res, next) => {
 	res.locals.user.friends = res.locals.user.friends.filter((user) => {
 		return user !== req.params.user;
 	});
-
+	res.locals.user.updateFriends();
 	res.end();
 });
 
-router.get('/search/id/:id', (req, res, next) => {
-	if(!req.params.id){
+router.get('/search/:query', (req, res, next) => {
+	if(!req.params.query){
 		next(new InvalidDataError());
 		return;
 	}
 
-	if(!/^[a-zA-Z0-9][a-zA-Z0-9-_.]{4,11}$/.test(req.params.id)){
+	if(!res.locals.auth){
+		next(new NotLoggedInError());
+		return;
+	}
+
+	if(!/^[a-zA-Z0-9@_.+-]{1,512}$/.test(req.params.query)){
 		next(new InvalidDataError());
 		return;
 	}
 
 	global.mongo
 		.collection(global.config['collection-user'])
-		.find({name: new RegExp("^" + req.params.id)})
+		.find({$or: [
+			{name: new RegExp("^" + req.params.query)},
+			{email: req.params.query},
+			{github: new RegExp("^" + req.params.query)}
+		]})
+		.limit(5)
 		.toArray((err, users) => {
 			if(err){
 				next(new ServerError());
@@ -77,62 +100,10 @@ router.get('/search/id/:id', (req, res, next) => {
 				return;
 			}
 
-			res.json(users.map((v) => {
-				return v.name
-			}));
-		});
-});
-
-router.get('/search/email/:email', (req, res, next) => {
-	if(!req.params.email){
-		next(new InvalidDataError());
-		return;
-	}
-
-	if(!/(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/.test(req.params.email)){
-		next(new InvalidDataError());
-		return;
-	}
-
-	global.mongo
-		.collection(global.config['collection-user'])
-		.find({email: req.params.email})
-		.toArray((err, users) => {
-			if(err){
-				next(new ServerError());
-				console.error(err.toString());
-				return;
-			}
-
-			res.json(users.map((v) => {
-				return v.name
-			}));
-		});
-});
-
-router.get('/search/github/:github', (req, res, next) => {
-	if(!req.params.github){
-		next(new InvalidDataError());
-		return;
-	}
-
-	if(!/^(([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])|([a-zA-Z0-9]+))$/.test(req.params.github)){
-		next(new InvalidDataError());
-		return;
-	}
-
-	global.mongo
-		.collection(global.config['collection-user'])
-		.find({github: req.params.github})
-		.toArray((err, users) => {
-			if(err){
-				next(new ServerError());
-				console.error(err.toString());
-				return;
-			}
-
-			res.json(users.map((v) => {
-				return v.name
+			res.json(users.filter((v) => {
+				return res.locals.user.friends.indexOf(v) !== -1;
+			}).map((v) => {
+				return v.name;
 			}));
 		});
 });

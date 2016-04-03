@@ -8,6 +8,30 @@
 		<meta property="og:url" content="<%= url %>">
 		<meta property="og:image" content="https://www.gravatar.com/avatar/<%= user.getHashedEmail() %>/?s=512">
 		<meta property="profile:username" content="<%= user.getName() %>">
+
+		<script>
+			var friendBtn = undefined;
+
+			$(document).ready(function(){
+				friendBtn = $('#friend-btn');
+			});
+
+			function addFriend(name){
+				$.ajax('/friends/add/<%= user.getName() %>').always(function(){
+					friendBtn.attr('href', 'javascript:removeFriend("' + name + '")');
+					friendBtn.children('i').attr('class', 'fa fa-user-times');
+					friendBtn.children('span').text('<%= global.translator('friends.remove') %>');
+				});
+			}
+
+			function removeFriend(name){
+				$.ajax('/friends/remove/<%= user.getName() %>').always(function(){
+					friendBtn.attr('href', 'javascript:addFriend("' + name + '")');
+					friendBtn.children('i').attr('class', 'fa fa-user-plus');
+					friendBtn.children('span').text('<%= global.translator('friends.add') %>');
+				});
+			}
+		</script>
 	</head>
 
 	<body>
@@ -21,7 +45,7 @@
 						<div class="card-image">
 							<img src="//www.gravatar.com/avatar/<%= user.getHashedEmail() %>/?s=512">
 							<span class="card-title" style="background-color: rgba(0, 0, 0, 0.5); font-size: 2rem;">
-								<%= user.getName() %>
+								<%= user.nickname %>
 								<% if(user.github !== ""){ %>
 									<a href="https://github.com/<%= user.github %>"><i class="fa fa-github"></i></a>
 								<% } %>
@@ -36,9 +60,9 @@
 					<a class="btn waves-effect waves-lignt" href="/me/update"><i class="fa fa-pencil"></i><%= global.translator('update.title') %></a>
 				<% }else{ %>
 					<% if(localUser.friends.indexOf(user.getName()) === -1){ %>
-						<a class="btn waves-effect waves-light" href="/friends/add/<%= user.getName() %>"><i class="fa fa-user-plus"></i><%= global.translator('friends.add') %></a>
+						<a id="friend-btn" class="btn waves-effect waves-light" href="javascript:addFriend('<%= user.getName() %>')"><i class="fa fa-user-plus"></i><span><%= global.translator('friends.add') %></span></a>
 					<% }else{ %>
-						<a class="btn waves-effect waves-light" href="/friends/remove/<%= user.getName() %>"><i class="fa fa-user-times"></i><%= global.translator('friends.remove') %></a>
+						<a id="friend-btn" class="btn waves-effect waves-light" href="javascript:removeFriend('<%= user.getName() %>')"><i class="fa fa-user-times"></i><span><%= global.translator('friends.remove') %></span></a>
 					<% } %>
 				<% } %>
 			<% } %>

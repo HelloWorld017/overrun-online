@@ -2,7 +2,7 @@
 	<% if(auth){ %>
 		<a class="dropdown-button" href="#!" data-activates="<%= activator %>">
 			<img src="//www.gravatar.com/avatar/<%= emailHash %>?s=50" alt="" class="user-icon circle">
-			<span class="user-name"><%= user.nickname %></span>
+			<span class="user-name"><%= localUser.nickname %></span>
 		</a>
 	<% }else{ %>
 		<a href="/login">
@@ -27,6 +27,10 @@
 
 		<li>
 			<a href="/build"><%= global.translator('build.title') %></a>
+		</li>
+
+		<li>
+			<a href="/friends"><%= global.translator('friends.title') %></a>
 		</li>
 
 		<li>
@@ -90,7 +94,7 @@
 					<%= global.translator('navigation.dropdown') %>
 				</a>
 			</li>
-			
+
 			<li>
 				<% drawUserDropdown("user-dropdown-mobile") %>
 			</li>

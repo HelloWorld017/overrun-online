@@ -1,9 +1,9 @@
 'use strict';
-var OverrunGame = require('./overrun-game').game;
+var overrun = require('./overrun-game');
 var PointCalculator = require('../src/calculate-point');
 
 const GAME_NAME = 'OVERRUN-RANKED';
-class OverrunRankedGame extends OverrunGame{
+class OverrunRankedGame extends overrun.game{
 	constructor(gid, bot1, bot2, server){
 		super(gid, bot1, bot2, [bot1.player, bot2.player], server);
 
@@ -88,5 +88,6 @@ module.exports = {
 	onLoad: (cb) => {
 		global.server.addToPool(OverrunRankedGame);
 		cb();
-	}
+	},
+	api: overrun.api
 };

@@ -41,13 +41,13 @@ router.post('/entry/:game/:bot/:argument', (req, res, next) => {
 		return;
 	}
 
-	var game = req.params.game.replace(/[^A-Z0-9-]/g, '');
+	var game = req.params.game.replace(/[^A-Z0-9-]/ig, '');
 	if(global.server.matchmakers[game] === undefined){
 		next(new InvalidDataError());
 		return;
 	}
 
-	global.server.matchmakers[game].entry(res.locals.user, bot, req.params.argument);
+	global.server.matchmakers[game].entry(res.locals.user, bot, req.params.argument.toString());
 	res.render('in-entry');
 	return;
 });

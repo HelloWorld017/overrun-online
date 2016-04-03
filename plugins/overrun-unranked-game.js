@@ -1,10 +1,10 @@
 'use strict';
-var OverrunGame = require('./overrun-game').game;
+var overrun = require('./overrun-game');
 var Player = require('../src/player');
 var PointCalculator = require('../src/calculate-point');
 
 const GAME_NAME = 'OVERRUN-UNRANKED';
-class OverrunUnrankedGame extends OverrunGame{
+class OverrunUnrankedGame extends overrun.game{
 	constructor(gid, bot1, bot2, server){
 		super(gid, bot1, bot2, [bot1.player, bot2.player], server);
 
@@ -87,5 +87,6 @@ module.exports = {
 			return new UnrankedMatchmaker(server, game);
 		});
 		cb();
-	}
+	},
+	api: overrun.api
 };

@@ -2,6 +2,85 @@
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
 		<%- include('./header', {title: global.translator('friends.title')}); %>
+
+		<script>
+			var autocomplete;
+			var search;
+			var searchList;
+			var isTimeoutOngoing = false;
+			var isEmpty = true;
+
+			function closeAutocomplete(){
+				isEmpty = true;
+				autocomplete.empty();
+				autocomplete.css({
+					display: 'none'
+				});
+			}
+
+			function addFriend(name){
+				$.ajax('/friends/add/' + name).always(function(){
+					searchList.append(
+						$(document.createElement('div')).attr('class', 'collection-item').attr('id', 'friend-' + name).append(
+							$(document.createElement('a')).attr('href', '/user/' + name).text(name).append(
+								$(document.createElement('a')).attr('href', 'javascript:removeFriend("' + name + '");').attr('class', 'secondary-content').append(
+									$(document.createElement('i')).attr('class', 'fa fa-user-times')
+								)
+							)
+						)
+					);
+
+					closeAutocomplete();
+				});
+			}
+
+			function removeFriend(name){
+				$.ajax('/friends/remove/' + name).always(function(){
+					$('#friend-' + name).remove();
+				});
+			}
+
+			$(document).ready(function(){
+				autocomplete = $('#autocomplete');
+				search = $('#friend-search');
+				searchList = $('#search-list');
+
+				search.on('input', function(){
+					autocomplete.css({display: 'block'});
+					if((!isTimeoutOngoing || isEmpty) && search.content !== ''){
+						setTimeout(function(){
+							if(!/^[a-zA-Z0-9@_.+-]{1,512}$/.test(search.val())){
+								return;
+							}
+							
+							$.ajax('/friends/search/' + search.val()).done(function(data){
+								isTimeoutOngoing = false;
+								autocomplete.empty();
+								data.forEach(function(v){
+									autocomplete.append(
+										$(document.createElement('div')).attr('class', 'hoverable card-panel').append(
+											$(document.createElement('a')).attr('href', 'javascript:addFriend("' + v + '")').text(v)
+										)
+									);
+								});
+							});
+						}, 500);
+						isTimeoutOngoing = true;
+						isEmpty = false;
+					}
+				});
+
+				search.on('unfocus', function(){
+					closeAutocomplete();
+				});
+			});
+		</script>
+		<style>
+			#autocomplete{
+				display: none;
+				position: absolute;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -9,7 +88,29 @@
 		<%- include ./background %>
 
 		<section class="main-section">
-			<%# TODO %>
+			<div id="search-list" class="collection">
+				<div class="collection-item">
+					<div class="row input-field">
+						<label for="friend-search"><%= global.translator('friends.search') %></label>
+						<input id="friend-search" type="text">
+
+						<!-- <div class="autocomplete" class="hoverable card-panel" style="display: none"> -->
+						<div id="autocomplete">
+						</div>
+					</div>
+				</div>
+
+				<% friends.forEach((v) => { %>
+					<div class="collection-item" id="friend-<%= v %>">
+						<a href="/user/<%= v %>">
+							<%= v %>
+							<a href="javascript:removeFriend('<%= v %>');" class="secondary-content">
+								<i class="fa fa-user-times"></i>
+							</a>
+						</a>
+					</div>
+				<% }); %>
+			</div>
 		</section>
 
 		<%- include ./footer %>

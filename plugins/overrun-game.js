@@ -295,5 +295,13 @@ OverrunGame.getName = () => {
 };
 
 module.exports = {
-	game: OverrunGame
+	game: OverrunGame,
+	api: [
+		['log', 'getBots', 'status', 'move', 'rotatus'].map((v) => {
+			return {
+				title: global.translator(`plugin.overrun.api.log.${v}.title`),
+				content: global.translator(`plugin.overrun.api.log.${v}.content`)
+			};
+		})
+	]
 };

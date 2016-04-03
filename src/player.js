@@ -85,15 +85,25 @@ class Player{
 				}
 			});
 	}
-	
+
 	updateTimer(){
 		this.entryTimer = Date.now() + global.config['entry-timer'];
-		
+
 		global.mongo
 			.collection(global.config['collection-user'])
 			.findOneAndUpdate({name: this.name}, {
 				$set: {
 					entryTimer: this.entryTimer
+				}
+			});
+	}
+
+	updateFriends(){
+		global.mongo
+			.collection(global.config['collection-user'])
+			.findOneAndUpdate({name: this.name}, {
+				$set: {
+					friends: this.friends
 				}
 			});
 	}

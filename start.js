@@ -22,6 +22,7 @@ global.users = {};
 global.ejsHook = {};
 global.plugins = {};
 global.entryList = {};
+global.apiList = {};
 
 var url = "mongodb://" + global.config['db-address'] + ":" + global.config['db-port'] + "/" + global.config['db-name'];
 MongoClient.connect(url, (err, client) => {
@@ -69,6 +70,10 @@ MongoClient.connect(url, (err, client) => {
 
 			if(plugin.entry){
 				global.entryList = global.entryList.concat(plugin.entry);
+			}
+
+			if(plugin.apiList){
+				global.apiList[plugin.name] = plugin.apiList;
 			}
 
 			plugin.onLoad(() => {
