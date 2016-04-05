@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<svg width="360" height="360" viewBox="0 0 360 360" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+	<defs>
+		<linearGradient id="gradient" x1="0" x2="1" y1="0" y2="1">
+			<stop offset="0%" stop-color="#00C0A0"/>
+			<stop offset="100%" stop-color="#3EB489"/>
+		</linearGradient>
+	</defs>
+	
+	<path d="M180 0 A180 180, 0, 1, 0, 360 180 L 360 0 Z" fill="url(#gradient)"/>
+	
+	<text x="180" y="180" text-anchor="middle" alignment-baseline="middle" font-family="Exo 2" font-size="90" fill="white">
+		r
+	</text>
+</svg>
