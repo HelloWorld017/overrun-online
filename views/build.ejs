@@ -18,6 +18,12 @@
 				font-family: 'NanumCoding' !important;
 			}
 		</style>
+
+		<script>
+			$(document).ready(function() {
+				$('select').material_select();
+			});
+		</script>
 	</head>
 
 	<body>
@@ -36,7 +42,7 @@
 				<div class="row">
 					<div class="input-field col s12">
 						<label for="skin"><%= global.translator('build.skin') %></label>
-						<select>
+						<select id="skin" name="skin">
 							<% skin.forEach((v) => { %>
 								<option value="<%= v %>">
 									<img src="/resources/image/skins/<%= v %>.svg"><%= v %>
@@ -47,6 +53,27 @@
 				</div>
 
 				<div class="row">
+					<div class="input-field col s12">
+						<label for="type"><%= global.translator('build.game') %></label>
+						<select id="type" name="type">
+							<% Object.keys(games).forEach((k) => {
+								var v = games[k];
+								if(v.getOptions()['show_to_bot_type']){ %>
+									<option value="<%= v.getName() %>">
+										<%= v.getReadableName() %>
+									</option>
+								<% } %>
+							<% }); %>
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<h3><%= global.translator('build.edit') %></h3>
+					<a class="btn waves-effect waves-light" href="javascript:openAPI()">
+						<%= global.translator('build.api') %>
+					</a>
+
 					<div id="code-editor">
 
 					</div>
@@ -61,8 +88,8 @@
 				editor.setTheme('ace/theme/monokai');
 				editor.getSession().setMode('ace/mode/javascript');
 				editor.setAutoScrollEditorIntoView(true);
-				editor.setOption("maxLines", 30);
-				editor.setOption("minLines", 2);
+				editor.setOption("maxLines", 100);
+				editor.setOption("minLines", 30);
 				editor.getSession().on('change', function(){
 					codeArea.val(editor.getSession().getValue());
 				});

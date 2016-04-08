@@ -35,13 +35,17 @@ router.post('/entry/:game/:bot/:argument', (req, res, next) => {
 		next(new InvalidDataError());
 		return;
 	}
-
-	if(bot.type !== game){
+	var game = req.params.game.replace(/[^A-Z0-9-]/ig, '');
+	if(global.server.gamePool[game] === undefined){
 		next(new InvalidDataError());
 		return;
 	}
 
-	var game = req.params.game.replace(/[^A-Z0-9-]/ig, '');
+	if(!global.server.gamePool[game].getOptions()['accepts_bot_type'].includes(bot.type)){
+		next(new InvalidDataError());
+		return;
+	}
+
 	if(global.server.matchmakers[game] === undefined){
 		next(new InvalidDataError());
 		return;

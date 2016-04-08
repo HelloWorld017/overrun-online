@@ -30,6 +30,17 @@ OverrunUnrankedGame.getName = () => {
 	return GAME_NAME;
 };
 
+OverrunUnrankedGame.getReadableName = () => {
+	return global.translator('plugin.overrun.unranked');
+};
+
+OverrunUnrankedGame.getOptions = () => {
+	return {
+		'accepts_bot_type': ['OVERRUN-RANKED', 'OVERRUN-UNRANKED'],
+		'show_to_bot_type': false
+	};
+};
+
 class UnrankedMatchmaker{
 	constructor(server, game){
 		this.pool = [];

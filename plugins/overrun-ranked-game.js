@@ -81,6 +81,17 @@ OverrunRankedGame.getName = () => {
 	return GAME_NAME;
 };
 
+OverrunRankedGame.getReadableName = () => {
+	return global.translator('plugin.overrun.ranked');
+};
+
+OverrunRankedGame.getOptions = () => {
+	return {
+		'accepts_bot_type': [GAME_NAME],
+		'show_to_bot_type': true
+	};
+};
+
 module.exports = {
 	name: 'Overrun Ranked',
 	author: 'Khinenw',

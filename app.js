@@ -5,6 +5,7 @@ var crypto = require('crypto');
 var errors = require('./src/errors');
 var express = require('express');
 var favicon = require('serve-favicon');
+var jsxCompile = require('express-jsx');
 var logger = require('morgan');
 var path = require('path');
 var session = require('express-session');
@@ -45,9 +46,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(jsxCompile(path.join(__dirname, 'plugins', 'public')));
+app.use(express.static(path.join(__dirname, 'plugins')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
+global.session = session({
 	secret: global.config['session-secret'],
 	saveUninitialized: false,
 	resave: false,
@@ -56,7 +60,9 @@ app.use(session({
 		ttl: 3600 * 24 * 7,
 		touchAfter: 3 * 3600
 	})
-}));
+});
+
+app.use(global.session);
 
 app.use((req, res, next) => {
 	res.locals.user = (global.users[req.session.userid]);
@@ -76,6 +82,13 @@ app.use((req, res, next) => {
 		});
 	};
 
+	var _render = res.render;
+
+	res.render = (name, options, cb) => {
+		res.locals.renderTarget = name;
+		_render.call(res, name, options, cb);
+	};
+
 	//Anti SQL Injection
 	async.map(req.body, (v, cb) => {
 		cb(null, (typeof v === 'string' || typeof v === 'number') ? v : '');
@@ -88,13 +101,6 @@ app.use((req, res, next) => {
 			next();
 		});
 	});
-
-	var _render = res.render;
-
-	res.render = (name, options, cb) => {
-		res.locals.renderTarget = name;
-		_render.call(res, 'hook', options, cb);
-	};
 });
 
 app.use('/', index);

@@ -27,7 +27,7 @@ router.all('/edit/:id', (req, res, next) => {
 	}
 
 	if(req.method === 'POST'){
-		if(req.body.name === undefined || req.body.skin === undefined || req.body.code === undefined || req.body.token === undefined){
+		if(req.body.name === undefined || req.body.skin === undefined || req.body.code === undefined || req.body.token === undefined || req.body.type === undefined){
 			next(new InvalidDataError());
 			return;
 		}
@@ -42,7 +42,12 @@ router.all('/edit/:id', (req, res, next) => {
 			return;
 		}
 
-		if(!res.locals.user.skins.inclues(req.body.skin)){
+		if(!res.locals.user.skins.includes(req.body.skin)){
+			next(new InvalidDataError());
+			return;
+		}
+
+		if(global.server.gamePool[req.body.type] === undefined){
 			next(new InvalidDataError());
 			return;
 		}
@@ -82,7 +87,7 @@ router.all('/', (req, res, next) => {
 	}
 
 	if(req.method === 'POST'){
-		if(req.body.name === undefined || req.body.skin === undefined || req.body.code === undefined){
+		if(req.body.name === undefined || req.body.skin === undefined || req.body.code === undefined || req.body.type === undefined){
 			next(new InvalidDataError());
 			return;
 		}
@@ -93,7 +98,11 @@ router.all('/', (req, res, next) => {
 		}
 
 		if(!res.locals.user.skins.includes(req.body.skin)){
-			//TODO update user.skins
+			next(new InvalidDataError());
+			return;
+		}
+
+		if(global.server.gamePool[req.body.type] === undefined){
 			next(new InvalidDataError());
 			return;
 		}

@@ -297,7 +297,7 @@ OverrunGame.getName = () => {
 module.exports = {
 	game: OverrunGame,
 	api: [
-		['log', 'getBots', 'status', 'move', 'rotatus'].map((v) => {
+		['log', 'getBots', 'status', 'move', 'rotate'].map((v) => {
 			return {
 				title: global.translator(`plugin.overrun.api.log.${v}.title`),
 				content: global.translator(`plugin.overrun.api.log.${v}.content`)

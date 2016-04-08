@@ -37,6 +37,13 @@
 <script src="/resources/js/jquery-2.1.4.min.js"></script>
 <script src="/resources/js/materialize.min.js"></script>
 
+<script src="/resources/js/react.min.js"></script>
+<script src="/resources/js/react-dom.min.js"></script>
+
+<% (global.headerHook[renderTarget] || []).forEach((v) => { %>
+	<script src="/jsx/<%= v %>.js"></script>
+<% }) %>
+
 <script>
 	$(document).ready(function(){
 		$('.button-collapse').sideNav();

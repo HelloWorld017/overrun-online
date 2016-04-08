@@ -6,6 +6,7 @@ var objectMerge = require('object-merge');
 var MongoClient = require('mongodb').MongoClient;
 var NodeRSA = require('node-rsa');
 var Server = require('./src/server');
+var sharedsession = require("express-socket.io-session");
 
 const SERVER_VERSION = "alpha 0.0.0 1603260001";
 
@@ -19,7 +20,7 @@ global.server = undefined;
 global.version = SERVER_VERSION;
 global.users = {};
 
-global.ejsHook = {};
+global.headerHook = {};
 global.plugins = {};
 global.entryList = {};
 global.apiList = {};
@@ -51,6 +52,11 @@ MongoClient.connect(url, (err, client) => {
 		}
 
 		async.eachSeries(files, (v, cb) => {
+			if(!v.endsWith('.js')){
+				cb();
+				return;
+			}
+
 			var plugin = require(path.join(__dirname, 'plugins', v));
 
 			if(!plugin.onLoad){
@@ -61,10 +67,10 @@ MongoClient.connect(url, (err, client) => {
 			global.plugins[plugin.name] = plugin;
 
 			if(plugin.renderHook){
-				Object.keys(plugin.renderHook).forEach((ejs) => {
-					if(!ejsHook[ejs]) ejsHook[ejs] = [];
+				Object.keys(plugin.renderHook).forEach((header) => {
+					if(!global.headerHook[header]) global.headerHook[header] = [];
 
-					ejsHook[ejs].push(plugin.renderHook[ejs]);
+					global.headerHook[header].push(plugin.renderHook[header]);
 				});
 			}
 
@@ -118,6 +124,42 @@ MongoClient.connect(url, (err, client) => {
 					}));
 				});
 
+				var io = require('socket.io')(httpServer);
+				io.use(sharedsession(global.session));
+
+				io.on('connection', (socket) => {
+					socket.on('join room', (data) => {
+						if(typeof data !== 'string') return;
+						data = data.replace(/[^a-zA-Z0-9-_:.]/g, '');
+
+						socket.get('room', (err, room) => {
+							if(!err && room){
+								socket.leave(room);
+							}
+							socket.set('room', data);
+							socket.join(data);
+						});
+					});
+
+					socket.on('chat', (data) => {
+						socket.get('room', (err, room) => {
+							if(err || !room) return;
+
+							var user = (global.users[socket.handshake.session.userid]);
+							if(user && (socket.handshake.session.token !== user.token)) user = undefined;
+							if(user && user.unregistered) user = undefined;
+
+							if(user === undefined) return;
+
+							io.sockets.in(room).emit('text', {
+								user: user.getName(),
+								nickname: user.nickname,
+								emailhash: user.getHashedEmail(),
+								content: data
+							});
+						});
+					});
+				});
 			});
 		});
 	});
