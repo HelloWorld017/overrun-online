@@ -7,7 +7,7 @@
 	"build.name": "봇 이름",
 	"build.skin": "스킨",
 	"build.game": "목표로 하는 게임",
-	"build.edit": "코드를 수정하세요.",
+	"build.edit": "코드 편집",
 	"build.api": "API 문서 보기",
 	"build.create": "봇 생성!",
 
@@ -69,6 +69,7 @@
 	"validate.remote.id": "이름이 중복되었습니다.",
 	"validate.remote.email": "이메일이 중복되었습니다.",
 
+	"error.alreadybought": "이미 구매하셨습니다.",
 	"error.alreadyentried": "이미 참가하였습니다.",
 	"error.alreadyloggedin": "이미 로그인이 되어있습니다.",
 	"error.captcha": "CAPTCHA를 확인해주세요.",
@@ -88,9 +89,11 @@
 
 	"server.http.eaddrinuse": "포트가 이미 사용중입니다.",
 	"server.http.eacces": "%bind%는 상승된 권한이 필요합니다.",
-	"server.listen": "%port%번 포트에서 듣고 있습니다.",
 	"server.plugin.error": "플러그인 로딩중에 오류가 발생했습니다.",
-	"server.plugin.load": "%author%(이)가 제작한 플러그인 %name% v%version%이 성공적으로 로딩되었습니다.",
+	"server.plugin.load": "%author%(이)가 제작한 플러그인 %name% v%version%(이)가 성공적으로 로딩되었습니다.",
+	"server.http.load": "HTTP 서버가 정상적으로 로딩됐습니다.",
+	"server.http.port": "%port%번 포트에서 듣고 있습니다",
+	"server.http.pipe": "%addr%로 파이프중입니다.",
 
 	"desc": "overrun-online은 알고리즘을 작성해 서로 싸우는 게임입니다."
 }

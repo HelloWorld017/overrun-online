@@ -2,6 +2,7 @@ var createToken = require('../src/create-token');
 var errors = require('../src/errors');
 var router = require('express').Router();
 
+var AlreadyBoughtError = errors.AlreadyBoughtError;
 var NotLoggedInError = errors.NotLoggedInError;
 var InsufficientMoneyError = errors.InsufficientMoneyError;
 var InvalidDataError = errors.InvalidDataError;
@@ -36,9 +37,15 @@ router.post('/buy/:section/:item', (req, res, next) => {
 		return;
 	}
 
+	console.log(res.locals.user[req.params.section]);
+	if(res.locals.user[req.params.section].indexOf(req.params.item) !== -1){
+		res.json({error: global.translator('error.alreadybought')});
+		return;
+	}
+
 	var item = global.config['shop-items'][req.params.section][req.params.item];
 	if(item.money > res.locals.user.money){
-		next(new InsufficientMoneyError());
+		res.json({error: global.translator('error.insufficientmoney')});
 		return;
 	}
 

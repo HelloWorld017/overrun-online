@@ -18,6 +18,18 @@ Math.inRange = function(min, max, value){
 	return (min < value) && (value < max);
 };
 
+Number.prototype.zfill = function(repeat){
+	var num = this.toString();
+	if(num.length >= repeat) return num;
+
+	var zeros = '';
+	for(var i = 0; i < repeat - num.length; i++){
+		zeros = zeros + '0';
+	}
+
+	return zeros + num;
+};
+
 Date.prototype.format = function(format){
 	var that = this;
 

@@ -105,6 +105,20 @@ body {
 	height: 100vh;
 }
 
+.skin-list{
+	display: inline-block;
+	margin: 3px;
+}
+
+.skin-list-wrapper{
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+
+.skin-list-wrapper:hover{
+	overflow-x: auto;
+}
+
 .user-icon{
 	vertical-align: middle;
 	margin-right: 10px;

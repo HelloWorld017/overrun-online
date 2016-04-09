@@ -1,3 +1,4 @@
+var Bot = require('../src/bot');
 var createToken = require('../src/create-token');
 var router = require('express').Router();
 var errors = require('../src/errors');
@@ -42,7 +43,7 @@ router.all('/edit/:id', (req, res, next) => {
 			return;
 		}
 
-		if(!res.locals.user.skins.includes(req.body.skin)){
+		if(res.locals.user.skins.indexOf(req.body.skin) === -1){
 			next(new InvalidDataError());
 			return;
 		}
@@ -59,6 +60,7 @@ router.all('/edit/:id', (req, res, next) => {
 
 		res.locals.user.bots[req.params.id] = new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code, req.body.type);
 		res.locals.user.saveBots();
+		res.redirect('/me');
 		return;
 	}
 
@@ -97,7 +99,7 @@ router.all('/', (req, res, next) => {
 			return;
 		}
 
-		if(!res.locals.user.skins.includes(req.body.skin)){
+		if(res.locals.user.skins.indexOf(req.body.skin) === -1){
 			next(new InvalidDataError());
 			return;
 		}

@@ -41,7 +41,7 @@ router.post('/entry/:game/:bot/:argument', (req, res, next) => {
 		return;
 	}
 
-	if(!global.server.gamePool[game].getOptions()['accepts_bot_type'].includes(bot.type)){
+	if(global.server.gamePool[game].getOptions()['accepts_bot_type'].indexOf(bot.type) === -1){
 		next(new InvalidDataError());
 		return;
 	}

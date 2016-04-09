@@ -101,11 +101,9 @@ router.get('/search/:query', (req, res, next) => {
 				return;
 			}
 
-			/*res.json(users.map((v) => v.name).filter((v) => {
+			res.json(users.map((v) => v.name).filter((v) => {
 				return (res.locals.user.friends.indexOf(v) === -1 && v !== res.locals.user.name);
-			}));*/
-
-			res.json(['AAAAAAAAAA', 'AAAAAAAAAA', 'AAAAAAAAAA', 'AAAAAAAAAA', 'AAAAAAAAAA'])
+			}));
 		});
 });
 

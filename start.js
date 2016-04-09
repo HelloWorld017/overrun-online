@@ -119,9 +119,7 @@ MongoClient.connect(url, (err, client) => {
 
 				httpServer.on('listening', () => {
 					var addr = httpServer.address();
-					console.log(global.translator('server.listen', {
-						port: (typeof addr === 'string') ? 'pipe ' + addr : 'port ' + addr.port
-					}));
+					console.log((typeof addr === 'string') ? global.translator('server.http.pipe', {addr: addr}) : global.translator('server.http.port', {port: addr.port}));
 				});
 
 				var io = require('socket.io')(httpServer);

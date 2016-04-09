@@ -141,11 +141,23 @@
 </style>
 
 <script>
+	Number.prototype.zfill = function(repeat){
+		var num = this.toString();
+		if(num.length >= repeat) return num;
+
+		var zeros = '';
+		for(var i = 0; i < repeat - num.length; i++){
+			zeros = zeros + '0';
+		}
+
+		return zeros + num;
+	};
+
 	var clock = $('.clock');
 
 	function updateClock(){
 		var date = new Date();
-		clock.text(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds());
+		clock.text(date.getHours().zfill(2) + ":" + date.getMinutes().zfill(2) + ":" + date.getSeconds().zfill(2));
 		setTimeout(updateClock, 500);
 	}
 

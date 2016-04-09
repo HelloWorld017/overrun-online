@@ -2,27 +2,88 @@
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
 		<%- include('./header', {title: global.translator('shop.title')}); %>
+		<style>
+			.shop-item{
+				display: inline-block;
+				text-align: center;
+				color: <%= global.theme['foreground-1'] %>;
+				padding: 10px;
+				margin: 0 10px;
+			}
+
+			.shop-item-icon{
+				width: 160px;
+				height: 160px;
+			}
+
+			.shop-name{
+				font-size: 1rem;
+			}
+
+			.shop-money{
+				font-size: 0.75rem;
+			}
+
+			.shop-category-wrapper{
+				overflow-x: hidden;
+				padding: 10px 5px;
+				white-space: nowrap;
+			}
+
+			.shop-category-wrapper:hover{
+				overflow-x: auto;
+			}
+		</style>
+
+		<script>
+			function buy(category, item){
+				$.ajax({
+					url: "/shop/buy/" + category + "/" + item,
+					data: {
+						token: '<%= token %>'
+					},
+					method: 'POST'
+				}).done(function(data){
+					if(data.error){
+						alert(data.error);
+						return;
+					}
+
+					alert('<%= global.translator('shop.bought') %>');
+					$('#shop-money-' + category + '-' + item).empty().append($(document.createElement('i')).addClass('fa fa-check'));
+					$('#shop-item-' + category + '-' + item).removeClass('hoverable');
+				});
+			}
+		</script>
+
 	</head>
 
 	<body>
 		<%- include ./navigation %>
 		<%- include ./background %>
 
-		<section class="main-section">
-			<span class="current-money"><%= global.translator('shop.current.money', user.money) %></span>
+		<section class="main-section" style="padding-right: 10px;">
+			<span class="current-money right"><%= global.translator('shop.current.money', {money: user.money}) %></span>
 
 			<% Object.keys(global.config['shop-items']).forEach((k) => {
 				var v = global.config['shop-items'][k]; %>
 
 				<h3><%= global.translator('shop.category.' + k) %></h3>
-				<div>
+				<div class="shop-category-wrapper hoverable">
 					<% Object.keys(v).forEach((itemKey) => {
+						var bought = (user[k].indexOf(itemKey) !== -1);
+						var bought = false;
 						var item = v[itemKey]; %>
 
-						<a class="shop-item" href="buy/<%= k %>/<%= itemKey %>">
+						<a id="shop-item-<%= k %>-<%= itemKey %>" class="shop-item <%= (!bought ? 'hoverable' : '') %> z-depth-1" href="javascript:buy('<%= k %>', '<%= itemKey %>')">
 							<img class="shop-item-icon" src="<%= item.icon %>">
-							<span class="shop-name"><%= global.translator('shop.item.'  + itemKey) %></span>
-							<span class="shop-money"><%= global.translator('shop.money', item.money) %></span>
+							<p class="shop-name"><%= global.translator('shop.item.' + itemKey) %></p>
+							<p id="shop-money-<%= k %>-<%= itemKey %>" class="shop-money">
+								<% if(bought){ %>
+									<i class="fa fa-check"></i>
+								<% } %>
+								<%= global.translator('shop.money', {money: item.money}) %>
+							</p>
 						</a>
 					<% }); %>
 				</div>

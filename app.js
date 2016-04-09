@@ -162,7 +162,7 @@ async.forEachOf(global.plugins, (plugin, pluginName, cb) => {
 	});
 
 	pluginLoadFinished = true;
-	console.log("Done loading app.");
+	console.log(global.translator('server.http.load'));
 
 	pluginLoadCallback.forEach((v) => {
 		process.nextTick(() => {

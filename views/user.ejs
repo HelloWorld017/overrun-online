@@ -73,12 +73,12 @@
 			}); %>
 
 			<h4><%= global.translator('user.skins') %></h4>
-			<% include('./user/skin-list', {
+			<%- include('./user/skin-list', {
 				skins: user.skins
 			}); %>
 
 			<h4><%= global.translator('user.status') %></h4>
-			<% include('./user/status', {
+			<%- include('./user/status', {
 				status: user.status
 			}); %>
 

@@ -30,7 +30,7 @@
 	"max-code-length": 100000,
 
 	"shop-items": {
-		"skin": {
+		"skins": {
 			"default": {
 				"icon": "/resources/image/skins/default.svg",
 				"money": "0"
