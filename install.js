@@ -1,3 +1,4 @@
+var chalk = require('chalk');
 var fs = require('fs');
 var path = require('path');
 var MongoClient = require('mongodb').MongoClient;
@@ -9,14 +10,24 @@ var url = "mongodb://" + config['db-address'] + ":" + config['db-port'] + "/" + 
 
 MongoClient.connect(url, (err, db) => {
 	db.createCollection(config['collection-user']).then(() => {
-		db.createCollection(config['collection-session']).then(() => {
-			db.createCollection(config['collection-auth']).then(() => {
-				db.createCollection(config['collection-reset']).then(() => {
-					console.log("overrun-online installed successfully!");
-					require('process').exit(0);
-				});
-			});
-		});
+		return db.createCollection(config['collection-session']);
+	}).then(() => {
+		return db.createCollection(config['collection-auth']);
+	}).then(() => {
+		return db.createCollection(config['collection-reset']);
+	}).then(() => {
+		return db.createCollection(config['collection-battle']);
+	}).then(() => {
+		return db.collection(config['collection-user']).ensureIndex({name: 1, point: 1, email: 1, nickname: 1, github: 1});
+	}).then(() => {
+		return db.collection(config['collection-battle']).ensureIndex({id: 1});
+	}).then(() => {
+		console.log(chalk.cyan("overrun-online installed successfully!"));
+		require('process').exit(0);
+	}).catch((err) => {
+		console.error(chalk.red("Error while installing overrun-online!"));
+		console.error(chalk.red("Reason : " + err.toString()));
+		require('process').exit(0);
 	});
 });
 

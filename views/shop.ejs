@@ -9,7 +9,24 @@
 		<%- include ./background %>
 
 		<section class="main-section">
-			
+			<span class="current-money"><%= global.translator('shop.current.money', user.money) %></span>
+
+			<% Object.keys(global.config['shop-items']).forEach((k) => {
+				var v = global.config['shop-items'][k]; %>
+
+				<h3><%= global.translator('shop.category.' + k) %></h3>
+				<div>
+					<% Object.keys(v).forEach((itemKey) => {
+						var item = v[itemKey]; %>
+
+						<a class="shop-item" href="buy/<%= k %>/<%= itemKey %>">
+							<img class="shop-item-icon" src="<%= item.icon %>">
+							<span class="shop-name"><%= global.translator('shop.item.'  + itemKey) %></span>
+							<span class="shop-money"><%= global.translator('shop.money', item.money) %></span>
+						</a>
+					<% }); %>
+				</div>
+			<% }); %>
 		</section>
 
 		<%- include ./footer %>

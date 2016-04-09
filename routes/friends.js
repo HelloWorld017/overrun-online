@@ -88,9 +88,10 @@ router.get('/search/:query', (req, res, next) => {
 	global.mongo
 		.collection(global.config['collection-user'])
 		.find({$or: [
-			{name: new RegExp("^" + req.params.query)},
-			{email: req.params.query},
-			{github: new RegExp("^" + req.params.query)}
+			{name: new RegExp("^" + req.params.query, 'i')},
+			{nickname: new RegExp("^" + req.params.query, 'i')},
+			{email: new RegExp("^" + req.params.query, 'i')},
+			{github: new RegExp("^" + req.params.query, 'i')}
 		]})
 		.limit(5)
 		.toArray((err, users) => {
@@ -100,11 +101,11 @@ router.get('/search/:query', (req, res, next) => {
 				return;
 			}
 
-			res.json(users.filter((v) => {
-				return res.locals.user.friends.indexOf(v) !== -1;
-			}).map((v) => {
-				return v.name;
-			}));
+			/*res.json(users.map((v) => v.name).filter((v) => {
+				return (res.locals.user.friends.indexOf(v) === -1 && v !== res.locals.user.name);
+			}));*/
+
+			res.json(['AAAAAAAAAA', 'AAAAAAAAAA', 'AAAAAAAAAA', 'AAAAAAAAAA', 'AAAAAAAAAA'])
 		});
 });
 

@@ -143,14 +143,15 @@ Player.register = (data) => {
 			unregistered: false,
 			emailVerified: false,
 			bots: [],
-			skins: [],
+			skins: ['default'],
 			stat: {
 				win: 0,
 				defeat: 0,
 				draw: 0
 			},
 			point: 0,
-			money: 0
+			money: 0,
+			github: ''
 		});
 
 	global.mongo

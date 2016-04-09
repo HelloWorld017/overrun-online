@@ -92,7 +92,7 @@ router.all('/', (req, res, next) => {
 			return;
 		}
 
-		if(!/[A-Za-z0-9가-힣ㄱ-ㅎ-+_()]{3,20}/.test(req.body.name)){
+		if(!/[A-Za-z0-9가-힣ㄱ-ㅎ-+_() ]{3,20}/.test(req.body.name)){
 			next(new InvalidDataError());
 			return;
 		}

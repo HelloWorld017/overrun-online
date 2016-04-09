@@ -52,10 +52,11 @@
 							if(!/^[a-zA-Z0-9@_.+-]{1,512}$/.test(search.val())){
 								return;
 							}
-							
+
 							$.ajax('/friends/search/' + search.val()).done(function(data){
 								isTimeoutOngoing = false;
 								autocomplete.empty();
+								console.log(data);
 								data.forEach(function(v){
 									autocomplete.append(
 										$(document.createElement('div')).attr('class', 'hoverable card-panel').append(
@@ -70,7 +71,7 @@
 					}
 				});
 
-				search.on('unfocus', function(){
+				search.on('focusout', function(){
 					closeAutocomplete();
 				});
 			});
@@ -78,7 +79,7 @@
 		<style>
 			#autocomplete{
 				display: none;
-				position: absolute;
+				position: relative;
 			}
 		</style>
 	</head>
@@ -94,8 +95,7 @@
 						<label for="friend-search"><%= global.translator('friends.search') %></label>
 						<input id="friend-search" type="text">
 
-						<!-- <div class="autocomplete" class="hoverable card-panel" style="display: none"> -->
-						<div id="autocomplete">
+						<div id="autocomplete" class="col s12 l4">
 						</div>
 					</div>
 				</div>

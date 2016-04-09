@@ -1,4 +1,5 @@
 'use strict';
+var Game = require('../src/game');
 var Player = require('../src/player');
 var process = require('process');
 var Library = require('../src/library');
@@ -18,12 +19,10 @@ const START_POS = {
 
 const GAME_NAME = 'OVERRUN';
 
-class OverrunGame{
+class OverrunGame extends Game{
 	constructor(gid, bot1, bot2, players, server){
-		this.gameId = gid;
-		this.players = players;
+		super();
 		this.bots = [new BotWrapper(bot1), new BotWrapper(bot2)];
-		this.server = server;
 
 		this.round = 0;
 		this.turn = 0;
@@ -160,7 +159,7 @@ class OverrunGame{
 					global.mongo
 					.collection(global.config['collection-battle'])
 					.insertOne({
-						id: `${p1.getName()}-${p2.getName()}-${date.format('yyyy-mm-dd-HH-mm-ss')}`,
+						id: this.battleId,
 						players: [p1.getName(), p2.getName()],
 						date: date.getMilliseconds(),
 						log: gameLog,

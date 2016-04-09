@@ -24,6 +24,7 @@
 				$('select').material_select();
 			});
 		</script>
+		<%# TODO jquery validator name %>
 	</head>
 
 	<body>
@@ -31,11 +32,11 @@
 		<% include ./background %>
 
 		<section class="main-section">
-			<form>
+			<form method="post">
 				<div class="row">
 					<div class="input-field col s12">
-						<label for="id"><%= global.translator('build.id') %></label>
-						<input id="id" name="id" type="text">
+						<label for="name"><%= global.translator('build.name') %></label>
+						<input id="name" name="name" type="text">
 					</div>
 				</div>
 
@@ -44,8 +45,8 @@
 						<label for="skin"><%= global.translator('build.skin') %></label>
 						<select id="skin" name="skin">
 							<% skin.forEach((v) => { %>
-								<option value="<%= v %>">
-									<img src="/resources/image/skins/<%= v %>.svg"><%= v %>
+								<option value="<%= v %>" data-icon="/resources/image/skins/<%= v %>.svg" class="left">
+									<%= v %>
 								</option>
 							<% }); %>
 						</select>
@@ -80,6 +81,8 @@
 				</div>
 
 				<textarea id="code" name="code" style="display: none"></textarea>
+
+				<button class="btn waves-effect waves-light" type="submit"><%= global.translator('build.create') %></button>
 			</form>
 
 			<script>

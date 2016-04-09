@@ -89,6 +89,7 @@ body {
 	max-width: 992px;
 	margin: 0 auto;
 	padding-left: 10px;
+	padding-bottom: 30px;
 	z-index: 2;
 }
 
@@ -133,7 +134,7 @@ body {
 		width: 992px;
 		min-height: 30rem;
 		padding-left: 10px;
-		margin-right: 7rem;
+		margin-right: 20%;
 		margin-bottom: 10px;
 		box-shadow: 0 0 5px 3px #808080;
 	}

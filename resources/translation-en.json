@@ -3,6 +3,14 @@
 	"index.motd": "Welcome to overrun-online!",
 	"index.continue": "Touch anywhere to continue.",
 
+	"build.title": "Building bot",
+	"build.name": "Bot Name",
+	"build.skin": "Skin",
+	"build.game": "Targetting game:",
+	"build.edit": "Edit your code",
+	"build.api": "Show API documentation",
+	"build.create": "Create bot!",
+
 	"login.title": "Login",
 	"login.id": "Username",
 	"login.password": "Password",
@@ -13,6 +21,7 @@
 	"friends.title": "Friends list",
 	"friends.add": "Add to friends",
 	"friends.remove": "Remove from friends",
+	"friends.search": "Search Friends",
 
 	"unregister.title": "Unregister",
 

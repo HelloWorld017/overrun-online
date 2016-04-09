@@ -32,7 +32,8 @@ class Server{
 	removeGame(gid){
 		this.games[gid].responses.forEach((v) => {
 			v.json({
-				gameFinish: true
+				'game-finish': true,
+				log: this.games[gid].getBattleId()
 			});
 		});
 

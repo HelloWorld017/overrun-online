@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg width="360" height="360" viewBox="0 0 360 360" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<path d="M0 120 C0 0, 0 0, 120 0 H240 C360 0, 360 0, 360 120 V240 C360 360, 360 360, 240 360 H120 C0 360, 0 360, 0 240 Z" fill="#008080"/>
+	<path d="M120 120 L240 180 L120 240" fill="transparent" stroke-width="10" stroke="#FFFFFF"/>
+
+	<circle cx="120" cy="120" r="30" fill="transparent" stroke-width="10" stroke="#FFFFFF"/>
+	<circle cx="240" cy="180" r="30" fill="transparent" stroke-width="10" stroke="#FFFFFF"/>
+	<circle cx="120" cy="240" r="30" fill="transparent" stroke-width="10" stroke="#FFFFFF"/>
+</svg>

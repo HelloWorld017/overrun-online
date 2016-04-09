@@ -37,7 +37,7 @@ router.post('/update', (req, res, next) => {
 		return;
 	}
 
-	if(!(/(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/.test(req.body.email) && /^[a-zA-Z0-9ㄱ-ㅎ가-힣#-_.]{2,11}$/.test(req.body.name) && /^(([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])|([a-zA-Z0-9]+))$/.test(req.body.github))){
+	if(!(/(^[a-zA-Z0-9_.+-]{1,30}@[a-zA-Z0-9-]{1,30}\.[a-zA-Z0-9-.]{1,10}$)/.test(req.body.email) && /^[a-zA-Z0-9ㄱ-ㅎ가-힣#-_.]{2,11}$/.test(req.body.name) && /^(([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])|([a-zA-Z0-9]+))$/.test(req.body.github))){
 		next(new InvalidDataError());
 		return;
 	}

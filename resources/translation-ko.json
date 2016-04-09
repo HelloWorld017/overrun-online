@@ -3,6 +3,14 @@
 	"index.motd": "Welcome to overrun-online!",
 	"index.continue": "아무데나 터치하세요.",
 
+	"build.title": "봇 제작",
+	"build.name": "봇 이름",
+	"build.skin": "스킨",
+	"build.game": "목표로 하는 게임",
+	"build.edit": "코드를 수정하세요.",
+	"build.api": "API 문서 보기",
+	"build.create": "봇 생성!",
+
 	"login.title": "로그인",
 	"login.id": "이름",
 	"login.password": "비밀번호",
@@ -10,9 +18,10 @@
 
 	"find.title": "아이디/비밀번호 찾기",
 
-	"friends.title": "친구목록",
-	"friends.add": "친구추가",
-	"friends.remove": "친구해제",
+	"friends.title": "친구 목록",
+	"friends.add": "친구 추가",
+	"friends.remove": "친구 해제",
+	"friends.search": "친구 검색",
 
 	"unregister.title": "회원탈퇴",
 
