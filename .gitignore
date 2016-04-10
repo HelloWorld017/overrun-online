@@ -38,3 +38,7 @@ jspm_packages
 /translation-en.json
 /translation-ko.json
 /theme.json
+
+# Imdone-related files
+.imdone/
+.imdoneignore

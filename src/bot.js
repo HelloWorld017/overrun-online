@@ -8,3 +8,5 @@ class Bot{
 		this.type = type;
 	}
 }
+
+module.exports = Bot;

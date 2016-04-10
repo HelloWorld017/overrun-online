@@ -1,7 +1,11 @@
-<ul>
+<ul class="collection">
 	<% bots.forEach((v) => { %>
 		<li class="bot-view">
-			
+			<img src="/resources/image/skins/<%= v.skin %>.svg" style="width: 64px; height: 64px;">
+			<div style="display: inline-block">
+				<span class="bot-name" style="display: block"><%= v.name %></span>
+				<span class="bot-type" style="display: block"><%= global.translator('bot.type', global.server.gamePool[v.type].getReadableName()); %></span>
+			</div>
 		</li>
 	<% }); %>
 </ul>

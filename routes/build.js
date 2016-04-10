@@ -121,7 +121,7 @@ router.all('/', (req, res, next) => {
 
 		res.locals.user.bots.push(new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code, req.body.type));
 		res.locals.user.saveBots();
-		res.redirect('/battle');
+		res.redirect('/me');
 		return;
 	}
 

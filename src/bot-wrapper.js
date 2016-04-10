@@ -3,7 +3,7 @@ var Library = require('./library');
 
 const SPEED = 1;
 
-class BotWraper{
+class BotWrapper{
 	constructor(bot, game){
 		this.bot = bot;
 		this.boundBox = new Library.AABB(new Library.Position(0, 0), new Library.Position(1, 1));
@@ -48,3 +48,5 @@ class BotWraper{
 		return this.getBot().player;
 	}
 }
+
+module.exports = BotWrapper;
