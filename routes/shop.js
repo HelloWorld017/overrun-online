@@ -37,7 +37,6 @@ router.post('/buy/:section/:item', (req, res, next) => {
 		return;
 	}
 
-	console.log(res.locals.user[req.params.section]);
 	if(res.locals.user[req.params.section].indexOf(req.params.item) !== -1){
 		res.json({error: global.translator('error.alreadybought')});
 		return;
@@ -53,7 +52,9 @@ router.post('/buy/:section/:item', (req, res, next) => {
 	res.locals.user[req.params.section].push(req.params.item);
 	res.locals.user.saveStat();
 
-	res.end();
+	res.json({
+		money: global.translator('shop.current.money', {money: res.locals.user.money})
+	});
 });
 
 module.exports = router;

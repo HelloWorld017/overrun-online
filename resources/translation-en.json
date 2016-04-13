@@ -52,6 +52,14 @@
 
 	"logout.title": "Logout",
 
+	"shop.title": "Shop",
+	"shop.category.skins": "Skins",
+	"shop.money": "%money%$",
+	"shop.current.money": "Current money: %money%$",
+	"shop.bought": "Successfully bought.",
+	"shop.item.skins.default": "Default skin",
+	"shop.item.skins.triangles": "Triangles",
+
 	"authenticate.finish.title": "Congratulations",
 	"authenticate.finish.masthead": "Your email address is successfully verified!",
 	"authenticate.finish.desc": "Now, please return to login page.",

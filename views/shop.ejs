@@ -3,6 +3,13 @@
 	<head prefix="og: http://ogp.me/ns#">
 		<%- include('./header', {title: global.translator('shop.title')}); %>
 		<style>
+
+			.current-money{
+				position: absolute;
+				right: 2rem;
+				top: 2rem;
+			}
+
 			.shop-item{
 				display: inline-block;
 				text-align: center;
@@ -50,8 +57,9 @@
 					}
 
 					alert('<%= global.translator('shop.bought') %>');
-					$('#shop-money-' + category + '-' + item).empty().append($(document.createElement('i')).addClass('fa fa-check'));
+					$('#shop-money-' + category + '-' + item).prepend($(document.createElement('i')).addClass('fa fa-check'));
 					$('#shop-item-' + category + '-' + item).removeClass('hoverable');
+					$('.current-money').text(data.money);
 				});
 			}
 		</script>
@@ -63,7 +71,7 @@
 		<%- include ./background %>
 
 		<section class="main-section" style="padding-right: 10px;">
-			<span class="current-money right"><%= global.translator('shop.current.money', {money: user.money}) %></span>
+			<span class="current-money"><%= global.translator('shop.current.money', {money: user.money}) %></span>
 
 			<% Object.keys(global.config['shop-items']).forEach((k) => {
 				var v = global.config['shop-items'][k]; %>
@@ -72,12 +80,11 @@
 				<div class="shop-category-wrapper hoverable">
 					<% Object.keys(v).forEach((itemKey) => {
 						var bought = (user[k].indexOf(itemKey) !== -1);
-						var bought = false;
 						var item = v[itemKey]; %>
 
 						<a id="shop-item-<%= k %>-<%= itemKey %>" class="shop-item <%= (!bought ? 'hoverable' : '') %> z-depth-1" href="javascript:buy('<%= k %>', '<%= itemKey %>')">
 							<img class="shop-item-icon" src="<%= item.icon %>">
-							<p class="shop-name"><%= global.translator('shop.item.' + itemKey) %></p>
+							<p class="shop-name"><%= global.translator(`shop.item.${k}.${itemKey}`) %></p>
 							<p id="shop-money-<%= k %>-<%= itemKey %>" class="shop-money">
 								<% if(bought){ %>
 									<i class="fa fa-check"></i>

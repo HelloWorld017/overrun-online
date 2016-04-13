@@ -67,20 +67,28 @@
 				<% } %>
 			<% } %>
 
-			<h4><%= global.translator('user.bots') %></h4>
-			<%- include('./user/bot-list', {
-				bots: user.bots
-			}); %>
+			<ul class="collection with-header">
+				<li class="collection-header"><h4><%= global.translator('user.bots') %></h4></li>
+				<%- include('./user/bot-list', {
+					bots: user.bots
+				}); %>
+			</ul>
 
-			<h4><%= global.translator('user.skins') %></h4>
-			<%- include('./user/skin-list', {
-				skins: user.skins
-			}); %>
+			<ul class="collection with-header">
+				<li class="collection-header"><h4><%= global.translator('user.skins') %></h4></li>
+				<li class="collection-item">
+					<%- include('./user/skin-list', {
+						skins: user.skins
+					}); %>
+				</li>
+			</ul>
 
-			<h4><%= global.translator('user.status') %></h4>
-			<%- include('./user/status', {
-				status: user.status
-			}); %>
+			<ul class="collection with-header">
+				<li class="collection-header"><h4><%= global.translator('user.status') %></h4></li>
+				<%- include('./user/status', {
+					status: user.status
+				}); %>
+			</ul>
 
 		</section>
 

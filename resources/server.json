@@ -34,6 +34,11 @@
 			"default": {
 				"icon": "/resources/image/skins/default.svg",
 				"money": "0"
+			},
+
+			"triangles": {
+				"icon": "/resources/image/skins/triangles.svg",
+				"money": "300"
 			}
 		}
 	}

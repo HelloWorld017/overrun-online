@@ -1,0 +1,12 @@
+#TODO:0 프로필, 미니 프로필 구현
+#TODO:10 Entry, Battle 구현
+#TODO:20 API 구현
+#FEATURES:0 도전과제 추가하기
+#FEATURES:10 전적의 종류를 특정 게임의 전적과 전체 전적으로 구분하기
+#FEATURES:20 게임에 매치메이킹시 봇을 아규먼트로 넘겨주지 않는 옵션 추가
+#FEATURES:30 코드의 길이를 제한하는 Stack 아이템 추가. 아이템의 성능이 올라갈수록 유저는 더 긴 코드를 작성 가능 +item
+#FEATURES:30 봇마다 정보를 저장가능하게 해주는 Heap 아이템 추가. 아이템의 성능이 올라갈수록 봇에다가 더 많은 정보 저장 가능 +item
+#FEATURES:40 여러가지 게임 추가하기
+#BUGCHECK:0 채팅과 socket.io의 버그 체크하기
+#BUGCHECK:10 엔트리의 버그 체크하기
+#BUGCHECK:20 게임마다 버그 체크하기

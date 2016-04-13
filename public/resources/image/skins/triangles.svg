@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<svg width="360" height="360" viewBox="0 0 360 360" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<path d="M0 120 C0 0, 0 0, 120 0 H240 C360 0, 360 0, 360 120 V240 C360 360, 360 360, 240 360 H120 C0 360, 0 360, 0 240 Z" fill="#EEE"/>
+
+	<polygon points="174 13, 20 279, 327 279" fill="#074fc4"/>
+	<polygon points="160 160, 120 229, 200 229" fill="#0e2cdf"/>
+	<polygon points="217 193, 149 311, 285 311" fill="#0d47f8"/>
+	<polygon points="216 121, 126 277, 306 277" fill="#1638c3"/>
+	<polygon points="105 165, 9 331, 201 331" fill="#0b03b7"/>
+	<polygon points="231 18, 179 107, 282 107" fill="#3728f4"/>
+	<polygon points="195 110, 83 303, 306 303" fill="#2038c3"/>
+	<polygon points="123 203, 57 316, 188 316" fill="#4237db"/>
+	<polygon points="234 156, 179 250, 288 250" fill="#3d44db"/>
+	<polygon points="220 156, 118 333, 322 333" fill="#ffffff"/>
+	<polygon points="164 156, 146 186, 181 186" fill="#3c2ac7"/>
+	<polygon points="116 77, 16 249, 215 249" fill="#5409be"/>
+	<polygon points="80 161, 26 254, 133 254" fill="#4354ed"/>
+	<polygon points="146 107, 77 227, 215 227" fill="#3e2efb"/>
+	<polygon points="133 242, 70 351, 196 351" fill="#3247be"/>
+	<polygon points="149 38, 103 117, 194 117" fill="#1942e1"/>
+	<polygon points="122 128, 72 214, 171 214" fill="#ffffff"/>
+	<polygon points="157 265, 109 347, 204 347" fill="#0a60df"/>
+	<polygon points="158 110, 138 144, 177 144" fill="#ffffff"/>
+	<polygon points="101 164, 39 271, 163 271" fill="#4452df"/>
+	<polygon points="145 205, 113 260, 177 260" fill="#0e3add"/>
+	<polygon points="98 62, 38 166, 158 166" fill="#0762c3"/>
+	<polygon points="273 222, 223 308, 322 308" fill="#1f33d5"/>
+	<polygon points="148 168, 72 299, 223 299" fill="#2b40fc"/>
+	<polygon points="54 30, 38 58, 70 58" fill="#ffffff"/>
+	<polygon points="51 96, 19 151, 83 151" fill="#4e53e8"/>
+</svg>

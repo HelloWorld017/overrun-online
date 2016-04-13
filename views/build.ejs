@@ -19,14 +19,49 @@
 			}
 		</style>
 
+		<script src="/resources/js/jquery.validate.min.js"></script>
+
 		<script>
 			$(document).ready(function() {
 				$('select').material_select();
 			});
+
+			$.validator.setDefaults({
+				errorClass: 'invalid',
+				validClass: "valid",
+
+				errorPlacement: function (error, element){
+					$(element)
+						.closest("form")
+						.find("label[for='" + element.attr("id") + "']")
+						.text(error.text());
+				}
+			});
+
+			$.validator.addMethod("regex", function(value, element){
+				return (/^[A-Za-z0-9가-힣ㄱ-ㅎ-+_() ]{3,20}$/).test(value);
+			}, "<%= global.translator('validate.regex') %>");
+
+			$(document).ready(function(){
+				$('form').validate({
+					rules: {
+						name: {
+							required : true,
+							minlength: 3,
+							regex: true
+						}
+					},
+
+					messages : {
+						name: {
+							required: '<%= global.translator('validate.required') %>',
+							minlength: '<%= global.translator('validate.minlength') %>',
+						}
+					}
+				});
+			});
 		</script>
-		<%#
-			#TODO: Add jquery validator for name
-		%>
+
 	</head>
 
 	<body>
@@ -48,7 +83,7 @@
 						<select id="skin" name="skin">
 							<% skin.forEach((v) => { %>
 								<option value="<%= v %>" data-icon="/resources/image/skins/<%= v %>.svg" class="left">
-									<%= v %>
+									<%= global.translator('shop.item.skins.' + v) %>
 								</option>
 							<% }); %>
 						</select>

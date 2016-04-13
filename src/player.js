@@ -1,6 +1,7 @@
 'use strict';
 
 var bcrypt = require('bcrypt-nodejs');
+var Bot = require('./bot');
 var createToken = require('./create-token');
 var crypto = require('crypto');
 var errors = require('./errors');
