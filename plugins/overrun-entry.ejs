@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head prefix="og: http://ogp.me/ns#">
+		<%- include('../views/header', {title: global.translator('plugin.overrun.entry.title')}) %>
+		<script>
+			var section = $('.main-section');
+			function entry(gameName){
+				section.empty().append($(document.createElement('img')).attr('src', '/resources/image/loading.svg'));
+				$.ajax('/entry/' + gameName + '/<%= bot %>/').done(function(data){
+					window.location.href = '/battle/results/' + data.log;
+				});
+			}
+		</script>
+	</head>
+
+	<body>
+		<% include ../views/navigation %>
+		<% include ../views/background %>
+
+		<section class="main-section">
+			<a href="javascript:entry('OVERRUN-RANKED')"><%= global.translator('plugin.overrun.entry.ranked') %></a>
+			<a href="/entry/overrun/2"><%= global.translator('plugin.overrun.entry.unranked') %></a>
+		</section>
+
+		<% include ../views/footer %>
+	</body>
+</html>

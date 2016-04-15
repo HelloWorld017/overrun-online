@@ -12,7 +12,7 @@ class MatchMaker{
 		this.game = game;
 	}
 
-	entry(player, bot, response){
+	entry(player, bot, response, argument){
 		if(player.currentGame !== undefined) return;
 		if(player.entryTick < Date.now()) return;
 

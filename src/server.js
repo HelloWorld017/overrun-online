@@ -1,23 +1,13 @@
 'use strict';
+var EventEmitter = require('events');
 var matchmake = require('./matchmake');
 
-class Server{
+class Server extends EventEmitter{
 	constructor(){
-		this.callbacks = [];
 		this.players = {};
 		this.games = {};
 		this.gamePool = {};
 		this.matchmakers = {};
-	}
-
-	trigger(name, data){
-		this.callbacks.forEach((v) => {
-			v(name, data);
-		});
-	}
-
-	bind(callback){
-		this.callbacks.push(callback);
 	}
 
 	addToPool(game, matchmaker){

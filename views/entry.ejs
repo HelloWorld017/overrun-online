@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="<%= global.config['lang'] %>">
+	<head prefix="og: http://ogp.me/ns#">
+		<%- include('./header', {title: global.translator('entry.title')}) %>
+	</head>
+
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+
+		<section class="main-section">
+			<% global.entryList.forEach((v) => { %>
+				<a href="<%= v.href %>" class="btn waves-effect waves-light"><%= v.name %></a>
+			<% }); %>
+		</section>
+
+		<% include ./footer %>
+	</body>
+</html>
