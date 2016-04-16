@@ -41,7 +41,7 @@
 <script src="/resources/js/react-dom.min.js"></script>
 
 <% (global.headerHook[renderTarget] || []).forEach((v) => { %>
-	<script src="/jsx/<%= v %>.js"></script>
+	<%- v %>
 <% }) %>
 
 <script>
