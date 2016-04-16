@@ -22,10 +22,6 @@
 		<script src="/resources/js/jquery.validate.min.js"></script>
 
 		<script>
-			$(document).ready(function() {
-				$('select').material_select();
-			});
-
 			$.validator.setDefaults({
 				errorClass: 'invalid',
 				validClass: "valid",
@@ -43,6 +39,7 @@
 			}, "<%= global.translator('validate.regex') %>");
 
 			$(document).ready(function(){
+				$('select').material_select();
 				$('form').validate({
 					rules: {
 						name: {
@@ -60,6 +57,13 @@
 					}
 				});
 			});
+
+			var modalHeader = $('#api-modal-header');
+			var modalContent = $('#api-modal-content');
+
+			function openAPI(){
+				//TODO: Implement openAPI
+			}
 		</script>
 
 	</head>
@@ -121,6 +125,17 @@
 
 				<button class="btn waves-effect waves-light" type="submit"><%= global.translator('build.create') %></button>
 			</form>
+
+			<div id="api-modal" class="modal bottom-sheet">
+				<div class="modal-content">
+					<h4 id="api-modal-header"></h4>
+					<p id="api-modal-content"></p>
+				</div>
+
+				<div class="modal-footer">
+					<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><%= global.translator('build.api.done') %></a>
+				</div>
+			</div>
 
 			<script>
 				var codeArea = $('#code');

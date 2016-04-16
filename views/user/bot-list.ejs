@@ -1,9 +1,19 @@
-<% bots.forEach((v) => { %>
+<%
+	if(typeof nohref === 'undefined'){
+		var nohref = false;
+	}
+%>
+
+<%#TODO: Add showing bots by types. %>
+<% bots.forEach((v, k) => { %>
 	<li class="bot-view collection-item">
 		<img src="/resources/image/skins/<%= v.skin %>.svg" style="width: 64px; height: 64px;">
 		<div style="display: inline-block">
 			<span class="bot-name" style="display: block"><%= v.name %></span>
 			<span class="bot-type" style="display: block"><%= global.translator('bot.type', global.server.gamePool[v.type].getReadableName()); %></span>
 		</div>
+		<% if(!nohref){ %>
+			<a href="<%= href.replace('%number%', k) %>" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;"></a>
+		<% } %>
 	</li>
 <% }); %>

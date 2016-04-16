@@ -2,16 +2,52 @@
 <html lang="<%= global.config['lang'] %>">
 	<head prefix="og: http://ogp.me/ns#">
 		<%- include('./header', {title: global.translator('entry.title')}) %>
+		<style>
+			.entry {
+				width: 100%;
+				height: 480px;
+				line-height: 480px;
+			}
+
+			.entry-wrapper {
+				display: table-cell;
+				width: 100%;
+				height: 500px;
+			}
+
+			.entry-section, .entry-wrapper {
+				padding: 10px;
+			}
+
+			.main-entry {
+				display: table;
+				width: 100%;
+			}
+
+			.main-section {
+				overflow-x: hidden;
+			}
+
+			.main-section:hover {
+				overflow-x: auto;
+			}
+		</style>
 	</head>
 
 	<body>
 		<% include ./navigation %>
 		<% include ./background %>
 
-		<section class="main-section">
-			<% global.entryList.forEach((v) => { %>
-				<a href="<%= v.href %>" class="btn waves-effect waves-light"><%= v.name %></a>
-			<% }); %>
+		<section class="main-section entry-section">
+			<div class="main-entry">
+				<% global.entryList.forEach((v) => { %>
+					<div class="entry-wrapper">
+						<a href="<%= v.href %>" class="btn <%= v.className || '' %> entry waves-effect waves-light">
+							<%= v.name %>
+						</a>
+					</div>
+				<% }); %>
+			</div>
 		</section>
 
 		<% include ./footer %>

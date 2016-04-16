@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head prefix="og: http://ogp.me/ns#">
+		<%- include('../views/header', {title: global.translator('plugin.overrun.entry.select.title')}) %>
+	</head>
+
+	<body>
+		<% include ../views/navigation %>
+		<% include ../views/background %>
+
+		<section class="main-section">
+			<ul class="collection with-header">
+				<li class="collection-header">
+					<h3><%= global.translator('plugin.overrun.entry.select.desc') %></h3>
+				</li>
+				<%- include('../views/user/bot-list', {
+					bots: user.bots,
+					href: '/entry/overrun/selected/%number%'
+				}) %>
+			</ul>
+		</section>
+
+		<% include ../views/footer %>
+	</body>
+</html>

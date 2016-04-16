@@ -22,7 +22,7 @@ global.users = {};
 
 global.headerHook = {};
 global.plugins = {};
-global.entryList = {};
+global.entryList = [];
 global.apiList = {};
 
 var url = "mongodb://" + global.config['db-address'] + ":" + global.config['db-port'] + "/" + global.config['db-name'];

@@ -1,7 +1,11 @@
 'use strict';
+var errors = require('../src/errors');
 var router = require('express').Router();
 var overrun = require('./overrun-game');
 var PointCalculator = require('../src/calculate-point');
+
+var NotLoggedInError = errors.NotLoggedInError;
+var AlreadyEntriedError = errors.AlreadyEntriedError;
 
 const GAME_NAME = 'OVERRUN-RANKED';
 class OverrunRankedGame extends overrun.game{
@@ -94,6 +98,11 @@ OverrunRankedGame.getOptions = () => {
 };
 
 router.use((req, res, next) => {
+	if(!res.locals.auth){
+		next(new NotLoggedInError());
+		return;
+	}
+
 	if(res.locals.user.currentGame){
 		next(new AlreadyEntriedError());
 		return;
@@ -126,10 +135,11 @@ module.exports = {
 	},
 	entry: [{
 		name: OverrunRankedGame.getReadableName(),
-		href: '/entry/overrun'
+		href: '/entry/overrun',
+		className: 'orange'
 	}],
 	routers: {
-		'entry': router
+		'/entry': router
 	},
 	api: overrun.api
 };

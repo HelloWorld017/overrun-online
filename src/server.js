@@ -4,6 +4,7 @@ var matchmake = require('./matchmake');
 
 class Server extends EventEmitter{
 	constructor(){
+		super();
 		this.players = {};
 		this.games = {};
 		this.gamePool = {};

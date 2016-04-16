@@ -119,6 +119,11 @@ body {
 	overflow-x: auto;
 }
 
+.loading-image{
+	width: 500px;
+	margin: 0 auto;
+}
+
 .user-icon{
 	vertical-align: middle;
 	margin-right: 10px;

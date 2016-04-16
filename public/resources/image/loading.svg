@@ -65,8 +65,4 @@
 			</animateMotion>
 		</line>
 	</g>
-
-	<text x="180" y="180" text-anchor="middle" alignment-baseline="middle" font-family="Exo 2" font-size="15">
-		Loading...
-	</text>
 </svg>
