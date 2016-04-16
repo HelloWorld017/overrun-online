@@ -51,8 +51,7 @@ router.post('/entry/:game/:bot/:argument', (req, res, next) => {
 		return;
 	}
 
-	global.server.matchmakers[game].entry(res.locals.user, bot, req.params.argument.toString());
-	res.render('in-entry');
+	global.server.matchmakers[game].entry(res.locals.user, bot, res, req.params.argument.toString());
 	return;
 });
 

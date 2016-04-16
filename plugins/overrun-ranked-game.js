@@ -1,4 +1,5 @@
 'use strict';
+var router = require('express').Router();
 var overrun = require('./overrun-game');
 var PointCalculator = require('../src/calculate-point');
 
@@ -92,6 +93,29 @@ OverrunRankedGame.getOptions = () => {
 	};
 };
 
+router.use((req, res, next) => {
+	if(res.locals.user.currentGame){
+		next(new AlreadyEntriedError());
+		return;
+	}
+
+	next();
+});
+
+router.get('/overrun', (req, res, next) => {
+	res.render('../plugins/overrun-entry-select-bot');
+});
+
+router.get('/overrun/selected/:bot', (req, res, next) => {
+	res.render('../plugins/overrun-entry', {
+		bot: req.params.bot
+	});
+});
+
+router.get('/overrun/unranked', (req, res, next) => {
+	res.render('../plugins/overrun-unranked-entry');
+});
+
 module.exports = {
 	name: 'Overrun Ranked',
 	author: 'Khinenw',
@@ -99,6 +123,13 @@ module.exports = {
 	onLoad: (cb) => {
 		global.server.addToPool(OverrunRankedGame);
 		cb();
+	},
+	entry: [{
+		name: OverrunRankedGame.getReadableName(),
+		href: '/entry/overrun'
+	}],
+	routers: {
+		'entry': router
 	},
 	api: overrun.api
 };
