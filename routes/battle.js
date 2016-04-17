@@ -24,7 +24,7 @@ router.get('/entry', (req, res, next) => {
 	res.render('entry');
 });
 
-router.post('/entry/:game/:bot/:argument', (req, res, next) => {
+router.post('/entry/:game/:bot/:argument*?', (req, res, next) => {
 	if(res.locals.user.currentGame){
 		next(new AlreadyEntriedError());
 		return;

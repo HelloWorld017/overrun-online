@@ -56,7 +56,6 @@
 							$.ajax('/friends/search/' + search.val()).done(function(data){
 								isTimeoutOngoing = false;
 								autocomplete.empty();
-								console.log(data);
 								data.forEach(function(v){
 									autocomplete.append(
 										$(document.createElement('div')).attr('class', 'hoverable card-panel').append(
@@ -72,7 +71,7 @@
 				});
 
 				search.on('focusout', function(){
-					closeAutocomplete();
+					setTimeout(closeAutocomplete, 1000);
 				});
 			});
 		</script>
@@ -100,16 +99,10 @@
 					</div>
 				</div>
 
-				<% friends.forEach((v) => { %>
-					<div class="collection-item" id="friend-<%= v %>">
-						<a href="/user/<%= v %>">
-							<%= v %>
-							<a href="javascript:removeFriend('<%= v %>');" class="secondary-content">
-								<i class="fa fa-user-times"></i>
-							</a>
-						</a>
-					</div>
-				<% }); %>
+				<%- include('./user/friend-list', {
+					friends: friends,
+					href: 'javascript:removeFriend("%friend%")'
+				}) %>
 			</div>
 		</section>
 

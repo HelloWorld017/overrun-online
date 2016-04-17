@@ -38,6 +38,10 @@
 				return (/^[A-Za-z0-9가-힣ㄱ-ㅎ-+_() ]{3,20}$/).test(value);
 			}, "<%= global.translator('validate.regex') %>");
 
+			var modalHeader = undefined;
+			var modalContent = undefined;
+			var type = undefined;
+
 			$(document).ready(function(){
 				$('select').material_select();
 				$('form').validate({
@@ -56,14 +60,28 @@
 						}
 					}
 				});
+
+				modalHeader = $('#api-modal-header');
+				modalContent = $('#api-modal-content');
+				type = $('#type');
+
+				$('.modal-trigger').leanModal();
 			});
 
-			var modalHeader = $('#api-modal-header');
-			var modalContent = $('#api-modal-content');
-
 			function openAPI(){
-				//TODO: Implement openAPI
+				$.ajax('/api/' + type.val()).done(function(apiData){
+					console.log(apiData);
+					modalHeader.empty().html(apiData.title);
+					modalContent.empty();
+
+					(apiData.content || []).forEach(function(v){
+						modalContent
+							.append($(document.createElement('h4')).html(v.title))
+							.append($(document.createElement('p4')).html(v.content));
+					});
+				});
 			}
+
 		</script>
 
 	</head>
@@ -74,6 +92,10 @@
 
 		<section class="main-section">
 			<form method="post">
+				<% if(typeof token !== 'undefined'){ %>
+					<input name="token" type="hidden" value="<%- token %>">
+				<% } %>
+
 				<div class="row">
 					<div class="input-field col s12">
 						<label for="name"><%= global.translator('build.name') %></label>
@@ -112,7 +134,7 @@
 
 				<div class="row">
 					<h3><%= global.translator('build.edit') %></h3>
-					<a class="btn waves-effect waves-light" href="javascript:openAPI()">
+					<a class="btn waves-effect waves-light modal-trigger" href="#api-modal" onclick="openAPI()">
 						<%= global.translator('build.api') %>
 					</a>
 
@@ -126,15 +148,8 @@
 				<button class="btn waves-effect waves-light" type="submit"><%= global.translator('build.create') %></button>
 			</form>
 
-			<div id="api-modal" class="modal bottom-sheet">
-				<div class="modal-content">
-					<h4 id="api-modal-header"></h4>
-					<p id="api-modal-content"></p>
-				</div>
-
-				<div class="modal-footer">
-					<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat"><%= global.translator('build.api.done') %></a>
-				</div>
+			<div id="bot-code" style="display: none">
+				<%- bot.code %>
 			</div>
 
 			<script>
@@ -148,9 +163,24 @@
 				editor.getSession().on('change', function(){
 					codeArea.val(editor.getSession().getValue());
 				});
+
+				<% if(typeof bot !== undefined){ %>
+					$('#name').val('<%= bot.name %>');
+					$('#skin').val('<%= bot.skin %>');
+					$('#type').val('<%= bot.type %>');
+
+					editor.setValue($('#bot-code').html(), -1);
+				<% } %>
 			</script>
 		</section>
 
 		<% include ./footer %>
+
+		<div id="api-modal" class="modal bottom-sheet">
+			<div class="modal-content">
+				<h3 id="api-modal-header"></h3>
+				<p id="api-modal-content"></p>
+			</div>
+		</div>
 	</body>
 </html>

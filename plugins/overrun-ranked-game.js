@@ -92,7 +92,7 @@ OverrunRankedGame.getReadableName = () => {
 
 OverrunRankedGame.getOptions = () => {
 	return {
-		'accepts_bot_type': [GAME_NAME],
+		'accepts_bot_type': ['OVERRUN-RANKED', 'OVERRUN-UNRANKED'],
 		'show_to_bot_type': true
 	};
 };
@@ -125,6 +125,9 @@ router.get('/overrun/unranked', (req, res, next) => {
 	res.render('../plugins/overrun-unranked-entry');
 });
 
+var api = overrun.api;
+api.name += 'UNRANKED';
+
 module.exports = {
 	name: 'Overrun Ranked',
 	author: 'Khinenw',
@@ -141,5 +144,8 @@ module.exports = {
 	routers: {
 		'/entry': router
 	},
-	api: overrun.api
+	apiList: {
+		name: 'OVERRUN-RANKED',
+		content: overrun.api.content
+	}
 };

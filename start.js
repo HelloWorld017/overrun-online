@@ -79,7 +79,7 @@ MongoClient.connect(url, (err, client) => {
 			}
 
 			if(plugin.apiList){
-				global.apiList[plugin.name] = plugin.apiList;
+				global.apiList[plugin.apiList.name] = plugin.apiList.content;
 			}
 
 			plugin.onLoad(() => {

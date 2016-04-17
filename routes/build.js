@@ -33,7 +33,7 @@ router.all('/edit/:id', (req, res, next) => {
 			return;
 		}
 
-		if(req.body.csrftoken !== req.session.csrftoken){
+		if(req.body.token !== req.session.csrftoken){
 			next(new InvalidTokenError());
 			return;
 		}

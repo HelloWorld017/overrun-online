@@ -9,6 +9,10 @@
 		<% include ../views/background %>
 
 		<section class="main-section">
+			<%- include('../views/user/friend-list', {
+				friends: user.friends,
+				href: '/entry/overrun/unranked/%friend%'
+			})
 		</section>
 
 		<% include ../views/footer %>

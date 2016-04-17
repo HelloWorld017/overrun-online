@@ -99,5 +99,8 @@ module.exports = {
 		});
 		cb();
 	},
-	api: overrun.api
+	apiList: {
+		name: 'OVERRUN-UNRANKED',
+		content: overrun.api.content
+	}
 };

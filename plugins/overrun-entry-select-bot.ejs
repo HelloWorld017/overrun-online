@@ -9,15 +9,16 @@
 		<% include ../views/background %>
 
 		<section class="main-section">
-			<ul class="collection with-header">
-				<li class="collection-header">
+			<div class="collection with-header">
+				<div class="collection-header">
 					<h3><%= global.translator('plugin.overrun.entry.select.desc') %></h3>
-				</li>
+				</div>
 				<%- include('../views/user/bot-list', {
 					bots: user.bots,
-					href: '/entry/overrun/selected/%number%'
+					href: '/entry/overrun/selected/%number%',
+					type: ['OVERRUN-RANKED', 'OVERRUN-UNRANKED']
 				}) %>
-			</ul>
+			</div>
 		</section>
 
 		<% include ../views/footer %>

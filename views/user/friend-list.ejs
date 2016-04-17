@@ -1,0 +1,10 @@
+<% friends.forEach((v) => { %>
+	<div class="collection-item" id="friend-<%= v %>">
+		<a href="/user/<%= v %>">
+			<%= v %>
+			<a href="<%= href.replace('%friend%', v) %>" class="secondary-content">
+				<i class="fa fa-user-times"></i>
+			</a>
+		</a>
+	</div>
+<% }); %>

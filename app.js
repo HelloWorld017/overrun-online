@@ -16,6 +16,7 @@ var StatusError = errors.StatusError;
 var MongoStore = require('connect-mongo')(session);
 
 var about = require('./routes/about');
+var api = require('./routes/api');
 var authenticate = require('./routes/authenticate');
 var battle = require('./routes/battle');
 var build = require('./routes/build');
@@ -104,6 +105,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', index);
+app.use('/api', api);
 app.use('/about', about);
 app.use('/authenticate', authenticate);
 app.use('/battle', battle);
