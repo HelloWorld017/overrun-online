@@ -1,7 +1,11 @@
 {
-	"index.title": "Welcome to overrun-online!",
-	"index.motd": "Welcome to overrun-online!",
-	"index.continue": "Touch anywhere to continue.",
+	"about.title": "About overrun-online",
+
+	"alert.checkemail": "Please check your email.",
+
+	"authenticate.finish.title": "Congratulations",
+	"authenticate.finish.masthead": "Your email address is successfully verified!",
+	"authenticate.finish.desc": "Now, please return to login page.",
 
 	"build.title": "Building bot",
 	"build.name": "Bot Name",
@@ -11,71 +15,19 @@
 	"build.api": "Show API documentation",
 	"build.create": "Create bot!",
 
-	"login.title": "Login",
-	"login.id": "Username",
-	"login.password": "Password",
-	"login.submit": "Login",
+	"desc": "overrun-online is a game which creates algorithm and fighting against.",
 
-	"find.title": "Find",
-
-	"friends.title": "Friends list",
-	"friends.add": "Add to friends",
-	"friends.remove": "Remove from friends",
-	"friends.search": "Search Friends",
-
-	"unregister.title": "Unregister",
-
-	"join.title": "Registration",
-	"join.name": "Nickname",
-	"join.id": "Username",
-	"join.email": "Email Address",
-	"join.password": "Password",
-	"join.password.check": "Password confirm",
-	"join.submit": "Sign up",
-
-	"update.title": "Update user information",
-	"update.name": "Nickname",
-	"update.id": "Username",
-	"update.email": "Email Address",
-	"update.password": "Password",
-	"update.password.check": "Password confirm",
-	"update.github": "Github Account",
-	"update.submit": "Update",
-
-	"navigation.dropdown": "System Menu",
-
-	"me.title": "My Page",
-
-	"user.bots": "Owning bots",
-	"user.skins": "Bought skins",
-	"user.status": "Match records",
-
-	"logout.title": "Logout",
-
-	"shop.title": "Shop",
-	"shop.category.skins": "Skins",
-	"shop.money": "%money%$",
-	"shop.current.money": "Current money: %money%$",
-	"shop.bought": "Successfully bought.",
-	"shop.item.skins.default": "Default skin",
-	"shop.item.skins.triangles": "Triangles",
-
-	"authenticate.finish.title": "Congratulations",
-	"authenticate.finish.masthead": "Your email address is successfully verified!",
-	"authenticate.finish.desc": "Now, please return to login page.",
+	"email.find.title": "Please confirm your overrun-online password reset request.",
+	"email.find.masthead": "To reset your password, please confirm your email.",
+	"email.find.desc": "You can reset your password by clicking link below. If you didn't requested resetting your password or you haven't registered yet, please ignore this email. The link is valid for an hour.",
+	"email.find.link": "Reset my password",
 
 	"email.verify.title": "Please verify your email.",
 	"email.verify.masthead": "You have to verify your email to sign up for overrun-online.",
 	"email.verify.desc": "Please click the link below. If you didn't signed up, please ignore this email.",
 	"email.verify.link": "Verify my email!",
 
-	"validate.email": "Invalid email address.",
-	"validate.equal.to": "Your password does not match.",
-	"validate.minlength": "It must be at least {0} characters.",
-	"validate.regex": "It seems that it contains invalid characters.",
-	"validate.required": "This is required field.",
-	"validate.remote.id": "Your username is duplicated.",
-	"validate.remote.email": "Your email is duplicated.",
+	"entry.title": "Entry",
 
 	"error.alreadybought": "You already have bought.",
 	"error.alreadyentried": "You already have been entried.",
@@ -95,6 +47,36 @@
 	"error.toomanybots": "There are too many bots!",
 	"error.wrongsession": "Your session is invalid.",
 
+	"find.title": "Find",
+
+	"friends.title": "Friends list",
+	"friends.add": "Add to friends",
+	"friends.remove": "Remove from friends",
+	"friends.search": "Search Friends",
+
+	"index.title": "Welcome to overrun-online!",
+	"index.motd": "Welcome to overrun-online!",
+	"index.continue": "Touch anywhere to continue.",
+
+	"join.title": "Registration",
+	"join.name": "Nickname",
+	"join.id": "Username",
+	"join.email": "Email Address",
+	"join.password": "Password",
+	"join.password.check": "Password confirm",
+	"join.submit": "Sign up",
+
+	"login.title": "Login",
+	"login.id": "Username",
+	"login.password": "Password",
+	"login.submit": "Login",
+
+	"logout.title": "Logout",
+
+	"navigation.dropdown": "System Menu",
+
+	"me.title": "My Page",
+
 	"server.http.eaddrinuse": "Port is already in use.",
 	"server.http.eacces": "%bind% needs elevated permission.",
 	"server.http.load": "HTTP Server has been successfully loaded.",
@@ -103,5 +85,55 @@
 	"server.plugin.error": "Error while loading plugins.",
 	"server.plugin.load": "Successfully loaded plugin %name% v%version% by %author%.",
 
-	"desc": "overrun-online is a game which creates algorithm and fighting against."
+	"shop.title": "Shop",
+	"shop.category.skins": "Skins",
+	"shop.money": "%money%$",
+	"shop.current.money": "Current money: %money%$",
+	"shop.bought": "Successfully bought.",
+	"shop.item.skins.default": "Default skin",
+	"shop.item.skins.triangles": "Triangles",
+
+	"tutorial.title": "Tutorial",
+
+	"unregister.title": "Unregister",
+
+	"update.title": "Update user information",
+	"update.name": "Nickname",
+	"update.id": "Username",
+	"update.email": "Email Address",
+	"update.password": "Password",
+	"update.password.check": "Password confirm",
+	"update.github": "Github Account",
+	"update.submit": "Update",
+
+	"user.bots": "Owning bots",
+	"user.skins": "Bought skins",
+	"user.status": "Match records",
+
+	"validate.email": "Invalid email address.",
+	"validate.equal.to": "Your password does not match.",
+	"validate.minlength": "It must be at least {0} characters.",
+	"validate.regex": "It seems that it contains invalid characters.",
+	"validate.required": "This is required field.",
+	"validate.remote.id": "Your username is duplicated.",
+	"validate.remote.email": "Your email is duplicated.",
+
+	"plugin.overrun.ranked": "overrun Ranked game",
+	"plugin.overrun.unranked": "overrun Unranked game",
+	"plugin.overrun.entry.select.title": "Select your bot",
+	"plugin.overrun.entry.select.desc": "Please select your bot!",
+	"plugin.overrun.entry.title": "Entry",
+	"plugin.overrun.entry.ranked": "Entry into Ranked match",
+	"plugin.overrun.entry.unranked": "Entry into Unranked match / Friendly battle",
+	"plugin.overrun.api.title": "#TODO: Add API",
+	"plugin.overrun.api.log.title": "",
+	"plugin.overrun.api.log.content": "",
+	"plugin.overrun.api.getBots.title": "",
+	"plugin.overrun.api.getBots.content": "",
+	"plugin.overrun.api.status.title": "",
+	"plugin.overrun.api.status.content": "",
+	"plugin.overrun.api.move.title": "",
+	"plugin.overrun.api.move.content": "",
+	"plugin.overrun.api.rotate.title": "",
+	"plugin.overrun.api.rotate.content": ""
 }

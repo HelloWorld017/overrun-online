@@ -148,9 +148,11 @@
 				<button class="btn waves-effect waves-light" type="submit"><%= global.translator('build.create') %></button>
 			</form>
 
-			<div id="bot-code" style="display: none">
-				<%- bot.code %>
-			</div>
+			<% if(typeof bot !== 'undefined'){ %>
+				<div id="bot-code" style="display: none">
+					<%- bot.code %>
+				</div>
+			<% } %>
 
 			<script>
 				var codeArea = $('#code');
@@ -163,8 +165,9 @@
 				editor.getSession().on('change', function(){
 					codeArea.val(editor.getSession().getValue());
 				});
+				editor.setValue('', -1);
 
-				<% if(typeof bot !== undefined){ %>
+				<% if(typeof bot !== 'undefined'){ %>
 					$('#name').val('<%= bot.name %>');
 					$('#skin').val('<%= bot.skin %>');
 					$('#type').val('<%= bot.type %>');
