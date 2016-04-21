@@ -94,12 +94,12 @@ MongoClient.connect(url, (err, client) => {
 					}
 
 					var loadCallback = () => {
-						cb();
 						console.log(global.translator('server.plugin.load', {
 							name: plugin.name,
 							author: plugin.author,
 							version: plugin.version
 						}));
+						cb();
 					};
 
 					if(plugin.onLoad){
