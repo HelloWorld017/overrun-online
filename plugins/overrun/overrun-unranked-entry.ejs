@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head prefix="og: http://ogp.me/ns#">
+		<%- include('../../views/header', {title: global.translator('plugin.overrun.entry.unranked')}) %>
+	</head>
+
+	<body>
+		<% include ../../views/navigation %>
+		<% include ../../views/background %>
+
+		<section class="main-section">
+			<%- include('../../views/user/friend-list', {
+				friends: user.friends,
+				href: '/entry/overrun/unranked/%friend%'
+			}) %>
+		</section>
+
+		<% include ../../views/footer %>
+	</body>
+</html>

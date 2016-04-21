@@ -1,11 +1,6 @@
 'use strict';
-var errors = require('../src/errors');
-var router = require('express').Router();
 var overrun = require('./overrun-game');
-var PointCalculator = require('../src/calculate-point');
-
-var NotLoggedInError = errors.NotLoggedInError;
-var AlreadyEntriedError = errors.AlreadyEntriedError;
+var PointCalculator = require(global.src('calculate-point'));
 
 const GAME_NAME = 'OVERRUN-RANKED';
 class OverrunRankedGame extends overrun.game{
@@ -97,55 +92,4 @@ OverrunRankedGame.getOptions = () => {
 	};
 };
 
-router.use((req, res, next) => {
-	if(!res.locals.auth){
-		next(new NotLoggedInError());
-		return;
-	}
-
-	if(res.locals.user.currentGame){
-		next(new AlreadyEntriedError());
-		return;
-	}
-
-	next();
-});
-
-router.get('/overrun', (req, res, next) => {
-	res.render('../plugins/overrun-entry-select-bot');
-});
-
-router.get('/overrun/selected/:bot', (req, res, next) => {
-	res.render('../plugins/overrun-entry', {
-		bot: req.params.bot
-	});
-});
-
-router.get('/overrun/unranked', (req, res, next) => {
-	res.render('../plugins/overrun-unranked-entry');
-});
-
-var api = overrun.api;
-api.name += 'UNRANKED';
-
-module.exports = {
-	name: 'Overrun Ranked',
-	author: 'Khinenw',
-	version: 'alpha 0.0.0 201603260001',
-	onLoad: (cb) => {
-		global.server.addToPool(OverrunRankedGame);
-		cb();
-	},
-	entry: [{
-		name: OverrunRankedGame.getReadableName(),
-		href: '/entry/overrun',
-		className: 'orange'
-	}],
-	routers: {
-		'/entry': router
-	},
-	apiList: {
-		name: 'OVERRUN-RANKED',
-		content: overrun.api.content
-	}
-};
+module.exports = OverrunRankedGame;

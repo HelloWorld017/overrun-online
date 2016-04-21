@@ -1,8 +1,8 @@
 'use strict';
-var Game = require('../src/game');
-var Player = require('../src/player');
+var Game = require(global.src('game'));
+var Player = require(global.src('player'));
 var process = require('process');
-var Library = require('../src/library');
+var Library = require(global.src('library'));
 var localeval = require('localeval');
 
 const BOARD_SIZE = 6;

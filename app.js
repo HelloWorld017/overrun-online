@@ -5,7 +5,6 @@ var crypto = require('crypto');
 var errors = require('./src/errors');
 var express = require('express');
 var favicon = require('serve-favicon');
-var jsxCompile = require('express-jsx');
 var logger = require('morgan');
 var path = require('path');
 var session = require('express-session');
@@ -48,8 +47,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(jsxCompile(path.join(__dirname, 'plugins', 'public')));
-app.use(express.static(path.join(__dirname, 'plugins')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 global.session = session({
@@ -125,13 +122,8 @@ app.use('/user', user);
 app.use('/validate', validate);
 
 async.forEachOf(global.plugins, (plugin, pluginName, cb) => {
-	if(plugin.routers){
-		async.forEachOf(plugin.routers, (router, routerName, callback) => {
-			app.use(routerName, router);
-			callback();
-		}, () => {
-			cb();
-		});
+	if(plugin.onServerInit){
+		plugin.onServerInit(app, cb);
 	}else cb();
 }, () => {
 	app.use((req, res, next) => {

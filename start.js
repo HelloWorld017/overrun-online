@@ -17,6 +17,7 @@ global.translator = require('./src/translator');
 global.key = (process.env.NODE_ENV || 'development') === 'development' ? new NodeRSA({b: 512}, {encryptionScheme: 'pkcs1'}) : new NodeRSA({b: 4096});
 global.mongo = undefined;
 global.server = undefined;
+global.src = require('./src/require-source');
 global.version = SERVER_VERSION;
 global.users = {};
 
@@ -52,43 +53,59 @@ MongoClient.connect(url, (err, client) => {
 		}
 
 		async.eachSeries(files, (v, cb) => {
-			if(!v.endsWith('.js')){
-				cb();
-				return;
-			}
+			fs.stat(path.join(__dirname, 'plugins', v), (err, stats) => {
+				if(err){
+					console.error(global.translator('server.plugin.error'));
+					console.error(err.toString());
+					cb();
+					return;
+				}
 
-			var plugin = require(path.join(__dirname, 'plugins', v));
+				if(!stats.isDirectory()){
+					cb();
+					return;
+				}
 
-			if(!plugin.onLoad){
-				cb();
-				return;
-			}
+				fs.access(path.join(__dirname, 'plugins', v, 'plugin.js'), fs.R_OK, (err) => {
+					if(err){
+						cb();
+						return;
+					}
 
-			global.plugins[plugin.name] = plugin;
+					var plugin = require(path.join(__dirname, 'plugins', v, 'plugin.js'));
+					global.plugins[plugin.name] = plugin;
 
-			if(plugin.renderHook){
-				Object.keys(plugin.renderHook).forEach((header) => {
-					if(!global.headerHook[header]) global.headerHook[header] = [];
+					if(plugin.renderHook){
+						Object.keys(plugin.renderHook).forEach((header) => {
+							if(!global.headerHook[header]) global.headerHook[header] = [];
 
-					global.headerHook[header].push(plugin.renderHook[header]);
+							global.headerHook[header].push(plugin.renderHook[header]);
+						});
+					}
+
+					if(plugin.entry){
+						global.entryList = global.entryList.concat(plugin.entry);
+					}
+
+					if(plugin.apiList){
+						plugin.apiList.forEach((v) => {
+							global.apiList[v.name] = v.content;
+						});
+					}
+
+					var loadCallback = () => {
+						cb();
+						console.log(global.translator('server.plugin.load', {
+							name: plugin.name,
+							author: plugin.author,
+							version: plugin.version
+						}));
+					};
+
+					if(plugin.onLoad){
+						plugin.onLoad(loadCallback);
+					}else loadCallback();
 				});
-			}
-
-			if(plugin.entry){
-				global.entryList = global.entryList.concat(plugin.entry);
-			}
-
-			if(plugin.apiList){
-				global.apiList[plugin.apiList.name] = plugin.apiList.content;
-			}
-
-			plugin.onLoad(() => {
-				cb();
-				console.log(global.translator('server.plugin.load', {
-					name: plugin.name,
-					author: plugin.author,
-					version: plugin.version
-				}));
 			});
 		}, () => {
 			var app = require('./app')((app) => {

@@ -118,6 +118,7 @@
 	"validate.remote.id": "Your username is duplicated.",
 	"validate.remote.email": "Your email is duplicated.",
 
+	"plugin.overrun": "Overrun",
 	"plugin.overrun.ranked": "overrun Ranked game",
 	"plugin.overrun.unranked": "overrun Unranked game",
 	"plugin.overrun.entry.select.title": "Select your bot",
