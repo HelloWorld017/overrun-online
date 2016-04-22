@@ -67,11 +67,12 @@ class OverrunGame extends Game{
 
 			localeval(attack.getCode(), attackEvaluator.evaluator, EVAL_TIMEOUT, (err) => {
 				turnLog[i].push({
-					content: 'turn.change',
+					content: 'overrun.turn.change',
 					data: {
 						type: 'attack',
 						name: attack.getName(),
 						skin: attack.getSkin(),
+						player: attack.getPlayer().getName(),
 						log: attackEvaluator.logs,
 						err: err ? err.toString() : undefined
 					}
@@ -81,13 +82,13 @@ class OverrunGame extends Game{
 				if(attack.boundBox.min().deepEqual(defece.boundBox.min())){
 					if(defence.defence !== undefined && defence.defence > 0){
 						turnLog[i].push({
-							content: 'turn.defence'
+							content: 'overrun.turn.defence'
 						});
 						return;
 					}
 
 					turnLog.final = {
-						content: 'turn.win',
+						content: 'overrun.turn.win',
 						data: {
 							type: 'attack',
 							player: bot.getPlayer().getName(),
@@ -103,11 +104,11 @@ class OverrunGame extends Game{
 				}
 
 				defence.metadata.currentMovement = MAX_ACTION_AMOUNT + 1;
-				var defenceEvaluator = this.getEvaluator(attack, [], true);
+				var defenceEvaluator = this.getEvaluator(defence, [], true);
 
 				localeval(defence.getCode(), defenceEvaluator.evaluator, EVAL_TIMEOUT, (err) => {
 					turnLog[i].push({
-						content: 'turn.change',
+						content: 'overrun.turn.change',
 						data: {
 							type: 'defence',
 							name: defence.getName(),
@@ -123,7 +124,7 @@ class OverrunGame extends Game{
 		}, (err) => {
 			if(!err){
 				turnLog.final = {
-					content: 'turn.win',
+					content: 'overrun.turn.win',
 					data: {
 						type: 'defence',
 						player: bot.getPlayer().getName(),
@@ -171,8 +172,8 @@ class OverrunGame extends Game{
 
 	getEvaluator(bot, logObject, isDefence){
 		var check = (amount) => {
-			if(player.metadata.currentMovement - amount < 0) return new Error('turn.no.movement');
-			if(player.metadata.overallMovement - amount < 0) return new Error('turn.no.movement.overall');
+			if(player.metadata.currentMovement - amount < 0) return 'turn.no.movement';
+			if(player.metadata.overallMovement - amount < 0) return 'turn.no.movement.overall';
 
 			return undefined;
 		};
@@ -199,7 +200,7 @@ class OverrunGame extends Game{
 		var evalObject = {
 			log: function(content){
 				if(typeof content !== 'string'){
-					log('turn.err', new Error('turn.content.not.string'), true);
+					log('turn.err', 'turn.content.not.string', true);
 					return false;
 				}
 
@@ -211,7 +212,7 @@ class OverrunGame extends Game{
 				var err = check(1);
 
 				if((bot.getBoundBox().maxX() >= BOARD_SIZE || bot.getBoundBox().minX() <= 0) || (bot.getBoundBox().maxY() >= BOARD_SIZE || bot.getBoundBox().minY() <= 0)){
-					err = new Error('turn.bot.over.board');
+					err = 'turn.bot.over.board';
 				}
 
 				if(err){
@@ -228,7 +229,7 @@ class OverrunGame extends Game{
 			rotate: function(amount){
 				var err = check(1);
 				if(Number.isInteger(amount)){
-					err = new Error('turn.amount.not.number');
+					err = 'turn.amount.not.number';
 				}
 
 				if(err){

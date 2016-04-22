@@ -1,4 +1,5 @@
 'use strict';
+const GAME_NAME = "MEIRO";
 const START_X = 0;
 const START_Y = 0;
 
@@ -23,6 +24,7 @@ class MeiroGame extends Game{
 	}
 
 	resetRound(){
+		//TODO generate maze
 		this.bots.forEach((v, k) => {
 			v.metadata.x = START_X;
 			v.metadata.y = START_Y;
@@ -33,27 +35,35 @@ class MeiroGame extends Game{
 		resetRound();
 
 		var turnLog = {};
-		var attack = this.bots[0];
 
 		async.eachSeries(Library.rangeOf(TURN_COUNT), (i, cb) => {
 			if(turnLog[i] === undefined){
 				turnLog[i] = [];
 			}
 
-			localeval(attack.getCode(), this.getEvaluator(, []), EVAL_TIMEOUT, (err) => {
-				var defenceEvaluator = this.getEvaluator(attack, [], true);
+			var evaluators = [];
+			evaluators[0] = this.getEvaluator(bots[0], []);
+			evaluators[1] = this.getEvaluator(bots[1], []);
 
-				localeval(defence.getCode(), defenceEvaluator.evaluator, EVAL_TIMEOUT, (err) => {
+			localeval(bots[0].getCode(), evaluators[0].evaluator, EVAL_TIMEOUT, (err) => {
+				localeval(defence.getCode(), evaluators[1].evaluator, EVAL_TIMEOUT, (err1) => {
 					turnLog[i].push({
-						content: 'turn.change',
-						data: {
-							type: 'defence',
-							name: defence.getName(),
-							skin: defence.getSkin(),
-							log: defenceEvaluator.logs,
+						content: 'meiro.turn.proceed',
+						data: [{
+							name: bots[0].getName(),
+							skin: bots[0].getSkin(),
+							player: bots[0].getPlayer().getName(),
+							log: evaluators[0].logs,
 							err: err ? err.toString() : undefined
-						}
+						}, {
+							name: bots[1].getName(),
+							skin: bots[1].getSkin(),
+							player: bots[1].getPlayer().getName(),
+							log: evaluators[1].logs,
+							err: err1 ? err1.toString() : undefined
+						}]
 					});
+					//TODO check bots escaping maze.
 
 					cb(null);
 				});
@@ -128,6 +138,7 @@ class MeiroGame extends Game{
 		};
 
 		var evalObject = {
+			//TODO
 		};
 
 		return {
@@ -141,6 +152,6 @@ class MeiroGame extends Game{
 	}
 }
 
-OverrunGame.getName = () => {
+MeiroGame.getName = () => {
 	return GAME_NAME;
 };
