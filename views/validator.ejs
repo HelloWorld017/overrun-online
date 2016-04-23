@@ -17,7 +17,7 @@
 	}, "<%= global.translator('validate.regex') %>");
 
 	$.validator.addMethod("name-regex", function(value, element){
-		return (/^[a-zA-Z0-9ㄱ-ㅎ가-힣#-_.]+$/).test(value);
+		return (/^[a-zA-Z0-9ㄱ-ㅎ가-힣#-_.]{2,20}$/).test(value);
 	}, "<%= global.translator('validate.regex') %>");
 
 	$(document).ready(function(){

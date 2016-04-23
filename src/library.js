@@ -18,6 +18,12 @@ Math.inRange = function(min, max, value){
 	return (min < value) && (value < max);
 };
 
+Math.randomRange = function(max, min){
+	min = min || 0;
+
+	return Math.round(Math.random() * (max - min)) + min;
+};
+
 Number.prototype.zfill = function(repeat){
 	var num = this.toString();
 	if(num.length >= repeat) return num;
@@ -162,9 +168,33 @@ AABB.prototype = {
 	}
 };
 
-function rangeOf(max){
-	return Array.apply(null, Array(max)).map((v, k) => {return k;});
-}
+//Appending built-in object's prototype is dangerous.
+Array.rangeOf = function(max){
+	return Array.apply(null, Array(max)).map(function(v, k){
+		return k;
+	});
+};
+
+Array.remove = function(array, index){
+	array.splice(index, 1);
+};
+
+Array.shuffle = function(array){
+	var newArray = [];
+	var usedKey = Array.rangeOf(array.length);
+
+	Array.rangeOf(array.length).forEach(function(v){
+		var k = Math.randomRange(usedKey.length - 1 , 0);
+		newArray.push(array[usedKey[k]]);
+		Array.remove(usedKey, k);
+	});
+
+	return newArray;
+};
+
+Array.clone = function(array){
+	return array.slice(0);
+};
 
 module.exports = {
 	Position: Position,

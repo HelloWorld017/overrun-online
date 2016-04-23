@@ -28,5 +28,5 @@ module.exports = {
 		name: global.translator('plugin.meiro'),
 		href: '/entry/meiro',
 		className: 'orange'
-	}],
+	}]
 };

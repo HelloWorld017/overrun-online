@@ -59,7 +59,7 @@
 
 			<% if(isMyPage){ %>
 				<a class="btn waves-effect waves-lignt" href="/me/update"><i class="fa fa-pencil"></i><%= global.translator('update.title') %></a>
-			<% }else{ %>
+			<% }else if(auth){ %>
 				<% if(localUser.friends.indexOf(user.getName()) === -1){ %>
 					<a id="friend-btn" class="btn waves-effect waves-light" href="javascript:addFriend('<%= user.getName() %>')"><i class="fa fa-user-plus"></i><span><%= global.translator('friends.add') %></span></a>
 				<% }else{ %>

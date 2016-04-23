@@ -1,7 +1,41 @@
 'use strict';
+var Library = require(global.src('library'));
+
 const GAME_NAME = "MEIRO";
 const START_X = 0;
 const START_Y = 0;
+const MAZE_SIZE = 10;
+
+const DIRECTIONS = [
+	{
+		//EAST
+		x: 1,
+		y: 0,
+		value: 1,
+		opposite: 2
+	},
+	{
+		//WEST
+		x: -1,
+		y: 0,
+		value: 2,
+		opposite: 1
+	},
+	{
+		//NORTH
+		x: 0,
+		y: 1,
+		value: 4,
+		opposite: 8
+	},
+	{
+		//SOUTH
+		x: 0,
+		y: -1,
+		value: 8,
+		opposite: 4
+	}
+];
 
 class MeiroGame extends Game{
 	constructor(gid, bot1, bot2, players, server){
@@ -24,7 +58,33 @@ class MeiroGame extends Game{
 	}
 
 	resetRound(){
-		//TODO generate maze
+		//TODO generate maze, generate teleporter
+		this.maze = {};
+
+		//Using recursive backtracking to generate a maze;
+		Array.rangeOf(MAZE_SIZE).forEach((x) => {
+			Array.rangeOf(MAZE_SIZE).forEach((y) => {
+				this.maze[`x${x}y${y}`] = 0;
+			});
+		});
+
+		var carve = (x, y) => {
+			var direction = Array.shuffle(DIRECTIONS);
+
+			direction.forEach((d) => {
+				var newX = x + d.x;
+				var newY = y + d.y;
+
+				if(newX >= 0 && newY >= 0 && newX < MAZE_SIZE && newY < MAZE_SIZE && this.maze[`x${newX}y${newY}`] === 0){
+					this.maze[`x${x}y${y}`] += d.value;
+					this.maze[`x${newX}y${newY}`] += d.opposite;
+					carve(newX, newY);
+				}
+			});
+		};
+
+		carve(START_X, START_Y);
+
 		this.bots.forEach((v, k) => {
 			v.metadata.x = START_X;
 			v.metadata.y = START_Y;
@@ -36,7 +96,7 @@ class MeiroGame extends Game{
 
 		var turnLog = {};
 
-		async.eachSeries(Library.rangeOf(TURN_COUNT), (i, cb) => {
+		async.eachSeries(Array.rangeOf(TURN_COUNT), (i, cb) => {
 			if(turnLog[i] === undefined){
 				turnLog[i] = [];
 			}

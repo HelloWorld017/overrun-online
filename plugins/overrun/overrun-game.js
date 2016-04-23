@@ -57,7 +57,7 @@ class OverrunGame extends Game{
 			return index !== attackIndex;
 		})[0];
 
-		async.eachSeries(Library.rangeOf(TURN_COUNT), (i, cb) => {
+		async.eachSeries(Array.rangeOf(TURN_COUNT), (i, cb) => {
 			if(turnLog[i] === undefined){
 				turnLog[i] = [];
 			}
@@ -139,7 +139,7 @@ class OverrunGame extends Game{
 
 	start(){
 		var gameLog = [];
-		async.eachSeries(Library.rangeOf(TURN_COUNT), (k, cb) => {
+		async.eachSeries(Array.rangeOf(TURN_COUNT), (k, cb) => {
 			processRound((k % 2), (log) => {
 				gameLog[k] = log;
 				cb(null);

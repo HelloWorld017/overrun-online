@@ -76,7 +76,7 @@ router.all('/', (req, resp, next) => {
 								return;
 							}
 							//Test id, email, name
-							if(!(/^[a-zA-Z0-9][a-zA-Z0-9-_.]{4,11}$/.test(id) && /(^[a-zA-Z0-9_.+-]{1,30}@[a-zA-Z0-9-]{1,30}\.[a-zA-Z0-9-.]{1,10}$)/.test(email) && /^[a-zA-Z0-9ㄱ-ㅎ가-힣#-_.]{2,11}$/.test(name))){
+							if(!(/^[a-zA-Z0-9][a-zA-Z0-9-_.]{4,11}$/.test(id) && /(^[a-zA-Z0-9_.+-]{1,30}@[a-zA-Z0-9-]{1,30}\.[a-zA-Z0-9-.]{1,10}$)/.test(email) && /^[a-zA-Z0-9ㄱ-ㅎ가-힣#-_.]{2,20}$/.test(name))){
 								next(new InvalidDataError());
 								return;
 							}
