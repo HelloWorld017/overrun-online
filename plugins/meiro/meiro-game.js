@@ -9,31 +9,31 @@ const MAZE_SIZE = 10;
 const DIRECTIONS = [
 	{
 		//EAST
-		x: 1,
+		x: -1,
 		y: 0,
-		value: 1,
-		opposite: 2
+		value: 'E',
+		opposite: 'W'
 	},
 	{
 		//WEST
-		x: -1,
+		x: 1,
 		y: 0,
-		value: 2,
-		opposite: 1
+		value: 'W',
+		opposite: 'E'
 	},
 	{
 		//NORTH
 		x: 0,
-		y: 1,
-		value: 4,
-		opposite: 8
+		y: -1,
+		value: 'N',
+		opposite: 'S'
 	},
 	{
 		//SOUTH
 		x: 0,
-		y: -1,
-		value: 8,
-		opposite: 4
+		y: 1,
+		value: 'S',
+		opposite: 'N'
 	}
 ];
 
@@ -64,7 +64,15 @@ class MeiroGame extends Game{
 		//Using recursive backtracking to generate a maze;
 		Array.rangeOf(MAZE_SIZE).forEach((x) => {
 			Array.rangeOf(MAZE_SIZE).forEach((y) => {
-				this.maze[`x${x}y${y}`] = 0;
+				this.maze[`x${x}y${y}`] = {
+					visited: false,
+					walls: {
+						N: true,
+						W: true,
+						S: true,
+						E: true
+					}
+				};
 			});
 		});
 
@@ -75,9 +83,10 @@ class MeiroGame extends Game{
 				var newX = x + d.x;
 				var newY = y + d.y;
 
-				if(newX >= 0 && newY >= 0 && newX < MAZE_SIZE && newY < MAZE_SIZE && this.maze[`x${newX}y${newY}`] === 0){
-					this.maze[`x${x}y${y}`] += d.value;
-					this.maze[`x${newX}y${newY}`] += d.opposite;
+				if(newX >= 0 && newY >= 0 && newX < MAZE_SIZE && newY < MAZE_SIZE && (this.maze[`x${newX}y${newY}`].visited === false)){
+					this.maze[`x${x}y${y}`].walls[d.value] = false;
+					this.maze[`x${newX}y${newY}`].walls[d.opposite] = false;
+					this.maze[`x${newX}y${newY}`].visited = true;
 					carve(newX, newY);
 				}
 			});
