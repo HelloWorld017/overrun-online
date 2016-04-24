@@ -1,21 +1,8 @@
 <!DOCTYPE html>
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
-		<%- include('../../views/header', {title: global.translator('plugin.overrun.entry.title')}) %>
-		<script>
-			var section = undefined;
-
-			$(document).ready(function(){
-				section = $('.main-section');
-			});
-
-			function entry(gameName){
-				section.empty().append($(document.createElement('img')).attr('src', '/resources/image/loading.svg').addClass('valign loading-image'));
-				$.ajax('/battle/entry/' + gameName + '/<%= bot %>/').done(function(data){
-					window.location.href = '/battle/results/' + data.log;
-				});
-			}
-		</script>
+		<%- include('../../views/header', {title: global.translator('plugin.common.entry.title')}) %>
+		<% include ./entry-script %>
 		<style>
 			.entry {
 				width: 100%;
@@ -54,14 +41,14 @@
 		<section class="main-section entry-section valign-wrapper">
 			<div class="main-entry">
 				<div class="entry-wrapper">
-					<a class="btn entry waves-effect waves-light" href="javascript:entry('OVERRUN-RANKED')">
-						<%= global.translator('plugin.overrun.entry.ranked') %>
+					<a class="btn entry waves-effect waves-light" href="javascript:entry('<%= entryName %>')">
+						<%= global.translator('plugin.common.entry.ranked') %>
 					</a>
 				</div>
 
 				<div class="entry-wrapper">
-					<a class="btn entry waves-effect waves-light" href="/entry/overrun/unranked">
-						<%= global.translator('plugin.overrun.entry.unranked') %>
+					<a class="btn entry waves-effect waves-light" href="/entry/<%= pluginName %>/unranked/<%= bot %>">
+						<%= global.translator('plugin.common.entry.unranked') %>
 					</a>
 				</div>
 			</div>

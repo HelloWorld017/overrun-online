@@ -1,0 +1,17 @@
+<script>
+	var section = undefined;
+
+	$(document).ready(function(){
+		section = $('.main-section');
+	});
+
+	function entry(gameName, args){
+		section.empty().append($(document.createElement('img')).attr('src', '/resources/image/loading.svg').addClass('valign loading-image'));
+		$.ajax({
+			url: '/battle/entry/' + gameName + '/<%= bot %>/' + (args || ''),
+			method: 'POST'
+		}).done(function(data){
+			window.location.href = '/battle/results/' + data.log;
+		});
+	}
+</script>

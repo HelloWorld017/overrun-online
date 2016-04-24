@@ -35,6 +35,7 @@ router.post('/entry/:game/:bot/:argument*?', (req, res, next) => {
 		next(new InvalidDataError());
 		return;
 	}
+
 	var game = req.params.game.replace(/[^A-Z0-9-]/ig, '');
 	if(global.server.gamePool[game] === undefined){
 		next(new InvalidDataError());
@@ -51,7 +52,7 @@ router.post('/entry/:game/:bot/:argument*?', (req, res, next) => {
 		return;
 	}
 
-	global.server.matchmakers[game].entry(res.locals.user, bot, res, req.params.argument.toString());
+	global.server.matchmakers[game].entry(res.locals.user, bot, res, (req.params.argument || '').toString());
 	return;
 });
 

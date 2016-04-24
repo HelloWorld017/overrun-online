@@ -11,7 +11,7 @@
 
 			$(document).ready(function(){
 				$('form').submit(function(){
-					$('#password').val(encrypt.encrypt($('#password').val()));
+					$('#encrypted-password').val(encrypt.encrypt($('#password').val()));
 				});
 			});
 		</script>
@@ -35,10 +35,8 @@
 					<div class="input-field col s12">
 						<i class="fa fa-key prefix"></i>
 						<label for="password"><%= global.translator('login.password') %></label>
-						<input id="password" name="password" type="password">
-						<%#
-							#TODO: RSA password to another field
-						%>
+						<input id="password" type="password">
+						<input id="encrypted-password" name="password" type="hidden">
 					</div>
 				</div>
 

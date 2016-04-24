@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
-		<%- include('../../views/header', {title: global.translator('plugin.overrun.entry.select.title')}) %>
+		<%- include('../../views/header', {title: global.translator('plugin.common.entry.select.title')}) %>
 	</head>
 
 	<body>
@@ -11,12 +11,12 @@
 		<section class="main-section">
 			<div class="collection with-header">
 				<div class="collection-header">
-					<h3><%= global.translator('plugin.overrun.entry.select.desc') %></h3>
+					<h3><%= global.translator('plugin.common.entry.select.desc') %></h3>
 				</div>
 				<%- include('../../views/user/bot-list', {
 					bots: user.bots,
-					href: '/entry/overrun/selected/%number%',
-					type: ['OVERRUN-RANKED', 'OVERRUN-UNRANKED']
+					href: `/entry/${pluginName}/selected/%number%`,
+					type: acceptsTypes
 				}) %>
 			</div>
 		</section>

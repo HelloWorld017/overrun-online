@@ -1,5 +1,6 @@
 'use strict';
 var Library = require(global.src('library'));
+var Game = require(global.src('game'));
 
 const GAME_NAME = "MEIRO";
 const START_X = 0;

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
-		<%- include('../../views/header', {title: global.translator('plugin.overrun.entry.unranked')}) %>
+		<%- include('../../views/header', {title: global.translator('plugin.common.entry.unranked')}) %>
+		<% include ./entry-script %>
 	</head>
 
 	<body>
@@ -11,7 +12,7 @@
 		<section class="main-section">
 			<%- include('../../views/user/friend-list', {
 				friends: user.friends,
-				href: '/entry/overrun/unranked/%friend%'
+				href: `javascript:entry(${entryName}, %friend%)`
 			}) %>
 		</section>
 

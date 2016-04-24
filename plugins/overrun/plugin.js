@@ -1,4 +1,4 @@
-var entry = require('./overrun-router');
+var entry = require('../common-entry/common-router');
 var overrun = require('./overrun-game');
 var OverrunRankedGame = require('./overrun-ranked-game');
 var OverrunUnrankedGame = require('./overrun-unranked-game');
@@ -14,7 +14,7 @@ module.exports = {
 		cb();
 	},
 	onServerInit: (app, cb) => {
-		app.use('/entry', entry);
+		app.use('/entry', entry('overrun', 'OVERRUN'));
 		cb();
 	},
 	apiList: [{
