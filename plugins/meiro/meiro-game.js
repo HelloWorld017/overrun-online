@@ -7,36 +7,44 @@ const START_X = 0;
 const START_Y = 0;
 const MAZE_SIZE = 10;
 
-const DIRECTIONS = [
-	{
-		//EAST
-		x: -1,
-		y: 0,
-		value: 'E',
-		opposite: 'W'
-	},
-	{
-		//WEST
-		x: 1,
-		y: 0,
-		value: 'W',
-		opposite: 'E'
-	},
-	{
-		//NORTH
-		x: 0,
-		y: -1,
-		value: 'N',
-		opposite: 'S'
-	},
-	{
-		//SOUTH
-		x: 0,
-		y: 1,
-		value: 'S',
-		opposite: 'N'
+class Direction{
+	constructor(x, y, value, opposite){
+		this.x = x;
+		this.y = y;
+		this.value = value;
+		this.opposite = opposite;
 	}
+}
+
+const DIRECTIONS = [
+	new Direction(-1, 0, 'E', 'W'),
+	new Direction(1, 0, 'W', 'E'),
+	new Direction(0, -1, 'N', 'S'),
+	new Direction(0, -1, 'S', 'N'),
 ];
+
+class Tile{
+	constructor(x, y){
+		this.x = x;
+		this.y = y;
+		this.walls = {};
+		this.visited = false;
+		this.placedObjects = [];
+		DIRECTIONS.forEach((v) => {
+			this.walls[v.value] = true;
+		});
+	}
+
+	placeObject(objectName){
+		this.placedObjects.push(objectName);
+		return this;
+	}
+
+	isPlaced(objectName){
+		if(objectName === undefined) return (this.placedObjects.length !== 0);
+		return (this.placedObjects.indexOf(objectName) !== -1);
+	}
+}
 
 class MeiroGame extends Game{
 	constructor(gid, bot1, bot2, players, server){
@@ -65,15 +73,7 @@ class MeiroGame extends Game{
 		//Using recursive backtracking to generate a maze;
 		Array.rangeOf(MAZE_SIZE).forEach((x) => {
 			Array.rangeOf(MAZE_SIZE).forEach((y) => {
-				this.maze[`x${x}y${y}`] = {
-					visited: false,
-					walls: {
-						N: true,
-						W: true,
-						S: true,
-						E: true
-					}
-				};
+				this.maze[`x${x}y${y}`] = new Tile(x, y);
 			});
 		});
 
