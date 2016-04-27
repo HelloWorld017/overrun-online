@@ -175,6 +175,10 @@ Array.rangeOf = function(max){
 	});
 };
 
+Array.random = function(array){
+	return array[Math.randomRange(array.length - 1, 0)];
+}
+
 Array.remove = function(array, index){
 	array.splice(index, 1);
 };

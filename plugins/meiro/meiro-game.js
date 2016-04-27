@@ -1,4 +1,5 @@
 'use strict';
+var async = require('async');
 var Library = require(global.src('library'));
 var Game = require(global.src('game'));
 
@@ -6,6 +7,7 @@ const GAME_NAME = "MEIRO";
 const START_X = 0;
 const START_Y = 0;
 const MAZE_SIZE = 10;
+const TELEPORTER_COUNT = 3;
 
 class Direction{
 	constructor(x, y, value, opposite){
@@ -58,7 +60,6 @@ class MeiroGame extends Game{
 		this.gameLog = [];
 		this.gameName = GAME_NAME;
 
-		this.maze = {};
 		resetRound();
 	}
 
@@ -67,13 +68,16 @@ class MeiroGame extends Game{
 	}
 
 	resetRound(){
-		//TODO generate maze, generate teleporter
-		this.maze = {};
+		//DONE:0 generate maze, generate teleporter
+		this.maze = {
+			tiles: {},
+			teleporters: {}
+		};
 
 		//Using recursive backtracking to generate a maze;
 		Array.rangeOf(MAZE_SIZE).forEach((x) => {
 			Array.rangeOf(MAZE_SIZE).forEach((y) => {
-				this.maze[`x${x}y${y}`] = new Tile(x, y);
+				this.maze.tiles[`x${x}y${y}`] = new Tile(x, y);
 			});
 		});
 
@@ -85,9 +89,9 @@ class MeiroGame extends Game{
 				var newY = y + d.y;
 
 				if(newX >= 0 && newY >= 0 && newX < MAZE_SIZE && newY < MAZE_SIZE && (this.maze[`x${newX}y${newY}`].visited === false)){
-					this.maze[`x${x}y${y}`].walls[d.value] = false;
-					this.maze[`x${newX}y${newY}`].walls[d.opposite] = false;
-					this.maze[`x${newX}y${newY}`].visited = true;
+					this.maze.tiles.[`x${x}y${y}`].walls[d.value] = false;
+					this.maze.tiles.[`x${newX}y${newY}`].walls[d.opposite] = false;
+					this.maze.tiles[`x${newX}y${newY}`].visited = true;
 					carve(newX, newY);
 				}
 			});
@@ -95,9 +99,35 @@ class MeiroGame extends Game{
 
 		carve(START_X, START_Y);
 
+		Array.rangeOf(TELEPORTER_COUNT).forEach((i) => {
+			getRandomUnplacedPosition((start) => {
+				//TODO WIP
+			});
+			var teleportEnd = '';
+			while(!this.maze.tiles[(teleportEnd = this.getRandomPosition())].isPlaced() && teleportStart !== teleportEnd);
+
+			this.maze.teleporters[i] = [];
+			this.maze.teleporters[i].push(teleportStart, teleportEnd);
+
+			this.maze.tiles[teleportStart].placeObject('teleport');
+			this.maze.tiles[teleportEnd].placeObject('teleport');
+		});
+
 		this.bots.forEach((v, k) => {
 			v.metadata.x = START_X;
 			v.metadata.y = START_Y;
+		});
+	}
+
+	getRandomPosition(){
+		return `x${Math.randomRange(MAZE_SIZE - 1, 0)}y${Math.randomRange(MAZE_SIZE -1, 0)}`;
+	}
+
+	getRandomUnplacedPosition(cb){
+		async.filter(this.maze.tiles, (tile, callback) => {
+			callback(!tile.isPlaced());
+		}, (err, res) => {
+			cb(Array.random(res));
 		});
 	}
 
@@ -133,7 +163,7 @@ class MeiroGame extends Game{
 							err: err1 ? err1.toString() : undefined
 						}]
 					});
-					//TODO check bots escaping maze.
+					//TODO:80 check bots escaping maze.
 
 					cb(null);
 				});
