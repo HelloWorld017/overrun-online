@@ -40,6 +40,7 @@
 		<section class="main-section entry-section">
 			<div class="main-entry">
 				<% global.entryList.forEach((v) => { %>
+					<% if(!v.checkPlayer(user)) return; %>
 					<div class="entry-wrapper">
 						<a href="<%= v.href %>" class="btn <%= v.className || '' %> entry waves-effect waves-light">
 							<%= v.name %>

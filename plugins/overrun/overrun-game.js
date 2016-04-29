@@ -3,7 +3,7 @@ var Game = require(global.src('game'));
 var Player = require(global.src('player'));
 var process = require('process');
 var Library = require(global.src('library'));
-var localeval = require('localeval');
+var localeval = require(global.src('evaluate'));
 
 const BOARD_SIZE = 6;
 const TURN_COUNT = 40;

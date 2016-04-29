@@ -1,4 +1,5 @@
-var entry = require('../common-entry/common-router');
+var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('overrun');
+var entry = require(global.pluginsrc('common-entry', 'common-router'));
 var overrun = require('./overrun-game');
 var OverrunRankedGame = require('./overrun-ranked-game');
 var OverrunUnrankedGame = require('./overrun-unranked-game');
@@ -27,6 +28,7 @@ module.exports = {
 	entry: [{
 		name: global.translator('plugin.overrun'),
 		href: '/entry/overrun',
-		className: 'orange'
+		className: 'orange',
+		checkPlayer: checkPass
 	}],
 };

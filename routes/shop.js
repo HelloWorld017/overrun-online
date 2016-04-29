@@ -49,6 +49,11 @@ router.post('/buy/:section/:item', (req, res, next) => {
 	}
 
 	res.locals.user.money -= item.money;
+
+	if(res.locals.user[req.params.section] === undefined){
+		res.locals.user[req.params.section] = [];
+	}
+
 	res.locals.user[req.params.section].push(req.params.item);
 	res.locals.user.saveStat();
 

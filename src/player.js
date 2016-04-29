@@ -85,6 +85,8 @@ class Player{
 					skins: this.skins
 				}
 			});
+
+		global.server.emit('player.save', this);
 	}
 
 	updateTimer(){

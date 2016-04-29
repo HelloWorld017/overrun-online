@@ -5,6 +5,7 @@ var path = require('path');
 var objectMerge = require('object-merge');
 var MongoClient = require('mongodb').MongoClient;
 var NodeRSA = require('node-rsa');
+var requireSource = require('./src/require-source');
 var Server = require('./src/server');
 var sharedsession = require("express-socket.io-session");
 
@@ -17,7 +18,8 @@ global.translator = require('./src/translator');
 global.key = (process.env.NODE_ENV || 'development') === 'development' ? new NodeRSA({b: 512}, {encryptionScheme: 'pkcs1'}) : new NodeRSA({b: 4096});
 global.mongo = undefined;
 global.server = undefined;
-global.src = require('./src/require-source');
+global.src = requireSource.src;
+global.pluginsrc = requireSource.plugin;
 global.version = SERVER_VERSION;
 global.users = {};
 
