@@ -47,8 +47,6 @@
 					</div>
 				</div>
 
-				<%# These password field is needed because of validator %>
-
 				<div class="row">
 					<div class="input-field col s12">
 						<label for="github"><%= global.translator('update.github') %></label>
@@ -62,6 +60,13 @@
 							<%= global.translator('update.submit') %>
 							<i class="fa fa-user right"></i>
 						</button>
+
+						<a class="btn waves-effect waves-lignt" href="/me/update/password">
+							<%= global.translator('update.pw.title') %>
+							<i class="fa fa-key right"></i>
+						</a>
+
+						<br><br>
 
 						<a class="btn waves-effect waves-lignt red" href="/unregister">
 							<%= global.translator('unregister.title') %>

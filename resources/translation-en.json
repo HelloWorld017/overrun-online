@@ -115,6 +115,11 @@
 	"update.email": "Email Address",
 	"update.password": "Password",
 	"update.password.check": "Password confirm",
+	"update.pw.original": "Original Password",
+	"update.pw.password": "New Password",
+	"update.pw.password.check": "New Password Confirm",
+	"update.pw.submit": "Update Password",
+	"update.pw.title": "Update Password",
 	"update.github": "Github Account",
 	"update.submit": "Update",
 

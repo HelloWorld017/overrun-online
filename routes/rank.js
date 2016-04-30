@@ -1,10 +1,14 @@
 var router = require('express').Router();
 
+var Library = require('../src/library');
 var ServerError = require('../src/errors').ServerError;
 
-router.get('/', (req, res, next) => {
-	var page = Math.max(1, parseInt(req.query.page || 1));
-	if(!isFinite(page) || page === null) page = 1;
+const MAX_VISIBLE_RANKING = 500;
+router.get('/:page', (req, res, next) => {
+	var showAmount = Math.clamp(5, 50, req.query.showAmount || 20);
+	var page = Math.clamp(1, Math.ceil(MAX_VISIBLE_RANKING / showAmount), parseInt(req.params.page || '1'));
+
+	if(!isFinite(page)) page = 1;
 
 	var collection = global.mongo
 		.collection(global.config['collection-user'])

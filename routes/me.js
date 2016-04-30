@@ -77,26 +77,26 @@ router.get('/update/password', (req, res, next) => {
 	});
 });
 
-router.post('/update/password', (req, res, next) => {
-	if(!req.body.original || !req.body.new || !req.body.new_check){
+router.post('/update/password', (req, resp, next) => {
+	if(!req.body.original || !req.body.newPw || !req.body['newPw-check']){
 		next(new InvalidDataError());
 		return;
 	}
 
-	if(req.body.newPw !== req.body.new_check){
+	if(req.body.newPw !== req.body['newPw-check']){
 		next(new PasswordNotEqualError());
 		return;
 	}
 
 	try{
 		var originalPw = global.key.decrypt(req.body.original, 'utf8');
-		var newPw = global.key.decrypt(req.body.new, 'utf8');
+		var newPw = global.key.decrypt(req.body.newPw, 'utf8');
 	}catch(err){
 		next(new InvalidDataError());
 		return;
 	}
 
-	bcrypt.compare(originalPw, res.locals.user.pw, (err, res) => {
+	bcrypt.compare(originalPw, resp.locals.user.pw, (err, res) => {
 		if(err){
 			console.error(err.toString());
 			next(new ServerError());
@@ -124,20 +124,20 @@ router.post('/update/password', (req, res, next) => {
 
 				global.mongo
 					.collection(global.config['collection-user'])
-					.findOneAndUpdate({name: res.locals.user.id}, {
+					.findOneAndUpdate({name: resp.locals.user.name}, {
 						$set: {
 							pw: hash
 						}
 					})
 					.then(() => {
-						res.locals.logout((err) => {
+						resp.locals.logout((err) => {
 							if(err){
 					            console.error(err.message);
 					            next(new ServerError());
 					            return;
 					        }
 
-							res.redirect('/');
+							resp.redirect('/');
 						});
 					});
 			});

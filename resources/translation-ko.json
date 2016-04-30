@@ -115,6 +115,11 @@
 	"update.email": "이메일",
 	"update.password": "비밀번호",
 	"update.password.check": "비밀번호 확인",
+	"update.pw.original": "기존 비밀번호",
+	"update.pw.password": "새 비밀번호",
+	"update.pw.password.check": "새 비밀번호 확인",
+	"update.pw.submit": "비밀번호 수정",
+	"update.pw.title": "비밀번호 수정",
 	"update.github": "깃허브 계정",
 	"update.submit": "수정",
 

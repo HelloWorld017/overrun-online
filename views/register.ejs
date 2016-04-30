@@ -30,7 +30,7 @@
 
 		<section class="main-section">
 			<h2><%= global.translator('join.title') %></h2>
-			<form class="validate-form" novalidate="novalidate" onsubmit="return false">
+			<form class="validate-form" novalidate="novalidate" onsubmit="$('.submit-form').submit(); return false;">
 				<div class="row">
 					<div class="input-field col s12">
 						<label for="id"><%= global.translator('join.id') %></label>
@@ -66,9 +66,10 @@
 					</div>
 				</div>
 
+				<input type="submit" style="display: none" aria-hidden="true">
 			</form>
 
-			<form method="post" novalidate="novalidate" onsubmit="return encryptPw()">
+			<form method="post" novalidate="novalidate" class="submit-form" onsubmit="return encryptPw()">
 				<input id="new-id" name="id" type="hidden">
 				<input id="new-name" name="name" type="hidden">
 				<input id="new-email" name="email" type="hidden">
