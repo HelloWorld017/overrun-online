@@ -47,8 +47,6 @@
 	"error.toomanybots": "봇을 너무 많이 소유중입니다!",
 	"error.wrongsession": "세션이 잘못되었습니다.",
 
-	"find.title": "아이디/비밀번호 찾기",
-
 	"friends.title": "친구 목록",
 	"friends.add": "친구 추가",
 	"friends.remove": "친구 해제",
@@ -75,7 +73,21 @@
 
 	"me.title": "개인 페이지",
 
+	"missing.title": "아이디/비밀번호 찾기",
+	"missing.email": "이메일",
+	"missing.id.result.desc": "당신의 아이디는 <samp>%id%</samp> 입니다.",
+	"missing.id.submit": "아이디 찾기",
+	"missing.id.title": "아이디 찾기",
+	"missing.pw.reset.title": "비밀번호 리셋",
+	"missing.pw.reset.pw": "비밀번호",
+	"missing.pw.reset.check": "비밀번호 확인",
+	"missing.pw.reset.submit": "비밀번호 리셋",
+	"missing.pw.submit": "비밀번호 리셋",
+	"missing.pw.title": "비밀번호 찾기",
+
 	"navigation.dropdown": "시스템 메뉴",
+
+	"script.needed": "자바스크립트를 활성화시켜주세요!",
 
 	"server.http.eaddrinuse": "포트가 이미 사용중입니다.",
 	"server.http.eacces": "%bind%는 상승된 권한이 필요합니다.",

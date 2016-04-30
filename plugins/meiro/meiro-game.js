@@ -41,10 +41,13 @@ class Tile{
 		this.x = x;
 		this.y = y;
 		this.walls = {};
+		this.visibleWalls = {};
 		this.visited = false;
 		this.placedObjects = {};
+
 		DIRECTIONS.forEach((v) => {
 			this.walls[v.value] = true;
+			this.visibleWalls[v.value] = true;
 		});
 	}
 
@@ -100,8 +103,14 @@ class MeiroGame extends Game{
 				var newY = y + d.y;
 
 				if(newX >= 0 && newY >= 0 && newX < MAZE_SIZE && newY < MAZE_SIZE && (this.maze[`x${newX}y${newY}`].visited === false)){
-					this.maze.tiles.[`x${x}y${y}`].walls[d.value] = false;
-					this.maze.tiles.[`x${newX}y${newY}`].walls[d.opposite] = false;
+					this.maze.tiles[`x${x}y${y}`].walls[d.value] = false;
+					this.maze.tiles[`x${newX}y${newY}`].walls[d.opposite] = false;
+
+					if(Math.randomRange(0, 10) < 10){
+						this.maze.tiles[`x${x}y${y}`].visibleWalls[d.value] = false;
+						this.maze.tiles[`x${newX}y${newY}`].visibleWalls[d.opposite] = false;
+					}
+
 					this.maze.tiles[`x${newX}y${newY}`].visited = true;
 					carve(newX, newY);
 				}
@@ -152,6 +161,16 @@ class MeiroGame extends Game{
 			callback(!tile.isPlaced());
 		}, (err, res) => {
 			cb(Array.random(res));
+		});
+	}
+
+	getPlayerByName(name, callback){
+		async.each(this.players, (v, cb) => {
+			if(v.getName() === name){
+				cb(v);
+			}
+		}, (player) => {
+			callback(player);
 		});
 	}
 
@@ -330,7 +349,9 @@ class MeiroGame extends Game{
 				Array.remove(bot.metadata.items, bot.metadata.items.indexOf('wallcutter'));
 				DIRECTIONS.forEach((v) => {
 					this.maze[`x${bot.metadata.x}y${bot.metadata.y}`].walls[v.value] = false;
+					this.maze[`x${bot.metadata.x}y${bot.metadata.y}`].visibleWalls[v.value] = false;
 					this.maze[`x${bot.metadata.x + v.x}y${bot.metadata.y + v.y}`].walls[v.opposite] = false;
+					this.maze[`x${bot.metadata.x + v.x}y${bot.metadata.y + v.y}`].visibleWalls[v.opposite] = false;
 				});
 
 				return true;
@@ -342,7 +363,7 @@ class MeiroGame extends Game{
 					return false;
 				}
 
-
+				return this.maze[`x${bot.metadata.x}y${bot.metadata.y}`].visibleWalls;
 			}
 		};
 
@@ -359,4 +380,20 @@ class MeiroGame extends Game{
 
 MeiroGame.getName = () => {
 	return GAME_NAME;
+};
+
+module.exports = {
+	game: MeiroGame,
+	api: {
+		name: 'MEIRO-',
+		content: {
+			title: global.translator('plugin.overrun.api.title'),
+			content: ['log', 'turnLeft', 'turnRight', 'move', 'carveWall', 'checkWall'].map((v) => {
+				return {
+					title: global.translator(`plugin.meiro.api.${v}.title`),
+					content: global.translator(`plugin.meiro.api.${v}.content`)
+				};
+			})
+		}
+	}
 };

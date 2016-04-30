@@ -47,8 +47,6 @@
 	"error.toomanybots": "There are too many bots!",
 	"error.wrongsession": "Your session is invalid.",
 
-	"find.title": "Find",
-
 	"friends.title": "Friends list",
 	"friends.add": "Add to friends",
 	"friends.remove": "Remove from friends",
@@ -73,9 +71,23 @@
 
 	"logout.title": "Logout",
 
+	"me.title": "My Page",
+
+	"missing.title": "Find",
+	"missing.email": "Email",
+	"missing.id.result.desc": "Your ID is <samp>%id%</samp>.",
+	"missing.id.submit": "Find ID",
+	"missing.id.title": "Find ID",
+	"missing.pw.reset.title": "Reset Password",
+	"missing.pw.reset.pw": "Password",
+	"missing.pw.reset.check": "Password confirm",
+	"missing.pw.reset.submit": "Reset Password",
+	"missing.pw.submit": "Reset Password",
+	"missing.pw.title": "Find Password",
+
 	"navigation.dropdown": "System Menu",
 
-	"me.title": "My Page",
+	"script.needed": "Please enable the javascript!",
 
 	"server.http.eaddrinuse": "Port is already in use.",
 	"server.http.eacces": "%bind% needs elevated permission.",
@@ -123,7 +135,7 @@
 	"plugin.common.entry.title": "Entry",
 	"plugin.common.entry.ranked": "Entry into Ranked match",
 	"plugin.common.entry.unranked": "Entry into Unranked match / Friendly battle",
-	
+
 	"plugin.overrun": "Overrun",
 	"plugin.overrun.ranked": "overrun Ranked game",
 	"plugin.overrun.unranked": "overrun Unranked game",

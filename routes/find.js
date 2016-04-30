@@ -17,6 +17,11 @@ router.post('/password', (req, res, next) => {
 		return;
 	}
 
+	if(!req.body.id || !req.body.email){
+		next(new InvalidDataError());
+		return;
+	}
+
 	recaptcha.verify(req, (err, recaptchaVerified) => {
 		if(err){
 			console.error(err.toString());
@@ -94,7 +99,7 @@ router.post('/password', (req, res, next) => {
 	});
 });
 
-router.all('/password/auth/:token', (req, res, next) => {
+router.post('/password/auth/:token', (req, res, next) => {
 	if(!req.body.password || !req.body['password-check']){
 		next(new InvalidDataError());
 		return;
@@ -152,7 +157,7 @@ router.all('/password/auth/:token', (req, res, next) => {
 										valid_until: 0
 									}
 								}).then(() => {
-									res.redirect('/');
+									res.redirect('/login');
 								});
 						});
 				});
@@ -169,6 +174,11 @@ router.get('/password/auth/:token', (req, res, next) => {
 router.post('/id', (req, res, next) => {
 	if(res.locals.auth){
 		next(new AlreadyLoggedInError());
+		return;
+	}
+
+	if(!req.body.email){
+		next(new InvalidDataError());
 		return;
 	}
 

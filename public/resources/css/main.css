@@ -76,6 +76,15 @@
 		url('/resources/font/exo2/thin/Exo2Thin.woff') format('woff');
 }
 
+@font-face {
+	font-family: 'NanumCoding';
+	font-weight: 400;
+	src:
+		url('/resources/font/nanum-coding/NanumGothicCoding-Regular.eot?#iefix') format('eot'),
+		url('/resources/font/nanum-coding/NanumGothicCoding-Regular.ttf') format('truetype'),
+		url('/resources/font/nanum-coding/NanumGothicCoding-Regular.woff') format('woff');
+}
+
 * {
 	font-family: 'Exo 2', 'Spoqa Han Sans', 'Spoqa Han Sans JP', '나눔바른고딕', '나눔고딕', '맑은 고딕', sans-serif;
 	-webkit-font-smoothing: antialiased;
@@ -83,6 +92,14 @@
 
 body {
 	overflow-x: hidden;
+}
+
+kbd, samp{
+	background: #222;
+	color: #fff;
+	border-radius: 5px;
+	border: 5px solid #222;
+	font-family: 'NanumCoding', monospace;
 }
 
 .main-section {

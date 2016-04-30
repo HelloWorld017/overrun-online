@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head>
+		<%- include('./header', {title: global.translator('missing.id.result')}); %>
+	</head>
+
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+
+		<section class="main-section">
+			<h3><%= global.translator('missing.id.result.masthead') %></h3>
+			<p><%- global.translator('missing.id.result.desc', {
+				id: id
+			}) %></p>
+		</section>
+
+		<% include ./footer %>
+	</body>
+</html>

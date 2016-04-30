@@ -11,10 +11,14 @@
 			encrypt.setPublicKey("<%= rsa.replace(/\n/g, '\\n') %>");
 
 			function encryptPw(){
+				if(!$('.validate-form').valid()) return false;
 				if($('#password').val() !== $('#password-check').val()) return false;
 
-				$('#password').val(encrypt.encrypt($('#password').val()));
-				$('#password-check').val($('#password').val());
+				$('#new-id').val($('#id').val());
+				$('#new-name').val($('#name').val());
+				$('#new-email').val($('#email').val());
+				$('#encrypted-password').val(encrypt.encrypt($('#password').val()));
+				$('#encrypted-password-check').val($('#encrypted-password').val());
 				return true;
 			}
 		</script>
@@ -26,7 +30,7 @@
 
 		<section class="main-section">
 			<h2><%= global.translator('join.title') %></h2>
-			<form method="post" class="validate-form" novalidate="novalidate" onsubmit="return encryptPw()">
+			<form class="validate-form" novalidate="novalidate" onsubmit="return false">
 				<div class="row">
 					<div class="input-field col s12">
 						<label for="id"><%= global.translator('join.id') %></label>
@@ -62,6 +66,15 @@
 					</div>
 				</div>
 
+			</form>
+
+			<form method="post" novalidate="novalidate" onsubmit="return encryptPw()">
+				<input id="new-id" name="id" type="hidden">
+				<input id="new-name" name="name" type="hidden">
+				<input id="new-email" name="email" type="hidden">
+				<input id="encrypted-password" name="password" type="hidden">
+				<input id="encrypted-password-check" name="password-check" type="hidden">
+
 				<div class="g-recaptcha" data-sitekey="<%= global.config['recaptcha-public'] %>">
 
 				</div>
@@ -77,6 +90,7 @@
 					</div>
 				</div>
 			</form>
+
 		</section>
 
 		<% include ./footer %>

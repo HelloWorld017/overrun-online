@@ -1,6 +1,5 @@
 'use strict';
 var overrun = require('./overrun-game');
-var PointCalculator = require(global.src('calculate-point'));
 
 const GAME_NAME = 'OVERRUN-UNRANKED';
 
