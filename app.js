@@ -150,7 +150,7 @@ async.forEachOf(global.plugins, (plugin, pluginName, cb) => {
 
 		res.render('error', {
 			message: err.message,
-			error: {}
+			error: err
 		});
 
 	});

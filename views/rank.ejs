@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head prefix="og: http://ogp.me/ns#">
+		<%- include('./header', {title: global.translator('rank.title')}); %>
+	</head>
+
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+
+		<section class="main-section">
+			<h3><%= global.translator('rank.title') %></h3>
+		</section>
+
+		<% include ./footer %>
+	</body>
+</html>

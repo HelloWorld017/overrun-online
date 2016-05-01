@@ -231,7 +231,7 @@ class MeiroGame extends Game{
 							err: err1 ? err1.toString() : undefined
 						}]
 					});
-					//TODO:80 check bots escaping maze.
+					//TODO:70 check bots escaping maze.
 
 					cb(null);
 				});

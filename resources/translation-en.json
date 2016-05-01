@@ -43,6 +43,7 @@
 	"error.passwordnotequal": "Please check your username and password.",
 	"error.sameidalreadyjoined": "Same id or email already exists.",
 	"error.internalserver": "An unknown error is occurred",
+	"error.title": "Aw, Snap!",
 	"error.toolongcode": "Your code is too long!",
 	"error.toomanybots": "There are too many bots!",
 	"error.wrongsession": "Your session is invalid.",
@@ -75,7 +76,9 @@
 
 	"missing.title": "Find",
 	"missing.email": "Email",
+	"missing.id": "Username",
 	"missing.id.result.desc": "Your ID is <samp>%id%</samp>.",
+	"missing.id.result.masthead": "Result",
 	"missing.id.submit": "Find ID",
 	"missing.id.title": "Find ID",
 	"missing.pw.reset.title": "Reset Password",

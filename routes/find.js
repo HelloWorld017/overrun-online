@@ -9,6 +9,7 @@ var AlreadyLoggedInError = errors.AlreadyLoggedInError;
 var CaptchaError = errors.CaptchaError;
 var PasswordNotEqualError = errors.PasswordNotEqualError;
 var InvalidDataError = errors.InvalidDataError;
+var InvalidTokenError = errors.InvalidTokenError;
 var ServerError = errors.ServerError;
 
 router.post('/password', (req, res, next) => {
@@ -80,7 +81,7 @@ router.post('/password', (req, res, next) => {
 									.findOneAndUpdate({id: id}, {
 										$set: {
 											reset_token: generatedToken,
-											valid_until: Date.now() + 3600
+											valid_until: Date.now() + 3600000
 										}
 									});
 							}
@@ -93,8 +94,10 @@ router.post('/password', (req, res, next) => {
 			});
 
 		res.render('alert', {
-			redirect: undefined,
-			message: global.translator('alert.checkemail')
+			error: {
+				redirect: '/login',
+				message: global.translator('alert.checkemail')
+			}
 		});
 	});
 });
@@ -126,7 +129,7 @@ router.post('/password/auth/:token', (req, res, next) => {
 				return;
 			}
 
-			if(result.valid_until > Date.now() || result.reset_token !== req.params.token){
+			if(result[0].valid_until < Date.now()){
 				next(new InvalidTokenError());
 				return;
 			}
@@ -145,7 +148,7 @@ router.post('/password/auth/:token', (req, res, next) => {
 
 					global.mongo
 						.collection(global.config['collection-user'])
-						.findOneAndUpdate({name: results[0].id}, {
+						.findOneAndUpdate({name: result[0].id}, {
 							$set: {
 								pw: hash
 							}

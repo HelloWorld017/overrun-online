@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="<%= global.config.lang %>">
-	<head>
+	<head prefix="og: http://ogp.me/ns#">
 		<%- include('./header', {title: global.translator('missing.title')}); %>
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	</head>
 
 	<body>
@@ -41,6 +42,14 @@
 					<div class="input-field col s12">
 						<label for="email"><%= global.translator('missing.email') %></label>
 						<input id="email" name="email" type="text">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col s12">
+						<div class="g-recaptcha" data-sitekey="<%= global.config['recaptcha-public'] %>">
+
+						</div>
 					</div>
 				</div>
 

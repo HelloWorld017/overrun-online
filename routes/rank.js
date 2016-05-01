@@ -4,7 +4,7 @@ var Library = require('../src/library');
 var ServerError = require('../src/errors').ServerError;
 
 const MAX_VISIBLE_RANKING = 500;
-router.get('/:page', (req, res, next) => {
+router.get('/:page?', (req, res, next) => {
 	var showAmount = Math.clamp(5, 50, req.query.showAmount || 20);
 	var page = Math.clamp(1, Math.ceil(MAX_VISIBLE_RANKING / showAmount), parseInt(req.params.page || '1'));
 

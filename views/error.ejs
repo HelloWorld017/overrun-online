@@ -1,3 +1,39 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head prefix="og: http://ogp.me/ns#">
+		<%- include('header', {title: global.translator('error.title')}) %>
+	</head>
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+
+		<section class="main-section" style="padding-right: 10px;">
+			<h1 style="font-size: 10em; text-align: center">
+				<%= error.status %>
+			</h1>
+
+			<h3 style="text-align: center">
+				<%= message %>
+			</h3>
+
+			<div>
+				<pre style="width: 100%; font-family: 'NanumCoding', monospace">
+<%= error.stack %>
+				</pre>
+
+				<div class="row">
+					<button class="btn-flat waves-effect waves-teal col s7" onclick="history.go(-1)">
+						<i class="fa fa-chevron-left"></i>
+						Previous Page
+					</button>
+
+					<a class="btn-flat waves-effect waves-teal col s5 center" href="/">
+						<i class="fa fa-home"></i>
+						Main
+					</a>
+				</div>
+			</div>
+		</section>
+		<% include ./footer %>
+	</body>
+</html>
