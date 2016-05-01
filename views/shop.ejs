@@ -67,8 +67,8 @@
 	</head>
 
 	<body>
-		<%- include ./navigation %>
-		<%- include ./background %>
+		<% include ./navigation %>
+		<% include ./background %>
 
 		<section class="main-section" style="padding-right: 10px;">
 			<span class="current-money"><%= global.translator('shop.current.money', {money: user.money}) %></span>
@@ -97,6 +97,6 @@
 			<% }); %>
 		</section>
 
-		<%- include ./footer %>
+		<% include ./footer %>
 	</body>
 </html>

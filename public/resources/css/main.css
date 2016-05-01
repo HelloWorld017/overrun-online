@@ -122,6 +122,19 @@ kbd, samp{
 	height: 100vh;
 }
 
+.pagination li {
+	padding: 0 !important;
+}
+
+.pagination li a {
+	display: inline-block;
+	padding: 0 10px !important;
+}
+
+.pagination .disabled a, .pagination .active a {
+	cursor: default;
+}
+
 .skin-list{
 	display: inline-block;
 	margin: 3px;

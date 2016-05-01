@@ -10,6 +10,39 @@
 
 		<section class="main-section">
 			<h3><%= global.translator('rank.title') %></h3>
+			<div class="collection">
+				<% rankers.forEach((v, k) => { %>
+					<a class="collection-item" href="/user/<%= v.name %>">
+						<span class="rank-number">#<%= k + 1 %></span>
+						<img src="//www.gravatar.com/avatar/<%= v.emailHash %>?s=50" alt="" class="user-icon circle">
+						<%= v.name %>
+						<span class="rank-point right"><%= v.point %>pt</span>
+					</a>
+				<% }); %>
+			</div>
+
+			<% var paginationTarget = "/rank/"; %>
+			<ul class="pagination row">
+				<li class="col s1 <%= (current <= 1) ? 'disabled' : 'waves-effect' %>">
+					<a href="<%= (current <= 1) ? '#!' : (paginationTarget + (current - 1)) %>">
+						<i class="fa fa-chevron-left"></i>
+					</a>
+				</li>
+
+				<% for(var i = 1; i <= count; i++){ %>
+					<li class="col s1 <%= (i === current) ? 'active' : 'waves-effect' %>">
+						<a href="<%= (i === current) ? '#' : (paginationTarget + i) %>" style="width: 100%">
+							<%= i %>
+						</a>
+					</li>
+				<% } %>
+
+				<li class="col s1 <%= (current >= count) ? 'disabled' : 'waves-effect' %>">
+					<a href="<%= (current >= count) ? '#' : (paginationTarget + (current + 1)) %>">
+						<i class="fa fa-chevron-right"></i>
+					</a>
+				</li>
+			</ul>
 		</section>
 
 		<% include ./footer %>

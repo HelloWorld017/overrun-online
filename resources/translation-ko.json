@@ -28,6 +28,8 @@
 	"email.verify.link": "이메일 인증하기",
 
 	"entry.title": "엔트리",
+	"entry.nothing": "참가할 게임이 없네요 :(",
+	"entry.nothing.masthead": "상점에서 패스라도 사보시는게 어떤가요?",
 
 	"error.alreadybought": "이미 구매하셨습니다.",
 	"error.alreadyentried": "이미 참가하였습니다.",
@@ -89,6 +91,8 @@
 	"missing.pw.title": "비밀번호 찾기",
 
 	"navigation.dropdown": "시스템 메뉴",
+
+	"rank.title": "랭킹",
 
 	"script.needed": "자바스크립트를 활성화시켜주세요!",
 

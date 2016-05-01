@@ -28,6 +28,8 @@
 	"email.verify.link": "Verify my email!",
 
 	"entry.title": "Entry",
+	"entry.nothing": "There are no games to entry.",
+	"entry.nothing.masthead": "How about buying passes to entry the games?",
 
 	"error.alreadybought": "You already have bought.",
 	"error.alreadyentried": "You already have been entried.",
@@ -89,6 +91,8 @@
 	"missing.pw.title": "Find Password",
 
 	"navigation.dropdown": "System Menu",
+
+	"rank.title": "Ranking",
 
 	"script.needed": "Please enable the javascript!",
 
