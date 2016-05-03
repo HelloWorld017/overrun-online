@@ -37,7 +37,7 @@ router.post('/buy/:section/:item', (req, res, next) => {
 		return;
 	}
 
-	if(res.locals.user[req.params.section].indexOf(req.params.item) !== -1){
+	if((res.locals.user[req.params.section] || []).indexOf(req.params.item) !== -1){
 		res.json({error: global.translator('error.alreadybought')});
 		return;
 	}

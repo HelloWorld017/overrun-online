@@ -28,4 +28,38 @@ router.get('/:user', (req, res, next) => {
 		});
 });
 
+router.get('/:user/:type/:href/bots', (req, res, next) => {
+	global.mongo
+		.collection(global.config['collection-user'])
+		.find({name: req.params.user})
+		.toArray((err, arr) => {
+			if(err){
+				next(new ServerError());
+				return;
+			}
+
+			if(arr.length <= 0){
+				next(new InvalidDataError());
+				return;
+			}
+
+			if(global.server.gamePool[req.params.type] === undefined){
+				next(new InvalidDataError());
+				return;
+			}
+
+			try{
+				var href = new Buffer(req.params.href, 'base64').toString();
+				res.render('user/bot-list', {
+					bots: arr[0].bots,
+					type: req.params.type,
+					href: href
+				});
+			}catch(e){
+				next(new InvalidDataError());
+				return;
+			}
+		});
+});
+
 module.exports = router;

@@ -79,7 +79,7 @@
 				<h3><%= global.translator('shop.category.' + k) %></h3>
 				<div class="shop-category-wrapper hoverable">
 					<% Object.keys(v).forEach((itemKey) => {
-						var bought = (user[k].indexOf(itemKey) !== -1);
+						var bought = ((user[k] || []).indexOf(itemKey) !== -1);
 						var item = v[itemKey]; %>
 
 						<a id="shop-item-<%= k %>-<%= itemKey %>" class="shop-item <%= (!bought ? 'hoverable' : '') %> z-depth-1" href="javascript:buy('<%= k %>', '<%= itemKey %>')">

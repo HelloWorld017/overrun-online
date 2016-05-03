@@ -40,6 +40,22 @@
 				});
 			}
 
+			function openAutoComplete(){
+				autocomplete.css({display: 'block'});
+				$.ajax('/friends/search/' + search.val()).done(function(data){
+					isTimeoutOngoing = false;
+					isEmpty = false;
+					autocomplete.empty();
+					data.forEach(function(v){
+						autocomplete.append(
+							$(document.createElement('div')).attr('class', 'hoverable card-panel').append(
+								$(document.createElement('a')).attr('href', 'javascript:addFriend("' + v + '")').text(v)
+							)
+						);
+					});
+				});
+			}
+
 			$(document).ready(function(){
 				autocomplete = $('#autocomplete');
 				search = $('#friend-search');
@@ -53,17 +69,7 @@
 								return;
 							}
 
-							$.ajax('/friends/search/' + search.val()).done(function(data){
-								isTimeoutOngoing = false;
-								autocomplete.empty();
-								data.forEach(function(v){
-									autocomplete.append(
-										$(document.createElement('div')).attr('class', 'hoverable card-panel').append(
-											$(document.createElement('a')).attr('href', 'javascript:addFriend("' + v + '")').text(v)
-										)
-									);
-								});
-							});
+							openAutoComplete();
 						}, 500);
 						isTimeoutOngoing = true;
 						isEmpty = false;
@@ -91,8 +97,11 @@
 			<div id="search-list" class="collection">
 				<div class="collection-item">
 					<div class="row input-field">
-						<label for="friend-search"><%= global.translator('friends.search') %></label>
-						<input id="friend-search" type="text">
+						<form onsubmit="openAutoComplete(); return false;">
+							<label for="friend-search"><%= global.translator('friends.search') %></label>
+							<input id="friend-search" type="text">
+							<input type="submit" style="display: none">
+						</form>
 
 						<div id="autocomplete" class="col s12 l4">
 						</div>

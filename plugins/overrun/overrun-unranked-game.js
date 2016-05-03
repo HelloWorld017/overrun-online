@@ -1,4 +1,5 @@
 'use strict';
+var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('overrun');
 var overrun = require('./overrun-game');
 
 const GAME_NAME = 'OVERRUN-UNRANKED';
@@ -36,7 +37,8 @@ OverrunUnrankedGame.getReadableName = () => {
 OverrunUnrankedGame.getOptions = () => {
 	return {
 		'accepts_bot_type': ['OVERRUN-RANKED', 'OVERRUN-UNRANKED'],
-		'show_to_bot_type': false
+		'show_to_bot_type': false,
+		'check': checkPass
 	};
 };
 

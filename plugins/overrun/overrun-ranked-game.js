@@ -1,4 +1,5 @@
 'use strict';
+var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('overrun');
 var overrun = require('./overrun-game');
 var PointCalculator = require(global.src('calculate-point'));
 
@@ -88,7 +89,8 @@ OverrunRankedGame.getReadableName = () => {
 OverrunRankedGame.getOptions = () => {
 	return {
 		'accepts_bot_type': ['OVERRUN-RANKED', 'OVERRUN-UNRANKED'],
-		'show_to_bot_type': true
+		'show_to_bot_type': true,
+		'check': checkPass
 	};
 };
 

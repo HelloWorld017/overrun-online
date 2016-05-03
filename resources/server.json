@@ -40,6 +40,18 @@
 				"icon": "/resources/image/skins/triangles.svg",
 				"money": "300"
 			}
+		},
+
+		"pass": {
+			"overrun": {
+				"icon": "/resources/image/pass/overrun.svg",
+				"money": "0"
+			},
+
+			"meiro": {
+				"icon": "/resources/image/pass/meiro.svg",
+				"money": "0"
+			}
 		}
 	}
 }

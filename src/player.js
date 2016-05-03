@@ -15,7 +15,7 @@ class Player{
 		this.name = data.name;
 		this.nickname = data.nickname;
 		this.email = data.email;
-		this.friends = [];
+		this.friends = (data.friends || []);
 		this.pw = data.pw;
 		this.stat = data.stat;
 		this.skins = data.skins;
@@ -29,6 +29,8 @@ class Player{
 
 		this.currentGame = undefined;
 		this.lastGame = undefined;
+
+		global.server.emit('player.load', this, data);
 	}
 
 	getStat(){

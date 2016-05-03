@@ -14,6 +14,11 @@ module.exports = {
 					}
 				});
 		});
+
+		global.server.on('player.load', (player, data) => {
+			player.pass = data.pass || [];
+		});
+
 		cb();
 	}
 };

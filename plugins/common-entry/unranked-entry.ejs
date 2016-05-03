@@ -3,6 +3,21 @@
 	<head prefix="og: http://ogp.me/ns#">
 		<%- include('../../views/header', {title: global.translator('plugin.common.entry.unranked')}) %>
 		<% include ./entry-script %>
+
+		<script>
+			function showBot(friend){
+				$.ajax("/user/" + friend + "/<%= entryName %>/" + btoa("javascript:entry('<%= entryName %>', '%friend%')") + "/bots").done(function(data){
+					$('#friend-' + friend).html(
+						'<div class="collection with-header">' +
+							'<div class="collection-header">' +
+								'<%= global.translator('plugin.common.entry.unranked.bots') %>' +
+							'</div>' +
+							data +
+						'</div>'
+					);
+				});
+			}
+		</script>
 	</head>
 
 	<body>
@@ -10,10 +25,17 @@
 		<% include ../../views/background %>
 
 		<section class="main-section">
-			<%- include('../../views/user/friend-list', {
-				friends: user.friends,
-				href: `javascript:entry(${entryName}, %friend%)`
-			}) %>
+			<div class="collection with-header">
+				<div class="collection-header">
+					<h3><%= global.translator('plugin.common.entry.unranked.friend') %></h3>
+				</div>
+				<%- include('../../views/user/friend-list', {
+					friends: user.friends,
+					main_href: 'javascript:showBot("%friend%")',
+					href_class: 'hidden',
+					href: '#'
+				}) %>
+			</div>
 		</section>
 
 		<% include ../../views/footer %>

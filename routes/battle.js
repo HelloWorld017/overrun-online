@@ -52,6 +52,11 @@ router.post('/entry/:game/:bot/:argument*?', (req, res, next) => {
 		return;
 	}
 
+	if(!global.server.gamePool[game].getOptions().check(res.locals.user)){
+		next(new InvalidDataError());
+		return;
+	}
+	
 	global.server.matchmakers[game].entry(res.locals.user, bot, res, (req.params.argument || '').toString());
 	return;
 });

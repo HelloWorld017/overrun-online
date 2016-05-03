@@ -1,4 +1,5 @@
 'use strict';
+var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('meiro');
 var meiro = require('./meiro-game');
 var PointCalculator = require(global.src('calculate-point'));
 
@@ -78,7 +79,8 @@ MeiroRankedGame.getReadableName = () => {
 MeiroRankedGame.getOptions = () => {
 	return {
 		'accepts_bot_type': ['MEIRO-RANKED', 'MEIRO-UNRANKED'],
-		'show_to_bot_type': true
+		'show_to_bot_type': true,
+		'check': checkPass
 	};
 };
 
