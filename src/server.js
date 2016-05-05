@@ -13,7 +13,7 @@ class Server extends EventEmitter{
 
 	addToPool(game, matchmaker){
 		this.gamePool[game.getName()] = game;
-		this.matchmakers[game.getName()] = matchmaker || matchmake(this, game);
+		this.matchmakers[game.getName()] = matchmaker ? matchmaker(this,game) : matchmake(this, game);
 	}
 
 	login(user){

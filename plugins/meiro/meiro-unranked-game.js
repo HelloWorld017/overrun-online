@@ -13,6 +13,7 @@ class MeiroUnrankedGame extends meiro.game{
 		});
 
 		this.name = GAME_NAME;
+		this.resetRound();
 	}
 }
 

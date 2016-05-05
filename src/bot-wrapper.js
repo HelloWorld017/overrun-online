@@ -24,7 +24,7 @@ class BotWrapper{
 
 	move(){
 		getBoundBox()
-			.nudgeX(parseInt((Math.sin(yaw) * PLAYER_SPEED).toFixed(10)));
+			.nudgeX(parseInt((Math.sin(yaw) * PLAYER_SPEED).toFixed(10)))
 			.nudgeY(parseInt((Math.cos(yaw) * PLAYER_SPEED).toFixed(10)));
 	}
 

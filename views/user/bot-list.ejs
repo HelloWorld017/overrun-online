@@ -3,14 +3,16 @@
 		var nohref = false;
 	}
 
-	if(typeof type !== 'undefined'){
-		bots = bots.filter((v) => {
-			return (type.indexOf(v.type) !== -1);
-		});
-	}
+	var checkType = (typeof type !== 'undefined');
 %>
 
 <% bots.forEach((v, k) => { %>
+	<% if(checkType){
+		if(type.indexOf(v.type) === -1){
+			return;
+		}
+	} %>
+
 	<% if(!nohref){ %>
 		<a href="<%= href.replace('%number%', k) %>" class="bot-view collection-item">
 	<% }else{ %>

@@ -6,7 +6,7 @@
 
 		<script>
 			function showBot(friend){
-				$.ajax("/user/" + friend + "/<%= entryName %>/" + btoa("javascript:entry('<%= entryName %>', '%friend%')") + "/bots").done(function(data){
+				$.ajax("/user/" + friend + "/<%= acceptsTypes.join(',') %>/" + btoa("javascript:entry('<%= entryName %>', '" + friend + "-%number%')") + "/bots").done(function(data){
 					$('#friend-' + friend).html(
 						'<div class="collection with-header">' +
 							'<div class="collection-header">' +
@@ -18,13 +18,19 @@
 				});
 			}
 		</script>
+
+		<style>
+			.entry-section{
+				padding: 10px;
+			}
+		</style>
 	</head>
 
 	<body>
 		<% include ../../views/navigation %>
 		<% include ../../views/background %>
 
-		<section class="main-section">
+		<section class="main-section entry-section valign-wrapper">
 			<div class="collection with-header">
 				<div class="collection-header">
 					<h3><%= global.translator('plugin.common.entry.unranked.friend') %></h3>

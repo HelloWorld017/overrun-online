@@ -13,6 +13,7 @@ class OverrunUnrankedGame extends overrun.game{
 		});
 
 		this.name = GAME_NAME;
+		this.resetRound();
 	}
 
 	getPlayerByName(name, callback){

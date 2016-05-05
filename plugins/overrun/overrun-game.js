@@ -1,9 +1,9 @@
 'use strict';
+var BotWrapper = require(global.src('bot-wrapper'));
 var Game = require(global.src('game'));
-var Player = require(global.src('player'));
-var process = require('process');
 var Library = require(global.src('library'));
 var localeval = require(global.src('evaluate'));
+var process = require('process');
 
 const BOARD_SIZE = 6;
 const TURN_COUNT = 40;
@@ -21,7 +21,7 @@ const GAME_NAME = 'OVERRUN';
 
 class OverrunGame extends Game{
 	constructor(gid, bot1, bot2, players, server){
-		super();
+		super(gid, bot1, bot2, players, server);
 		this.bots = [new BotWrapper(bot1), new BotWrapper(bot2)];
 
 		this.round = 0;
@@ -31,7 +31,6 @@ class OverrunGame extends Game{
 		this.roundTick = 0;
 		this.gameLog = [];
 		this.gameName = GAME_NAME;
-		resetRound();
 	}
 
 	getName(){
@@ -161,7 +160,7 @@ class OverrunGame extends Game{
 					.collection(global.config['collection-battle'])
 					.insertOne({
 						id: this.battleId,
-						players: [p1.getName(), p2.getName()],
+						players: this.players.map((v) => v.getName()),
 						date: date.getMilliseconds(),
 						log: gameLog,
 					});

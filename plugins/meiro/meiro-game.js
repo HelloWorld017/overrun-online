@@ -1,8 +1,10 @@
 'use strict';
 var async = require('async');
-var Library = require(global.src('library'));
+var BotWrapper = require(global.src('bot-wrapper'));
 var Game = require(global.src('game'));
+var Library = require(global.src('library'));
 var localeval = require(global.src('evaluate'));
+var process = require('process');
 
 const GAME_NAME = "MEIRO";
 const START_X = 0;
@@ -64,7 +66,7 @@ class Tile{
 
 class MeiroGame extends Game{
 	constructor(gid, bot1, bot2, players, server){
-		super();
+		super(gid, bot1, bot2, players, server);
 		this.bots = [new BotWrapper(bot1), new BotWrapper(bot2)];
 
 		this.round = 0;
@@ -73,8 +75,6 @@ class MeiroGame extends Game{
 		this.roundTick = 0;
 		this.gameLog = [];
 		this.gameName = GAME_NAME;
-
-		resetRound();
 	}
 
 	getName(){
@@ -273,13 +273,13 @@ class MeiroGame extends Game{
 					var date = new Date();
 
 					global.mongo
-					.collection(global.config['collection-battle'])
-					.insertOne({
-						id: this.battleId,
-						players: [p1.getName(), p2.getName()],
-						date: date.getMilliseconds(),
-						log: gameLog,
-					});
+						.collection(global.config['collection-battle'])
+						.insertOne({
+							id: this.battleId,
+							players: this.players.map((v) => v.getName()),
+							date: date.getMilliseconds(),
+							log: gameLog,
+						});
 				});
 			});
 		});

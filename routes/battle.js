@@ -56,7 +56,7 @@ router.post('/entry/:game/:bot/:argument*?', (req, res, next) => {
 		next(new InvalidDataError());
 		return;
 	}
-	
+
 	global.server.matchmakers[game].entry(res.locals.user, bot, res, (req.params.argument || '').toString());
 	return;
 });

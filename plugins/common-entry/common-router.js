@@ -47,6 +47,7 @@ function requestRouter(pluginName, entryName, acceptsTypes){
 		res.render(view('unranked-entry'), {
 			pluginName: pluginName,
 			entryName: entryName + '-UNRANKED',
+			acceptsTypes: acceptsTypes,
 			bot: req.params.bot
 		});
 	});

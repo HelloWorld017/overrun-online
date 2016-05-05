@@ -13,6 +13,7 @@ class MeiroRankedGame extends meiro.game{
 		});
 
 		this.name = GAME_NAME;
+		this.resetRound();
 	}
 
 	handleWin(gameLog, callback){

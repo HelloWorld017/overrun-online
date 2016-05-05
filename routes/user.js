@@ -43,7 +43,15 @@ router.get('/:user/:type/:href/bots', (req, res, next) => {
 				return;
 			}
 
-			if(global.server.gamePool[req.params.type] === undefined){
+			var check = req.params.type.split(',').every((t) => {
+				if(global.server.gamePool[t] === undefined){
+					return false;
+				}
+
+				return true;
+			});
+
+			if(!check){
 				next(new InvalidDataError());
 				return;
 			}
@@ -52,7 +60,7 @@ router.get('/:user/:type/:href/bots', (req, res, next) => {
 				var href = new Buffer(req.params.href, 'base64').toString();
 				res.render('user/bot-list', {
 					bots: arr[0].bots,
-					type: req.params.type,
+					type: req.params.type.split(','),
 					href: href
 				});
 			}catch(e){

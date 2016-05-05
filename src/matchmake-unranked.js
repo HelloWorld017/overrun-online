@@ -12,37 +12,60 @@ class UnrankedMatchmaker{
 	}
 
 	entry(player, bot, response, argument){
-		if(player.currentGame !== undefined) return;
-		if(player.entryTick < Date.now()) return;
+		if(player.currentGame !== undefined){
+			response.json({
+				'game-finish': false,
+				err: global.translator('err.matchmake.ingame')
+			});
+			return;
+		}
+
+		if(player.entryTick < Date.now()){
+			response.json({
+				'game-finish': false,
+				err: global.translator('err.matchmake.tick')
+			});
+			return;
+		}
 
 		argument = argument.split('-');
 		if(argument.length < 1) return;
 
 		player.updateTimer();
 
-		async.every(this.pool, (poolEntry, cb) => {
-			cb(null, poolEntry.player.getName() !== player.getName());
-		}, (err, res) => {
-			if(res){
-				global.mongo
-				.collection(global.config['collection-user'])
-				.find({name: argument[0]})
-				.toArray((err, players) => {
-					if(err){
-						console.error(err.toString());
-						return;
-					}
+		global.mongo
+			.collection(global.config['collection-user'])
+			.find({name: argument[0]})
+			.toArray((err, players) => {
+				if(err){
+					console.error(err.toString());
+					response.json({
+						'game-finish': false,
+						err: global.translator('err.internalserver')
+					});
+					return;
+				}
 
-					if(players.length <= 0) return;
+				if(players.length <= 0){
+					response.json({
+						'game-finish': false,
+						err: global.translator('err.matchmake.noplayer')
+					});
+					return;
+				}
 
-					var againstPlayer = new Player(players[0]);
+				var againstPlayer = new Player(players[0]);
 
-					if(!againstPlayer.bots[argument[1]]) return;
+				if(!againstPlayer.bots[argument[1]]){
+					response.json({
+						'game-finish': false,
+						err: global.translator('err.matchmake.nobot')
+					});
+					return;
+				}
 
-					this.server.registerGame(new this.game(this.server.getGameId(), bot, againstPlayer.bots[argument[1]], this.server), [response]);
-				});
-			}
-		});
+				this.server.registerGame(new this.game(this.server.getGameId(), bot, againstPlayer.bots[argument[1]], this.server), [response]);
+			});
 	}
 
 	remove(){

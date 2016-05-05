@@ -11,6 +11,12 @@
 			url: '/battle/entry/' + gameName + '/<%= bot %>/' + (args || ''),
 			method: 'POST'
 		}).done(function(data){
+			if(data['game-finish'] === false){
+				alert(data.err);
+				window.location.href = '/';
+				return;
+			}
+
 			window.location.href = '/battle/results/' + data.log;
 		});
 	}

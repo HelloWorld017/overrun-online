@@ -13,8 +13,21 @@ class MatchMaker{
 	}
 
 	entry(player, bot, response, argument){
-		if(player.currentGame !== undefined) return;
-		if(player.entryTick < Date.now()) return;
+		if(player.currentGame !== undefined){
+			response.json({
+				'game-finish': false,
+				err: global.translator('err.matchmake.ingame')
+			});
+			return;
+		}
+
+		if(player.entryTick < Date.now()){
+			response.json({
+				'game-finish': false,
+				err: global.translator('err.matchmake.tick')
+			});
+			return;
+		}
 
 		player.updateTimer();
 
@@ -27,6 +40,12 @@ class MatchMaker{
 					bot: bot,
 					response: response
 				});
+			}else{
+				response.json({
+					'game-finish': false,
+					err: global.translator('err.alreadyentried')
+				});
+				return;
 			}
 		});
 	}
