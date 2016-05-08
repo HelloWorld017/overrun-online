@@ -36,6 +36,7 @@ class Server extends EventEmitter{
 			game: game,
 			responses: responses
 		};
+		game.start();
 	}
 
 	getGameId(){

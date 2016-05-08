@@ -1,4 +1,5 @@
 'use strict';
+var async = require('async');
 var BotWrapper = require(global.src('bot-wrapper'));
 var Game = require(global.src('game'));
 var Library = require(global.src('library'));
@@ -44,9 +45,9 @@ class OverrunGame extends Game{
 	}
 
 	processRound(attackIndex, roundCallback){
-		resetRound();
+		this.resetRound();
 
-		bots.forEach((v) => {
+		this.bots.forEach((v) => {
 			v.metadata.overallMovement = TURN_COUNT * 2;
 		});
 
@@ -63,7 +64,7 @@ class OverrunGame extends Game{
 
 			attack.metadata.currentMovement = MAX_ACTION_AMOUNT;
 			var attackEvaluator = this.getEvaluator(attack, []);
-
+			
 			localeval(attack.getCode(), attackEvaluator.evaluator, EVAL_TIMEOUT, (err) => {
 				turnLog[i].push({
 					content: 'overrun.turn.change',
@@ -78,7 +79,7 @@ class OverrunGame extends Game{
 				});
 
 				//deepEqual is okay because this moves on 5*5 grid and size of bots are same
-				if(attack.boundBox.min().deepEqual(defece.boundBox.min())){
+				if(attack.boundBox.min().deepEqual(defence.boundBox.min())){
 					if(defence.defence !== undefined && defence.defence > 0){
 						turnLog[i].push({
 							content: 'overrun.turn.defence'
@@ -126,8 +127,8 @@ class OverrunGame extends Game{
 					content: 'overrun.turn.win',
 					data: {
 						type: 'defence',
-						player: bot.getPlayer().getName(),
-						bot: bot.getName()
+						player: defence.getPlayer().getName(),
+						bot: defence.getName()
 					}
 				};
 			}
@@ -139,7 +140,7 @@ class OverrunGame extends Game{
 	start(){
 		var gameLog = [];
 		async.eachSeries(Array.rangeOf(TURN_COUNT), (k, cb) => {
-			processRound((k % 2), (log) => {
+			this.processRound((k % 2), (log) => {
 				gameLog[k] = log;
 				cb(null);
 			});
@@ -150,7 +151,7 @@ class OverrunGame extends Game{
 			});
 
 			process.nextTick(() => {
-				handleWin(gameLog, (afterHandle) => {
+				this.handleWin(gameLog, (afterHandle) => {
 					if(!afterHandle) return;
 
 					this.server.removeGame(this.gameId);

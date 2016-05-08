@@ -175,7 +175,7 @@ class MeiroGame extends Game{
 	}
 
 	processRound(roundCallback){
-		resetRound();
+		this.resetRound();
 
 		var turnLog = {};
 
@@ -208,25 +208,25 @@ class MeiroGame extends Game{
 			evaluators[0] = this.getEvaluator(bots[0], []);
 			evaluators[1] = this.getEvaluator(bots[1], []);
 
-			bots.forEach((v) => {
+			this.bots.forEach((v) => {
 				v.metadata.moveerr = false;
 				v.metadata.checkedWall = false;
 			});
 
-			localeval(bots[0].getCode(), evaluators[0].evaluator, EVAL_TIMEOUT, (err) => {
+			localeval(this.bots[0].getCode(), evaluators[0].evaluator, EVAL_TIMEOUT, (err) => {
 				localeval(defence.getCode(), evaluators[1].evaluator, EVAL_TIMEOUT, (err1) => {
 					turnLog[i].push({
 						content: 'meiro.turn.proceed',
 						data: [{
-							name: bots[0].getName(),
-							skin: bots[0].getSkin(),
-							player: bots[0].getPlayer().getName(),
+							name: this.bots[0].getName(),
+							skin: this.bots[0].getSkin(),
+							player: this.bots[0].getPlayer().getName(),
 							log: evaluators[0].logs,
 							err: err ? err.toString() : undefined
 						}, {
-							name: bots[1].getName(),
-							skin: bots[1].getSkin(),
-							player: bots[1].getPlayer().getName(),
+							name: this.bots[1].getName(),
+							skin: this.bots[1].getSkin(),
+							player: this.bots[1].getPlayer().getName(),
 							log: evaluators[1].logs,
 							err: err1 ? err1.toString() : undefined
 						}]
@@ -255,7 +255,7 @@ class MeiroGame extends Game{
 	start(){
 		var gameLog = [];
 		async.eachSeries(Library.rangeOf(TURN_COUNT), (k, cb) => {
-			processRound((k % 2), (log) => {
+			this.processRound((k % 2), (log) => {
 				gameLog[k] = log;
 				cb(null);
 			});
@@ -266,7 +266,7 @@ class MeiroGame extends Game{
 			});
 
 			process.nextTick(() => {
-				handleWin(gameLog, (afterHandle) => {
+				this.handleWin(gameLog, (afterHandle) => {
 					if(!afterHandle) return;
 
 					this.server.removeGame(this.gameId);
