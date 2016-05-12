@@ -26,6 +26,7 @@ class Player{
 		this.bots = data.bots.map((v) => {return new Bot(this, v.skin, v.name, v.code, v.type);});
 		this.github = data.github || "";
 		this.entryTimer = data.entryTimer || 0;
+		this.isAdmin = data.isAdmin || false;
 
 		this.currentGame = undefined;
 		this.lastGame = undefined;
