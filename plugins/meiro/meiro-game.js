@@ -102,7 +102,7 @@ class MeiroGame extends Game{
 				var newX = x + d.x;
 				var newY = y + d.y;
 
-				if(newX >= 0 && newY >= 0 && newX < MAZE_SIZE && newY < MAZE_SIZE && (this.maze[`x${newX}y${newY}`].visited === false)){
+				if(newX >= 0 && newY >= 0 && newX < MAZE_SIZE && newY < MAZE_SIZE && (this.maze.tiles[`x${newX}y${newY}`].visited === false)){
 					this.maze.tiles[`x${x}y${y}`].walls[d.value] = false;
 					this.maze.tiles[`x${newX}y${newY}`].walls[d.opposite] = false;
 
