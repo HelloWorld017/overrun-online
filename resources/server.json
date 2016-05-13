@@ -8,6 +8,7 @@
 	"collection-auth": "auth",
 	"collection-battle": "battle",
 	"collection-user": "users",
+	"collection-report": "report",
 	"collection-reset": "reset",
 	"collection-session": "session",
 
@@ -28,6 +29,7 @@
 
 	"max-bot-count": 5,
 	"max-code-length": 100000,
+	"max-report-length": 10000,
 
 	"shop-items": {
 		"skins": {
