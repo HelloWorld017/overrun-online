@@ -5,13 +5,15 @@ var Game = require(global.src('game'));
 var Library = require(global.src('library'));
 var localeval = require(global.src('evaluate'));
 var process = require('process');
+var evaluatePrefix = require('fs').readFileSync(global.pluginsrc('overrun', './evaluate-prefix.js'), 'utf8');
 
 const BOARD_SIZE = 6;
 const TURN_COUNT = 40;
 const ROUND_COUNT = 2;
 const MAX_ACTION_AMOUNT = 4;
 
-const EVAL_TIMEOUT = 50;
+const EVAL_TIMEOUT = 500;
+const MAX_CALLABLE = 1024;
 
 const START_POS = {
 	0: new Library.AABB(new Library.Position(0, 0), new Library.Position(1, 1)),
@@ -64,8 +66,36 @@ class OverrunGame extends Game{
 
 			attack.metadata.currentMovement = MAX_ACTION_AMOUNT;
 			var attackEvaluator = this.getEvaluator(attack, []);
-			
-			localeval(attack.getCode(), attackEvaluator.evaluator, EVAL_TIMEOUT, (err) => {
+
+			localeval(evaluatePrefix.replace('"code";', attack.getCode()), {
+				enemy: {
+						name: defence.getName(),
+						x: defence.boundBox.minX(),
+						y: defence.boundBox.minY(),
+						overallMovement: defence.metadata.overallMovement,
+						currentMovement: defence.metadata.currentMovement
+					},
+
+				x: attack.boundBox.minX(),
+				y: attack.boundBox.minY(),
+				yaw: attack.yaw,
+				overallMovement: attack.metadata.overallMovement,
+				currentMovement: attack.metadata.currentMovement,
+				isDefence: false
+
+			}, EVAL_TIMEOUT, (err, val) => {
+				try{
+					val = JSON.parse(val);
+				}catch(exception){
+					val = [];
+				}
+
+				if(val.length < MAX_CALLABLE){
+					val.forEach((callableObject) => {
+						((attackEvaluator.evaluator[callableObject.name] || {}).apply || () => {})({}, callableObject.arguments);
+					});
+				}
+
 				turnLog[i].push({
 					content: 'overrun.turn.change',
 					data: {
@@ -106,7 +136,35 @@ class OverrunGame extends Game{
 				defence.metadata.currentMovement = MAX_ACTION_AMOUNT + 1;
 				var defenceEvaluator = this.getEvaluator(defence, [], true);
 
-				localeval(defence.getCode(), defenceEvaluator.evaluator, EVAL_TIMEOUT, (err) => {
+				localeval(evaluatePrefix.replace('"code";', defence.getCode()), {
+					enemy: {
+							name: attack.getName(),
+							x: attack.boundBox.minX(),
+							y: attack.boundBox.minY(),
+							overallMovement: attack.metadata.overallMovement,
+							currentMovement: attack.metadata.currentMovement
+						},
+
+					x: defence.boundBox.minX(),
+					y: defence.boundBox.minY(),
+					yaw: defence.yaw,
+					overallMovement: defence.metadata.overallMovement,
+					currentMovement: defence.metadata.currentMovement,
+					isDefence: true
+
+				}, EVAL_TIMEOUT, (err, val) => {
+					try{
+						val = JSON.parse(val);
+					}catch(exception){
+						val = [];
+					}
+
+					if(val.length < MAX_CALLABLE){
+						val.forEach((callableObject) => {
+							((defenceEvaluator.evaluator[callableObject.name] || {}).apply || () => {})({}, callableObject.arguments);
+						});
+					}
+
 					turnLog[i].push({
 						content: 'overrun.turn.change',
 						data: {
@@ -242,26 +300,6 @@ class OverrunGame extends Game{
 				bot.yaw += amount;
 				log('turn.rotate', amount);
 				return true;
-			},
-
-			status: function(){
-				return {
-					'left-overall': bot.metadata.overallMovement,
-					'left-current': bot.metadata.currentMovement,
-					'turn': turn
-				};
-			},
-
-			getBots: function(){
-				return game.bot.map((v) => {
-					return {
-						name: v.getName(),
-						x: v.boundBox.minX(),
-						y: v.boundBox.minY(),
-						overallMovement: v.metadata.overallMovement,
-						currentMovement: v.metadata.currentMovement
-					};
-				});
 			}
 		};
 
@@ -300,7 +338,7 @@ module.exports = {
 		name: 'OVERRUN-',
 		content: {
 			title: global.translator('plugin.overrun.api.title'),
-			content: ['log', 'getBots', 'status', 'move', 'rotate'].map((v) => {
+			content: ['log', 'me', 'enemy', 'status', 'move', 'rotate'].map((v) => {
 				return {
 					title: global.translator(`plugin.overrun.api.${v}.title`),
 					content: global.translator(`plugin.overrun.api.${v}.content`)

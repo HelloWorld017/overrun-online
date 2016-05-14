@@ -15,7 +15,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-	res.render('report', {
+	res.render('request-report', {
 		length : global.config['max-report-length']
 	});
 });
@@ -50,7 +50,8 @@ router.get('/reports', (req, res, next) => {
 				next(new ServerError());
 				return;
 			}
-			//TODO
+
+			res.render('report');
 		});
 });
 
