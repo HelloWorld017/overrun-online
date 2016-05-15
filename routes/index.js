@@ -1,4 +1,5 @@
 var express = require('express');
+var git = require('git-rev');
 var router = express.Router();
 
 router.get('/', (req, res, next) => {
@@ -8,7 +9,14 @@ router.get('/', (req, res, next) => {
 	}
 
 	if(req.cookies.developer){
-		res.render('splash');
+		git.short((commitHash) => {
+			git.log((commitLog) => {
+				res.render('splash', {
+					hash: commitHash,
+					log: commitLog
+				});
+			});
+		});
 		return;
 	}
 

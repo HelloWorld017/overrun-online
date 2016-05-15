@@ -55,15 +55,13 @@
 				bottom: 0;
 			}
 
-			.splash-version-wrapper{
+			.splash-version{
 				position: fixed;
 				right: 30px;
 				bottom: 30px;
 				z-index: 4;
-			}
-
-			.splash-version {
 				color: #FFFFFF;
+				display: block;
 			}
 		</style>
 	</head>
@@ -79,11 +77,27 @@
 				</div>
 			</a>
 
-			<div class="splash-version-wrapper">
-				<a class="splash-version" href="https://github.com/HelloWorld017/overrun-online/" target="_blank">
-					<%= global.version %>
-				</a>
-			</div>
+			<a class="splash-version button-collapse" data-activates="history" href="#">
+				<%= global.version %>
+				<br>
+				<%= hash %>
+			</a>
 		</section>
+		<div id="history" class="side-nav">
+			<ul>
+				<% log.forEach((v) => { %>
+					<li>
+						<a href="https://github.com/HelloWorld017/overrun-online/commit/<%= v[0] %>" target="_blank">
+							<%= v[1] %>
+						</a>
+					</li>
+				<% }); %>
+				<li>
+					<a href="https://github.com/HelloWorld017/overrun-online/">
+						<i class="fa fa-github"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
 	</body>
 </html>

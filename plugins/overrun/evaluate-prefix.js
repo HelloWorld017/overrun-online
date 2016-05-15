@@ -1,4 +1,5 @@
 (function(){
+	"use strict";
 	var returnValue = [];
 	var appendToReturn = (name, cost, things) => {
 		things = things || () => {};
