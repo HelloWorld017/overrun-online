@@ -81,6 +81,10 @@ class MeiroGame extends Game{
 		return this.gameName;
 	}
 
+	getBattleId(){
+		return this.battleId;
+	}
+
 	resetRound(){
 		//DONE:0 generate maze, generate teleporter
 		this.maze = {

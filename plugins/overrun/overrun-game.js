@@ -40,6 +40,10 @@ class OverrunGame extends Game{
 		return this.gameName;
 	}
 
+	getBattleId(){
+		return this.battleId;
+	}
+
 	resetRound(){
 		this.bots.forEach((v, k) => {
 			v.boundBox = START_POS[k] || START_POS[0];
@@ -79,6 +83,7 @@ class OverrunGame extends Game{
 				x: attack.boundBox.minX(),
 				y: attack.boundBox.minY(),
 				yaw: attack.yaw,
+				turn: i + 1,
 				overallMovement: attack.metadata.overallMovement,
 				currentMovement: attack.metadata.currentMovement,
 				isDefence: false
@@ -92,7 +97,10 @@ class OverrunGame extends Game{
 
 				if(val.length < MAX_CALLABLE){
 					val.forEach((callableObject) => {
-						((attackEvaluator.evaluator[callableObject.name] || {}).apply || () => {})({}, callableObject.arguments);
+						Function.prototype.apply.apply((attackEvaluator.evaluator[callableObject.name] || () => {}), [
+							{},
+							callableObject.arguments
+						]);
 					});
 				}
 
@@ -148,6 +156,7 @@ class OverrunGame extends Game{
 					x: defence.boundBox.minX(),
 					y: defence.boundBox.minY(),
 					yaw: defence.yaw,
+					turn: i + 1,
 					overallMovement: defence.metadata.overallMovement,
 					currentMovement: defence.metadata.currentMovement,
 					isDefence: true
@@ -161,7 +170,10 @@ class OverrunGame extends Game{
 
 					if(val.length < MAX_CALLABLE){
 						val.forEach((callableObject) => {
-							((defenceEvaluator.evaluator[callableObject.name] || {}).apply || () => {})({}, callableObject.arguments);
+							Function.prototype.apply.apply((defenceEvaluator.evaluator[callableObject.name] || () => {}), [
+								{},
+								callableObject.arguments
+							]);
 						});
 					}
 
@@ -230,8 +242,8 @@ class OverrunGame extends Game{
 
 	getEvaluator(bot, logObject, isDefence){
 		var check = (amount) => {
-			if(player.metadata.currentMovement - amount < 0) return 'turn.no.movement';
-			if(player.metadata.overallMovement - amount < 0) return 'turn.no.movement.overall';
+			if(bot.metadata.currentMovement - amount < 0) return 'turn.no.movement';
+			if(bot.metadata.overallMovement - amount < 0) return 'turn.no.movement.overall';
 
 			return undefined;
 		};

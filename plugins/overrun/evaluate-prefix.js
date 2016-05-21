@@ -1,4 +1,4 @@
-(function(){
+(function(overallMovement, currentMovement, turn, yaw, x, y, isDefence){
 	"use strict";
 	var returnValue = [];
 	var appendToReturn = (name, cost, things) => {
@@ -9,7 +9,7 @@
 			overallMovement -= cost;
 			things.apply({}, arguments);
 
-			returnValue.append({
+			returnValue.push({
 				name: name,
 				arguments: arguments
 			});
@@ -50,4 +50,4 @@
 	"code";
 
 	return JSON.stringify(returnValue);
-})();
+})(overallMovement, currentMovement, turn, yaw, x, y, isDefence);

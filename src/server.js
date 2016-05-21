@@ -21,10 +21,11 @@ class Server extends EventEmitter{
 	}
 
 	removeGame(gid){
+		var battleId = this.games[gid].game.getBattleId();
 		this.games[gid].responses.forEach((v) => {
 			v.json({
 				'game-finish': true,
-				log: this.games[gid].getBattleId()
+				log: battleId
 			});
 		});
 
