@@ -298,8 +298,10 @@ class OverrunGame extends Game{
 
 			rotate: function(amount){
 				var err = check(1);
-				if(Number.isInteger(amount)){
+				if(!Number.isInteger(amount) || !isFinite(amount)){
 					err = 'turn.amount.not.number';
+				}else if(amount % 90 !== 0){
+					err = 'turn.amount.not.90';
 				}
 
 				if(err){
@@ -309,7 +311,7 @@ class OverrunGame extends Game{
 
 				bot.metadata.currentMovement--;
 				bot.metadata.overallMovement--;
-				bot.yaw += amount;
+				bot.yaw += amount % 360;
 				log('turn.rotate', amount);
 				return true;
 			}
@@ -350,7 +352,7 @@ module.exports = {
 		name: 'OVERRUN-',
 		content: {
 			title: global.translator('plugin.overrun.api.title'),
-			content: ['log', 'me', 'enemy', 'status', 'move', 'rotate'].map((v) => {
+			content: ['log', 'enemy', 'status', 'move', 'rotate', 'defence'].map((v) => {
 				return {
 					title: global.translator(`plugin.overrun.api.${v}.title`),
 					content: global.translator(`plugin.overrun.api.${v}.content`)

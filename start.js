@@ -27,6 +27,7 @@ global.headerHook = {};
 global.plugins = {};
 global.entryList = [];
 global.apiList = {};
+global.blockly = [];
 
 var url = "mongodb://" + global.config['db-address'] + ":" + global.config['db-port'] + "/" + global.config['db-name'];
 MongoClient.connect(url, (err, client) => {
@@ -93,6 +94,10 @@ MongoClient.connect(url, (err, client) => {
 						plugin.apiList.forEach((v) => {
 							global.apiList[v.name] = v.content;
 						});
+					}
+
+					if(plugin.blockly){
+						global.blockly = global.blockly.concat(plugin.blockly);
 					}
 
 					var loadCallback = () => {

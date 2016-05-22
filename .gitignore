@@ -42,3 +42,12 @@ jspm_packages
 # Imdone-related files
 .imdone/
 .imdoneignore
+
+# Plugins
+/plugins/*
+
+# Built-in Plugins
+!/plugins/common-entry/
+!/plugins/common-pass/
+!/plugins/meiro/
+!/plugins/overrun/

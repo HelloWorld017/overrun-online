@@ -77,7 +77,8 @@ router.all('/edit/:id', (req, res, next) => {
 			bot: res.locals.user.bots[req.params.id],
 			token: token,
 			target: '/edit/' + req.params.id,
-			games: global.server.gamePool
+			games: global.server.gamePool,
+			blockly: global.blockly
 		});
 	});
 });
@@ -129,7 +130,8 @@ router.all('/', (req, res, next) => {
 		skin: res.locals.user.skins,
 		bot: undefined,
 		target: '/build',
-		games: global.server.gamePool
+		games: global.server.gamePool,
+		blockly: global.blockly
 	});
 });
 

@@ -33,11 +33,12 @@
 			'turn': turn,
 			'yaw': yaw,
 			'x': x,
-			'y': y
+			'y': y,
+			'isDefence': isDefence
 		};
 	};
 
-	var enemy = function(){
+	var enemy = () => {
 		return enemy;
 	};
 
@@ -46,6 +47,39 @@
 	if(isDefence){
 		defence = appendToReturn('defence', 6);
 	}
+
+	//Blockly code
+	var getOverall = (e) => {
+		return e ? enemy.overallMovement : overallMovement;
+	};
+
+	var getCurrent = (e) => {
+		return e ? enemy.currentMovement : currentMovement;
+	};
+
+	var getTurn = () => {
+		return turn;
+	};
+
+	var getYaw = (e) => {
+		return e ? enemy.yaw : yaw;
+	};
+
+	var getX = (e) => {
+		return e ? enemy.x : x;
+	};
+
+	var getY = (e) => {
+		return e ? enemy.y : y;
+	};
+
+	var getIsDefence = () => {
+		return isDefence;
+	};
+
+	var getEnemyName = () => {
+		return enemy.name;
+	};
 
 	"code";
 
