@@ -101,6 +101,7 @@
 	"server.http.load": "HTTP Server has been successfully loaded.",
 	"server.http.port": "Listening on %port%.",
 	"server.http.pipe": "Listening on pipe %addr%.",
+	"server.load": "This server is running $6overrun-online$ $3%version%$ [%codeAscii%(%codeUnicode%)]",
 	"server.plugin.error": "Error while loading plugins.",
 	"server.plugin.load": "Successfully loaded plugin %name% v%version% by %author%.",
 

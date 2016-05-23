@@ -1,4 +1,5 @@
 var async = require('async');
+var chalk = require('chalk');
 var fs = require('fs');
 var http = require('http');
 var path = require('path');
@@ -10,6 +11,8 @@ var Server = require('./src/server');
 var sharedsession = require("express-socket.io-session");
 
 const SERVER_VERSION = "alpha 0.0.0 1603260001";
+const SERVER_VERSION_CODE = "$2Lime Sidewinder$";
+const SERVER_VERSION_CODE_UNICODE = "$2ライム ヨコバイガラガラヘビ$";
 
 global.config = objectMerge(require('./resources/server'), require('./server'));
 global.translation = objectMerge(require('./resources/translation-' + global.config.lang), require('./translation-' + global.config.lang));
@@ -28,6 +31,12 @@ global.plugins = {};
 global.entryList = [];
 global.apiList = {};
 global.blockly = [];
+
+console.log(global.translator('server.load', {
+	version: SERVER_VERSION,
+	codeAscii: SERVER_VERSION_CODE,
+	codeUnicode: SERVER_VERSION_CODE_UNICODE
+}));
 
 var url = "mongodb://" + global.config['db-address'] + ":" + global.config['db-port'] + "/" + global.config['db-name'];
 MongoClient.connect(url, (err, client) => {
