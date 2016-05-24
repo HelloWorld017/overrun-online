@@ -1,3 +1,4 @@
+var blockly = require('./blockly-list');
 var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('overrun');
 var entry = require(global.pluginsrc('common-entry', 'common-router'));
 var overrun = require('./overrun-game');
@@ -25,71 +26,7 @@ module.exports = {
 		name: 'OVERRUN-UNRANKED',
 		content: overrun.api.content
 	}],
-	blockly: [{
-		name: 'Overrun',
-		content: [
-			{
-				conv: 'log',
-				message0: global.translator('plugin.overrun.blockly.log.message'),
-				args0: [
-					{
-						'type': 'input_value',
-						'name': 'VALUE',
-						'check': 'String'
-					}
-				],
-				color: 160,
-				tooltip: global.translator('plugin.overrun.blockly.log.tooltip'),
-				previousStatement: null,
-				nextStatement: null
-			},
-			{
-				conv: 'move',
-				message0: global.translator('plugin.overrun.blockly.move.message'),
-				color: 160,
-				tooltip: global.translator('plugin.overrun.blockly.move.tooltip'),
-				previousStatement: null,
-				nextStatement: null
-			},
-			{
-				conv: 'defence',
-				message0: global.translator('plugin.overrun.blockly.defence.message'),
-				color: 160,
-				tooltip: global.translator('plugin.overrun.blockly.defence.tooltip'),
-				previousStatement: null,
-				nextStatement: null
-			},
-			{
-				conv: 'rotate',
-				message0: global.translator('plugin.overrun.blockly.rotate.tooltip'),
-				args0: [
-					{
-						'type': 'input_value',
-						'name': 'VALUE',
-						'check': 'Number'
-					}
-				],
-				tooltip: global.translator('plugin.overrun.blockly.rotate.tooltip'),
-				previousStatement: null,
-				nextStatement: null
-			},
-			{
-				conv: 'getOverall',
-				message0: global.translator('plugin.overrun.blockly.getOverall.message'),
-				args0: [
-					{
-						'type': 'field_dropdown',
-						'name': 'VALUE',
-						'options': [['enemy', 'ENEMY'], ['me', 'ME']]
-					}
-				],
-				color: 160,
-				tooltip: global.translator('plugin.overrun.blockly.getOverall.tooltip'),
-				previousStatement: null,
-				nextStatement: null
-			}
-		]
-	}],
+	blockly: blockly,
 	entry: [{
 		name: global.translator('plugin.overrun'),
 		href: '/entry/overrun',
