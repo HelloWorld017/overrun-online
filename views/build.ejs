@@ -82,7 +82,12 @@
 
 					Blockly.JavaScript['<%- category.name %>_<%- v.conv %>'] = function(block) {
 						<% if(v.convManual === undefined){ %>
-							return '<%- v.conv %>(' + (Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_NONE) || '') + ')';
+							<% if(v.output){ %>
+								var order = Blockly.JavaScript.ORDER_MEMBER;
+							<% }else{ %>
+								var order = Blockly.JavaScript.ORDER_NONE;
+							<% } %>
+							return ['<%- v.conv %>(' + (Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_NONE) || '') + ')', order];
 						<% }else{ %>
 							<%- v.convManual %>
 						<% } %>
