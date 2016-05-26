@@ -63,6 +63,11 @@
 				color: #FFFFFF;
 				display: block;
 			}
+
+			.commit{
+				overflow-x: auto;
+				white-space: nowrap;
+			}
 		</style>
 	</head>
 
@@ -87,7 +92,7 @@
 			<ul>
 				<% log.forEach((v) => { %>
 					<li>
-						<a href="https://github.com/HelloWorld017/overrun-online/commit/<%= v[0] %>" target="_blank">
+						<a href="https://github.com/HelloWorld017/overrun-online/commit/<%= v[0] %>" target="_blank" class="commit">
 							<%= v[1] %>
 						</a>
 					</li>
