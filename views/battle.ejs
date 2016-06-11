@@ -2,16 +2,106 @@
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
 		<%- include('./header', {title: global.translator('battle.title')}); %>
+		<style>
+			.log-trigger {
+				display: block;
+				position: absolute;
+				top: calc(64px + (100vh - 64px) / 10);
+				width: 50px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				background: <%= global.theme['background-0'] %>;
+				opacity: 0.4;
+				transition: opacity 0.5s, left 0.5s;
+				-webkit-transition: opacity 0.5s, left 0.5s;
+				will-change: left;
+			}
+
+			.log-trigger:hover {
+				opacity: 1;
+			}
+
+			#log-wrapper {
+				width: 200px;
+				height: calc(100vh - 64px);
+				padding: 3px;
+				position: relative;
+				left: -200px;
+				overflow-x: hidden;
+				overflow-y: auto;
+				display: inline-block;
+				background: <%= global.theme['background-0'] %>;
+				transition: left 0.5s;
+				-webkit-transition: left 0.5s;
+				will-change: left;
+			}
+
+			#main-canvas {
+				width: auto;
+				height: 100%;
+				margin: 0;
+			}
+
+			main {
+				width: 100vw;
+				height: calc(100vh - 64px);
+				display: block;
+				position: absolute;
+				margin: 0;
+				top: 64px;
+				white-space: nowrap;
+			}
+
+			nav {
+				position: relative;
+			}
+		</style>
 	</head>
 
 	<body>
 		<% include ./navigation %>
-		<% include ./background %>
 
-		<section class="main-section">
+		<main>
+			<div id="log-wrapper">
+			</div>
+			<canvas id="main-canvas"></canvas>
+		</main>
 
-		</section>
+		<a class="log-trigger" href="#" onclick="return openLog()">
+			<i class="fa fa-list"></i>
+		</a>
+
+		<div class="hidden">
+			<%- log %>
+		</div>
 
 		<% include ./footer %>
+
+		<script>
+			var canvas = $('#main-canvas').get(0);
+			var log = $('#log-wrapper').get(0);
+			var trigger = $('.log-trigger').get(0);
+
+			//Log handler
+			var gameLog =
+		</script>
+
+		<script>
+			var logOpened = false;
+			function openLog(){
+				if(logOpened){
+					log.style.left = '-200px';
+					trigger.style.left = '0';
+					logOpened = false;
+					return false;
+				}
+
+				log.style.left = '0';
+				trigger.style.left = '200px';
+				logOpened = true;
+				return false;
+			}
+		</script>
 	</body>
 </html>

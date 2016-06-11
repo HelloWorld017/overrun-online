@@ -17,7 +17,13 @@ module.exports = {
 	},
 	onServerInit: (app, cb) => {
 		app.use('/entry', entry('overrun', 'OVERRUN'));
+		app.use('/render/overrun.js', (req, res) => {
+			res.sendFile(global.pluginsrc('overrun', 'overrun-render.js'));
+		});
 		cb();
+	},
+	renderHook: {
+		'battle': `<script src="/render/overrun.js"></script>`
 	},
 	apiList: [{
 		name: 'OVERRUN-RANKED',

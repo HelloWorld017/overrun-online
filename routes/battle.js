@@ -61,7 +61,7 @@ router.post('/entry/:game/:bot/:argument*?', (req, res, next) => {
 	return;
 });
 
-router.get('/result/:id', (req, res, next) => {
+router.get('/results/:id', (req, res, next) => {
 
 	global.mongo
 		.collection(global.config['collection-battle'])
@@ -80,7 +80,9 @@ router.get('/result/:id', (req, res, next) => {
 				return;
 			}
 
-			res.json(battle[0]);
+			res.render('battle', {
+				battle: battle[0]
+			});
 		});
 });
 

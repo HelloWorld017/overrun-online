@@ -233,7 +233,9 @@ class OverrunGame extends Game{
 						id: this.battleId,
 						players: this.players.map((v) => v.getName()),
 						date: date.getMilliseconds(),
+						dateTime: Date.now(),
 						log: gameLog,
+						type: 'OVERRUN'
 					});
 				});
 			});
