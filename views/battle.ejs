@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
+		<script>
+			var handlers = {};
+			var canvas, log, logType, trigger, gameLog;
+
+
+			function printLog(str){
+				log.append($(document.createElement('textarea')).val(str).attr('disabled', '')).append($(document.createElement('br')));
+			}
+		</script>
+
 		<%- include('./header', {title: global.translator('battle.title')}); %>
 		<style>
 			.log-trigger {
@@ -56,10 +66,14 @@
 			nav {
 				position: relative;
 			}
+
+			#log-wrapper textarea {
+				color: <%= global.theme['foreground-0'] %>;
+			}
 		</style>
 	</head>
 
-	<body>
+	<body style="overflow: hidden">
 		<% include ./navigation %>
 
 		<main>
@@ -72,32 +86,38 @@
 			<i class="fa fa-list"></i>
 		</a>
 
-		<div class="hidden">
-			<%- log %>
+		<div style="display:none;" id="log-content" aria-hidden="true">
+			<%- JSON.stringify(battle.log) %>
 		</div>
 
 		<% include ./footer %>
 
 		<script>
-			var canvas = $('#main-canvas').get(0);
-			var log = $('#log-wrapper').get(0);
-			var trigger = $('.log-trigger').get(0);
+			canvas = $('#main-canvas').get(0);
+			log = $('#log-wrapper');
+			trigger = $('.log-trigger').get(0);
 
 			//Log handler
-			var gameLog =
+			gameLog = JSON.parse($('#log-content').text());
+			logType = '<%- battle.type %>';
+			handlers[logType]();
 		</script>
 
 		<script>
 			var logOpened = false;
 			function openLog(){
 				if(logOpened){
-					log.style.left = '-200px';
+					log.css({
+						left: '-200px'
+					});
 					trigger.style.left = '0';
 					logOpened = false;
 					return false;
 				}
 
-				log.style.left = '0';
+				log.css({
+					left: '0'
+				});
 				trigger.style.left = '200px';
 				logOpened = true;
 				return false;

@@ -209,7 +209,7 @@ class OverrunGame extends Game{
 
 	start(){
 		var gameLog = [];
-		async.eachSeries(Array.rangeOf(TURN_COUNT), (k, cb) => {
+		async.eachSeries(Array.rangeOf(ROUND_COUNT), (k, cb) => {
 			this.processRound((k % 2), (log) => {
 				gameLog[k] = log;
 				cb(null);
