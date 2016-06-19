@@ -58,6 +58,25 @@ class OverrunGame extends Game{
 		});
 
 		var turnLog = {};
+
+		turnLog.init = {
+			turnCount: TURN_COUNT,
+			players: this.bots.map(function(v){
+				return {
+					name: v.getName(),
+					skin: v.getSkin(),
+					pos: {
+						x: v.boundBox.minX(),
+						y: v.boundBox.minY(),
+					},
+					rotation: v.yaw,
+					player: v.getPlayer().getName()
+				}
+			}),
+			boardSize: BOARD_SIZE,
+			maxActionAmount: MAX_ACTION_AMOUNT
+		};
+
 		var attack = this.bots[attackIndex];
 		var defence = this.bots.filter((bot, index) => {
 			return index !== attackIndex;
