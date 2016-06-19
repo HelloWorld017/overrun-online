@@ -32,7 +32,7 @@ var translate = (key, options) => {
 		translation = translation.split(`%${k}%`).join(options[k]);
 	});
 
-	translation = translation.replace(/>(>)?([^]+?)<(?!<)/g, (match, p1, p2) => {
+	translation = translation.replace(/>(>)?([^><]+?)<(?!<)/g, (match, p1, p2) => {
 		if(p1 === '<') return match; //Escape
 		return translate(p2, options);
 	});

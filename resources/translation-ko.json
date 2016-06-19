@@ -79,7 +79,8 @@
 	"missing.title": "아이디/비밀번호 찾기",
 	"missing.email": "이메일",
 	"missing.id": "이름",
-	"missing.id.result.desc": "당신의 아이디는 <samp>%id%</samp> 입니다.",
+	"missing.id.result": "아이디 찾기 결과",
+	"missing.id.result.desc": "당신의 아이디는 <<samp>>%id%<</samp>> 입니다.",
 	"missing.id.result.masthead": "결과",
 	"missing.id.submit": "아이디 찾기",
 	"missing.id.title": "아이디 찾기",
@@ -113,6 +114,7 @@
 	"shop.item.skins.default": "기본 스킨",
 	"shop.item.skins.triangles": "삼각형",
 
+	"title": "overrun",
 	"tutorial.title": "튜토리얼",
 
 	"unregister.title": "회원탈퇴",
