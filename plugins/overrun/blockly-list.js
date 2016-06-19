@@ -49,39 +49,28 @@ var blockly = [{
 		{
 			conv: 'getIsDefence',
 			message0: global.translator(`plugin.overrun.blockly.getIsDefence.message`),
-			args0: [
-				{
-					'type': 'field_dropdown',
-					'name': 'VALUE',
-					'options': [['enemy', 'ENEMY'], ['me', 'ME']]
-				}
-			],
 			color: 160,
 			tooltip: global.translator(`plugin.overrun.blockly.getIsDefence.tooltip`),
-			previousStatement: null,
-			nextStatement: null,
 			output: 'Boolean'
 		},
 		{
 			conv: 'getEnemyName',
 			message0: global.translator(`plugin.overrun.blockly.getEnemyName.message`),
-			args0: [
-				{
-					'type': 'field_dropdown',
-					'name': 'VALUE',
-					'options': [['enemy', 'ENEMY'], ['me', 'ME']]
-				}
-			],
 			color: 160,
 			tooltip: global.translator(`plugin.overrun.blockly.getEnemyName.tooltip`),
-			previousStatement: null,
-			nextStatement: null,
 			output: 'String'
+		},
+		{
+			conv: 'getTurn',
+			message0: global.translator(`plugin.overrun.blockly.getTurn.message`),
+			color: 160,
+			tooltip: global.translator(`plugin.overrun.blockly.getTurn.tooltip`),
+			output: 'Number'
 		}
 	]
 }];
 
-blockly[0].content = blockly[0].content.concat(['getOverall', 'getCurrent', 'getTurn', 'getYaw', 'getX', 'getY'].map((v) => {
+blockly[0].content = blockly[0].content.concat(['getOverall', 'getCurrent', 'getYaw', 'getX', 'getY'].map((v) => {
 	return {
 		conv: v,
 		message0: global.translator(`plugin.overrun.blockly.${v}.message`),
@@ -94,8 +83,6 @@ blockly[0].content = blockly[0].content.concat(['getOverall', 'getCurrent', 'get
 		],
 		color: 160,
 		tooltip: global.translator(`plugin.overrun.blockly.${v}.tooltip`),
-		previousStatement: null,
-		nextStatement: null,
 		output: 'Number'
 	};
 }));
