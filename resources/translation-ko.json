@@ -156,6 +156,11 @@
 	"plugin.json.stringify.message": "%1를 JSON화",
 	"plugin.json.stringify.tooltip": "",
 
+	"plugin.type.parseInt.message": "%1을 숫자로",
+	"plugin.type.parseInt.tooltip": "텍스트 숫자로 바꿉니다.",
+	"plugin.type.toString.message": "%1을 텍스트로",
+	"plugin.type.toString.tooltip": "숫자를 텍스트로 바꿉니다.",
+
 	"plugin.meiro": "Meiro",
 	"plugin.meiro.ranked": "Meiro 랭크전",
 	"plugin.meiro.unranked": "Meiro 친선전",

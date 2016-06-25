@@ -49,6 +49,6 @@ jspm_packages
 # Built-in Plugins
 !/plugins/common-entry/
 !/plugins/common-pass/
-!/plugins/common-json/
+!/plugins/common-blockly/
 !/plugins/meiro/
 !/plugins/overrun/

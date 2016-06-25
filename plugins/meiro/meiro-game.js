@@ -16,6 +16,9 @@ const MAZE_SIZE = 10;
 const END_X = MAZE_SIZE - 1;
 const END_Y = MAZE_SIZE - 1;
 
+const TURN_COUNT = 50;
+const ROUND_COUNT = 1;
+
 const TRAP_COUNT = 1;
 const TELEPORTER_COUNT = 3;
 const WALLCUTTER_COUNT = 2;
@@ -275,7 +278,8 @@ class MeiroGame extends Game{
 								content: 'turn.win',
 								data: {
 									player: endedBot[0].getPlayer().getName(),
-									bot: endedBot[0].getName()
+									bot: endedBot[0].getName(),
+									escaped: true
 								}
 							};
 							break;
@@ -284,7 +288,8 @@ class MeiroGame extends Game{
 								content: 'turn.draw',
 								data: {
 									player: [endedBot[0].getPlayer().getName(), endedBot[1].getPlayer().getName()],
-									bot: endedBot[1].getName()
+									bot: [endedBot[0].getName(), endedBot[1].getName()],
+									escaped: true
 								}
 							};
 							break;
@@ -299,13 +304,24 @@ class MeiroGame extends Game{
 				});
 			});
 		}, (err) => {
+			if(turnLog.final === undefined){
+				turnLog.final = {
+					content: 'turn.draw',
+					data: {
+						player: [endedBot[0].getPlayer().getName(), endedBot[1].getPlayer().getName()],
+						bot: endedBot[1].getName(),
+						escaped: false
+					}
+				};
+			}
+
 			roundCallback(turnLog);
 		});
 	}
 
 	start(){
 		var gameLog = [];
-		async.eachSeries(Library.rangeOf(TURN_COUNT), (k, cb) => {
+		async.eachSeries(Array.rangeOf(ROUND_COUNT), (k, cb) => {
 			this.processRound((k % 2), (log) => {
 				gameLog[k] = log;
 				cb(null);

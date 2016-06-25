@@ -4,14 +4,14 @@ var blockly = [{
 		{
 			conv: 'checkWall',
 			message0: global.translator(`plugin.meiro.blockly.checkWall.message`),
-			color: 160,
+			colour: 260,
 			tooltip: global.translator(`plugin.meiro.blockly.checkWall.tooltip`),
 			output: 'Number'
 		},
 		{
 			conv: 'load',
 			message0: global.translator(`plugin.meiro.blockly.load.message`),
-			color: 160,
+			colour: 260,
 			tooltip: global.translator(`plugin.meiro.blockly.load.tooltip`),
 			output: 'String'
 		},
@@ -19,7 +19,7 @@ var blockly = [{
 		{
 			conv: 'items',
 			message0: global.translator(`plugin.meiro.blockly.items.message`),
-			color: 160,
+			colour: 260,
 			tooltip: global.translator(`plugin.meiro.blockly.items.tooltip`),
 			output: 'Array'
 		}
@@ -30,7 +30,7 @@ blockly[0].content = blockly[0].content.concat(['move', 'turnLeft', 'turnRight',
 	return {
 		conv: v,
 		message0: global.translator(`plugin.meiro.blockly.${v}.message`),
-		color: 160,
+		colour: 260,
 		tooltip: global.translator(`plugin.meiro.blockly.${v}.tooltip`),
 		previousStatement: null,
 		nextStatement: null
@@ -49,7 +49,7 @@ blockly[0].content = blockly[0].content.concat(['log', 'save'].map((v) => {
 				check: 'String'
 			}
 		],
-		color: 160,
+		colour: 260,
 		tooltip: global.translator(`plugin.meiro.blockly.${v}.tooltip`),
 		previousStatement: null,
 		nextStatement: null
