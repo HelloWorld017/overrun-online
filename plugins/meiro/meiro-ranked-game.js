@@ -21,6 +21,11 @@ class MeiroRankedGame extends meiro.game{
 		var playerName = this.players[0].getName();
 
 		async.each(gameLog, (v, cb) => {
+			if(typeof v.final.data.player === 'object'){
+				cb();
+				return;
+			}
+			
 			if(v.final.data.player === playerName){
 				playerScore++;
 				cb();

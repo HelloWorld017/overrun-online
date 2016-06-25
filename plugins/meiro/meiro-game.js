@@ -9,16 +9,19 @@ var process = require('process');
 var evaluatePrefix = require('fs').readFileSync(global.pluginsrc('meiro', './evaluate-prefix.js'), 'utf8');
 
 const GAME_NAME = "MEIRO";
+
 const START_X = 0;
 const START_Y = 0;
 const MAZE_SIZE = 10;
 const END_X = MAZE_SIZE - 1;
 const END_Y = MAZE_SIZE - 1;
+
+const TRAP_COUNT = 1;
 const TELEPORTER_COUNT = 3;
 const WALLCUTTER_COUNT = 2;
 
 const EVAL_TIMEOUT = 500;
-const MAX_CALLABLE = 1024;
+const MAX_SAVE_LENGTH = 10000;
 
 class Direction{
 	constructor(x, y, value, left, right, opposite){
@@ -123,11 +126,11 @@ class MeiroGame extends Game{
 		carve(START_X, START_Y);
 
 		Array.rangeOf(TELEPORTER_COUNT).forEach((i) => {
-			getRandomUnplacedPosition((start) => {
+			this.getRandomUnplacedPosition((start) => {
 				if(start === undefined) return;
 				start.placeObject('teleport', i);
 
-				getRandomUnplacedPosition((end) => {
+				this.getRandomUnplacedPosition((end) => {
 					if(end === undefined){
 						start.placedObjects.teleport = undefined;
 						return;
@@ -140,10 +143,17 @@ class MeiroGame extends Game{
 		});
 
 		Array.rangeOf(WALLCUTTER_COUNT).forEach((i) => {
-			getRandomUnplacedPosition((pos) => {
+			this.getRandomUnplacedPosition((pos) => {
 				if(pos === undefined) return;
 
 				pos.placeObject('wallcutter', true);
+			});
+		});
+
+		Array.rangeOf(TRAP_COUNT).forEach((i) => {
+			this.getRandomUnplacedPosition((pos) => {
+				if(pos === undefined) return;
+				pos.placeObject('trap', true);
 			});
 		});
 
@@ -153,6 +163,7 @@ class MeiroGame extends Game{
 			v.metadata.direction = DIRECTIONS_BY_VALUE.N;
 			v.metadata.items = [];
 			v.metadata.usedTeleporter = [];
+			v.metadata.saveData = undefined;
 		});
 	}
 
@@ -216,26 +227,40 @@ class MeiroGame extends Game{
 			localeval(evaluatePrefix, {
 				code: this.bots[0].getCode(),
 				maze: JSON.stringify(this.maze),
-				bot: JSON.stringify(this.bots[0].metadata)
+				bot: JSON.stringify(this.bots[0].metadata),
+				startX: START_X,
+				startY: START_Y,
+				saveLength: MAX_SAVE_LENGTH
 			}, EVAL_TIMEOUT, (err, logs) => {
+				this.maze = logs.maze;
+				this.bots[0].metadata = logs.bot;
+				this.bots[0].metadata.direction = DIRECTIONS_BY_VALUE[this.bots[0].metadata.direction.value];
+
 				localeval(evaluatePrefix, {
 					code: this.bots[1].getCode(),
 					maze: JSON.stringify(this.maze),
-					bot: JSON.stringify(this.bots[1].metadata)
+					bot: JSON.stringify(this.bots[1].metadata),
+					startX: START_X,
+					startY: START_Y,
+					saveLength: MAX_SAVE_LENGTH
 				}, EVAL_TIMEOUT, (err1, logs1) => {
+					this.maze = logs1.maze;
+					this.bots[1].metadata = logs1.bot;
+					this.bots[1].metadata.direction = DIRECTIONS_BY_VALUE[this.bots[1].metadata.direction.value];
+
 					turnLog[i].push({
 						content: 'meiro.turn.proceed',
 						data: [{
 							name: this.bots[0].getName(),
 							skin: this.bots[0].getSkin(),
 							player: this.bots[0].getPlayer().getName(),
-							log: logs
+							log: logs.logObject,
 							err: err ? err.toString() : undefined
 						}, {
 							name: this.bots[1].getName(),
 							skin: this.bots[1].getSkin(),
 							player: this.bots[1].getPlayer().getName(),
-							log: logs1,
+							log: logs1.logObject,
 							err: err1 ? err1.toString() : undefined
 						}]
 					});
@@ -269,7 +294,7 @@ class MeiroGame extends Game{
 						cb({});
 						return;
 					}
-					
+
 					cb(null);
 				});
 			});
