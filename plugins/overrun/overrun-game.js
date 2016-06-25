@@ -240,22 +240,40 @@ class OverrunGame extends Game{
 			});
 
 			process.nextTick(() => {
-				this.handleWin(gameLog, (afterHandle) => {
-					if(!afterHandle) return;
+				var score = {};
+				this.players.forEach((v) => {
+					score[v.getName()] = 0;
+				});
+				async.each(gameLog, (v, cb) => {
+					score[v.final.data.player]++;
+					cb();
+				}, () => {
+					this.handleWin(gameLog, (afterHandle) => {
+						if(!afterHandle) return;
 
-					this.server.removeGame(this.gameId);
-					var date = new Date();
-
-					global.mongo
-					.collection(global.config['collection-battle'])
-					.insertOne({
-						id: this.battleId,
-						players: this.players.map((v) => v.getName()),
-						date: date.getMilliseconds(),
-						dateTime: Date.now(),
-						log: gameLog,
-						type: 'OVERRUN'
-					});
+						this.server.removeGame(this.gameId);
+						var date = new Date();
+						var bots = {};
+						async.each(this.bots, (v, cb) => {
+							bots[v.getPlayer().getName()] = {
+								skin: v.getSkin(),
+								name: v.getName()
+							};
+							cb();
+						}, () => {
+							global.mongo
+							.collection(global.config['collection-battle'])
+							.insertOne({
+								id: this.battleId,
+								players: this.players.map((v) => v.getName()),
+								date: date.getMilliseconds(),
+								dateTime: Date.now(),
+								log: gameLog,
+								score: score,
+								type: 'OVERRUN'
+							});
+						});
+					}, score);
 				});
 			});
 		});

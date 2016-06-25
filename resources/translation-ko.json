@@ -58,6 +58,7 @@
 	"index.title": "Welcome to overrun-online!",
 	"index.motd": "Welcome to overrun-online!",
 	"index.continue": "아무데나 터치하세요.",
+	"index.recent.match": "최근 경기",
 
 	"join.title": "가입",
 	"join.name": "닉네임",

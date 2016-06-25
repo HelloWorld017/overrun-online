@@ -2,6 +2,25 @@
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
 		<%- include('./header', {title: global.translator('index.title')}); %>
+		<style>
+			.bot-icon {
+				width: 50px;
+				vertical-align: middle;
+			}
+
+			.battle-collection {
+				text-align: center;
+				height: 100px;
+			}
+
+			.battle-user-name {
+				font-size: 1.5rem;
+			}
+
+			.user-divider {
+				font-size: 3rem;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -9,7 +28,34 @@
 		<% include ./background %>
 
 		<section class="main-section">
-
+			<h3><%- global.translator('index.recent.match') %></h3>
+			<div class="collection">
+				<% battles.forEach((battle) => { %>
+					<a class="collection-item battle-collection" href="/battle/results/<%= battle.id %>">
+						<div class="left user-badge">
+							<% if(battle.bots !== undefined){ %>
+								<img src="<%= global.config['shop-items'].skins[battle.bots[battle.players[0]].skin].icon %>" class="circle bot-icon">
+							<% } %>
+							<span class="battle-user-name"><%= battle.players[0] %></span>
+							<% if(battle.score !== undefined){ %>
+								<br>
+								<span class="score"><%= battle.score[battle.players[0]] %></span>
+							<% } %>
+						</div>
+						<span class="user-divider">:</span>
+						<div class="right user-badge">
+							<% if(battle.bots !== undefined){ %>
+								<img src="<%= global.config['shop-items'].skins[battle.bots[battle.players[1]].skin].icon %>" class="circle bot-icon">
+							<% } %>
+							<span class="battle-user-name"><%= battle.players[1] %></span>
+							<% if(battle.score !== undefined){ %>
+								<br>
+								<span class="score"><%= battle.score[battle.players[1]] %></span>
+							<% } %>
+						</div>
+					</a>
+				<% }); %>
+			</div>
 		</section>
 
 		<% include ./footer %>

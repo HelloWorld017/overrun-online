@@ -372,21 +372,49 @@ class MeiroGame extends Game{
 			});
 
 			process.nextTick(() => {
-				this.handleWin(gameLog, (afterHandle) => {
-					if(!afterHandle) return;
-					this.server.removeGame(this.gameId);
-					var date = new Date();
+				var score = {};
+				this.players.forEach((v) => {
+					score[v.getName()] = 0;
+				});
 
-					global.mongo
-						.collection(global.config['collection-battle'])
-						.insertOne({
-							id: this.battleId,
-							players: this.players.map((v) => v.getName()),
-							date: date.getMilliseconds(),
-							dateTime: Date.now(),
-							log: gameLog,
-							type: 'MEIRO'
+				async.each(gameLog, (v, cb) => {
+					if(typeof v.final.data.player === 'object'){
+						v.final.data.player.forEach((v1) => {
+							score[v1]++;
 						});
+						cb();
+						return;
+					}
+
+					score[v.final.data.player]++;
+					cb();
+				}, () => {
+					this.handleWin(gameLog, (afterHandle) => {
+						if(!afterHandle) return;
+						this.server.removeGame(this.gameId);
+						var date = new Date();
+						var bots = {};
+						async.each(this.bots, (v, cb) => {
+							bots[v.getPlayer().getName()] = {
+								skin: v.getSkin(),
+								name: v.getName()
+							};
+							cb();
+						}, () => {
+							global.mongo
+								.collection(global.config['collection-battle'])
+								.insertOne({
+									id: this.battleId,
+									players: this.players.map((v) => v.getName()),
+									bots: bots,
+									score: score,
+									date: date.getMilliseconds(),
+									dateTime: Date.now(),
+									log: gameLog,
+									type: 'MEIRO'
+								});
+						});
+					}, score);
 				});
 			});
 		});
