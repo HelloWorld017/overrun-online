@@ -41,7 +41,7 @@ const DIRECTIONS = [
 	new Direction(0, -1, 'N', 'W', 'E', 'S'),
 	new Direction(1, 0, 'W', 'S', 'N', 'E'),
 	new Direction(-1, 0, 'E', 'N', 'S', 'W'),
-	new Direction(0, -1, 'S', 'E', 'W', 'N')
+	new Direction(0, 1, 'S', 'E', 'W', 'N')
 ];
 
 const DIRECTIONS_BY_VALUE = {
@@ -199,8 +199,8 @@ class MeiroGame extends Game{
 
 		var tiles = Object.keys(this.maze.tiles).reduce((prev, curr) => {
 			prev[curr] = {
-				walls: this.maze.tiles[curr],
-				placedObjects: this.maze.placedObjects
+				walls: this.maze.tiles[curr].walls,
+				placedObjects: this.maze.tiles[curr].placedObjects
 			};
 
 			return prev;
@@ -213,7 +213,19 @@ class MeiroGame extends Game{
 				maze: {
 					tiles: tiles,
 					teleporters: this.maze.teleporters
-				}
+				},
+				start: {
+					x: START_X,
+					y: START_Y
+				},
+				size: MAZE_SIZE,
+				players: this.bots.map(function(v){
+					return {
+						name: v.getName(),
+						skin: v.getSkin(),
+						player: v.getPlayer().getName()
+					}
+				}),
 			}
 		};
 
@@ -362,7 +374,6 @@ class MeiroGame extends Game{
 			process.nextTick(() => {
 				this.handleWin(gameLog, (afterHandle) => {
 					if(!afterHandle) return;
-
 					this.server.removeGame(this.gameId);
 					var date = new Date();
 
@@ -372,7 +383,9 @@ class MeiroGame extends Game{
 							id: this.battleId,
 							players: this.players.map((v) => v.getName()),
 							date: date.getMilliseconds(),
+							dateTime: Date.now(),
 							log: gameLog,
+							type: 'MEIRO'
 						});
 				});
 			});

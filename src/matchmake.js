@@ -34,13 +34,24 @@ class MatchMaker{
 		global.mongo
 			.collection(global.config['collection-user'])
 			.find({
-				bots: {
-					$elemMatch: {
-						type: {
-							$in: acceptsBotType
+				$and: [
+					{
+						bots: {
+							$elemMatch: {
+								type: {
+									$in: acceptsBotType
+								}
+							}
+						}
+					},
+					{
+						name: {
+							$not: {
+								$eq: player.getName()
+							}
 						}
 					}
-				}
+				]
 			})
 			.toArray((err, res) => {
 				if(res.length <= 0){
@@ -55,16 +66,13 @@ class MatchMaker{
 					return Math.abs(a.point - player.point) - Math.abs(b.point - player.point);
 				})[0];
 
-				var targetPlayer = (this.server.players[targetPlayerData.name] === undefined) ? targetPlayer : this.server.players[targetPlayerData.name];
+				var targetPlayer = (this.server.players[targetPlayerData.name] === undefined) ? new Player(targetPlayerData) : this.server.players[targetPlayerData.name];
 
 				var targetBot = targetPlayer.bots.filter((v) => {
 					return acceptsBotType.indexOf(v.type) !== -1;
 				})[0]
 
-				this.server.registerGame(new this.game(this.server.getGameId(), bot, targetBot, [
-					targetPlayer,
-					player
-				], this.server), [
+				this.server.registerGame(new this.game(this.server.getGameId(), bot, targetBot, this.server), [
 					response
 				]);
 			});

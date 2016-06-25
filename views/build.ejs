@@ -347,19 +347,19 @@
 						</p>
 						<div class="col s12">
 							<ul class="tabs">
-								<li class="tab col s3"><a class="active" href="#code"><%= global.translator('build.editor.code') %></a></li>
+								<li class="tab col s3"><a class="active" href="#codeView"><%= global.translator('build.editor.code') %></a></li>
 								<li class="tab col s3"><a href="#blockly"><%= global.translator('build.editor.blockly') %></a></li>
 							</ul>
 						</div>
 
-						<div id="code" class="col s12">
+						<div id="codeView" class="col s12">
 							<div id="code-editor"></div>
 						</div>
 
-						<div id="blockly" class="col s12" style="width: 800px; height: 600px;">
-							<div id="blockly-div" style="width: 800px; height: 600px; position: absolute; z-index: 999"></div>
-							<button class="btn waves-effect waves-light" onclick="importFromXml()"><%= global.translator('build.blockly.import') %></button>
+						<div id="blockly" class="col s12" style="width: 800px; height: 650px;">
 							<button class="btn waves-effect waves-light" onclick="exportToXml()"><%= global.translator('build.blockly.export') %></button>
+							<button class="btn waves-effect waves-light" onclick="importFromXml()"><%= global.translator('build.blockly.import') %></button>
+							<div id="blockly-div" style="width: 800px; height: 600px; position: absolute; z-index: 999"></div>
 						</div>
 					</div>
 				</div>
@@ -377,7 +377,6 @@
 
 			<script>
 				var codeArea = $('#code');
-				var multiedit = $('#multi-detector');
 				var editor = ace.edit('code-editor');
 				editor.setTheme('ace/theme/monokai');
 				editor.getSession().setMode('ace/mode/javascript');
@@ -402,7 +401,7 @@
 				var blocklySvg = $('.blocklySvg');
 				var blocklyThings = $('.blocklyWidgetDiv, .blocklyTooltipDiv, .blocklyToolboxDiv');
 
-				$('ul.tabs a[href=#code]').click(function(){
+				$('ul.tabs a[href=#codeView]').click(function(){
 					blocklyThings.css({
 						display: 'none'
 					});

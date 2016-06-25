@@ -1,4 +1,5 @@
 'use strict';
+var async = require('async');
 var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('meiro');
 var meiro = require('./meiro-game');
 var PointCalculator = require(global.src('calculate-point'));
@@ -25,7 +26,7 @@ class MeiroRankedGame extends meiro.game{
 				cb();
 				return;
 			}
-			
+
 			if(v.final.data.player === playerName){
 				playerScore++;
 				cb();
@@ -35,19 +36,19 @@ class MeiroRankedGame extends meiro.game{
 			playerScore--;
 			cb();
 		}, (err) => {
-			getPlayerByName(playerName, (p1) => {
+			this.getPlayerByName(playerName, (p1) => {
 				var p2 = this.players.filter((v) => {
 					return v.getName() !== playerName;
 				})[0];
 
-				if(playerStatus === 0){
+				if(playerScore === 0){
 					p1.getStat().draw++;
 					p2.getStat().draw++;
 				}else{
 					var win;
 					var defeat;
 
-					if(playerStatus > 0){
+					if(playerScore > 0){
 						//[win, defeat] = [p1, p2];
 						win = p1;
 						defeat = p2;

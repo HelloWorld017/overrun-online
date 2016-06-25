@@ -15,7 +15,7 @@
 		new Direction(0, -1, 'N', 'W', 'E', 'S'),
 		new Direction(1, 0, 'W', 'S', 'N', 'E'),
 		new Direction(-1, 0, 'E', 'N', 'S', 'W'),
-		new Direction(0, -1, 'S', 'E', 'W', 'N')
+		new Direction(0, 1, 'S', 'E', 'W', 'N')
 	];
 
 	const DIRECTIONS_BY_VALUE = {
@@ -59,6 +59,18 @@
 		bot.metadata.y = START_Y;
 	};
 
+	var maxMovement = 128;
+	var currentMovement = 0;
+
+	var check = () => {
+		if(maxMovement < currentMovement){
+			log('turn.err', 'turn.max.exceed', true);
+			return true;
+		}
+		currentMovement++;
+		return false;
+	};
+
 	vm.runInNewContext(code, {
 		log: (content) => {
 			if(typeof content !== 'string'){
@@ -71,29 +83,36 @@
 		},
 
 		turnLeft: () => {
+			if(check()) return;
 			bot.metadata.direction = DIRECTIONS_BY_VALUE[bot.metadata.direction.left];
 			log('turn.left');
 		},
 
 		turnRight: () => {
+			if(check()) return;
 			bot.metadata.direction = DIRECTIONS_BY_VALUE[bot.metadata.direction.right];
 			log('turn.right');
 		},
 
 		move: () => {
+			if(check()) return;
 			if(bot.metadata.moveerr){
-				log('turn.cannot.move');
+				log('turn.err', 'turn.cannot.move', true);
 				return false;
 			}
 
-			var currentTile = maze[`x${bot.metadata.x}y${bot.metadata.y}`];
-
-			if(currentTile.placedObjects['wallcutter']) bot.metadata.items.push('wallcutter');
+			var currentPosition = `x${bot.metadata.x}y${bot.metadata.y}`;
+			var currentTile = maze[currentPosition];
+			if(currentTile.placedObjects['wallcutter']){
+				bot.metadata.items.push('wallcutter');
+				currentTile.placedObject['wallcutter'] = undefined;
+				log('turn.wallcutter', currentPosition);
+			}
 
 			if(currentTile.placedObjects['trap']){
 				restartFromStart();
 
-				log('turn.trap');
+				log('turn.trap', currentPosition);
 				currentTile.placedObject['trap'] = undefined;
 				return false;
 			}
@@ -106,13 +125,13 @@
 				bot.metadata.x = teleportTarget.x;
 				bot.metadata.y = teleportTarget.y;
 				bot.metadata.usedTeleporter.push(teleporterIndex);
-				log('turn.teleport');
+				log('turn.teleport', 'teleport' + teleporterIndex);
 				return true;
 			}
 
-			if(currentTile.walls[bot.metadata.direction.value] && !bot.metadata.moveerr){
+			if(currentTile.walls[bot.metadata.direction.value]){
 				restartFromStart();
-				log('turn.move.over.wall');
+				log('turn.err', 'turn.move.over.wall', true);
 				return false;
 			}
 
@@ -133,6 +152,8 @@
 				maze[`x${bot.metadata.x}y${bot.metadata.y}`].walls[v.value] = false;
 				maze[`x${bot.metadata.x + v.x}y${bot.metadata.y + v.y}`].walls[v.opposite] = false;
 			});
+
+			log('turn.carve');
 
 			return true;
 		},

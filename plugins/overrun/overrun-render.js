@@ -1,16 +1,4 @@
 handlers['OVERRUN'] = (function(){
-	var ctx = canvas.getContext('2d');
-	_canvas = $(canvas);
-
-	var boardSize = Math.round((_canvas.height() < _canvas.width()) ? _canvas.height() / 2 : _canvas.width() / 2);
-	var boardMinX = Math.round((_canvas.width() - boardSize) / 2);
-	var boardMaxX = boardMinX + boardSize;
-	var boardMinY = Math.round((_canvas.height() - boardSize) / 2);
-	var boardMaxY = boardMinY + boardSize;
-
-	canvas.width = _canvas.width();
-	canvas.height = _canvas.height();
-
 	ctx.strokeStyle = "#202020";
 
 	async.forEachOf(gameLog, function(roundLog, round, cb){
