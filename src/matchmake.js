@@ -1,5 +1,6 @@
 'use strict';
 var async = require('async');
+var Player = require('./player');
 
 const TICK = 5000;
 
@@ -29,7 +30,7 @@ class MatchMaker{
 
 		player.updateTimer();
 
-		var acceptsBotType = game.getOptions().accepts_bot_type;
+		var acceptsBotType = this.game.getOptions().accepts_bot_type;
 		global.mongo
 			.collection(global.config['collection-user'])
 			.find({
@@ -50,29 +51,23 @@ class MatchMaker{
 					return;
 				}
 
-				var targetBot = res.sort((a, b) => {
+				var targetPlayerData = res.sort((a, b) => {
 					return Math.abs(a.point - player.point) - Math.abs(b.point - player.point);
-				})[0].bots.filter((v) => {
+				})[0];
+
+				var targetPlayer = (this.server.players[targetPlayerData.name] === undefined) ? targetPlayer : this.server.players[targetPlayerData.name];
+
+				var targetBot = targetPlayer.bots.filter((v) => {
 					return acceptsBotType.indexOf(v.type) !== -1;
 				})[0]
 
-				this.server.registerGame(new this.game(this.server.getGameId(), bot, targetBot, this.server), [
+				this.server.registerGame(new this.game(this.server.getGameId(), bot, targetBot, [
+					targetPlayer,
+					player
+				], this.server), [
 					response
 				]);
 			});
-	}
-
-	onRun(){
-		global.mongo
-			.collection(global.config['collection-user'])
-			.find({
-				bots: {
-					$in: [game]
-				}
-			})
-		this.pool.sort((a, b) => {
-			return (a.getPoint() - b.getPoint());
-		});
 	}
 
 	remove(){

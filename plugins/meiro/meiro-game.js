@@ -3,7 +3,7 @@ var async = require('async');
 var BotWrapper = require(global.src('bot-wrapper'));
 var Game = require(global.src('game'));
 var Library = require(global.src('library'));
-var localeval = require(global.src('evaluate'));
+var localeval = require('./meiro-evaluator');
 var process = require('process');
 
 var evaluatePrefix = require('fs').readFileSync(global.pluginsrc('meiro', './evaluate-prefix.js'), 'utf8');
@@ -204,7 +204,7 @@ class MeiroGame extends Game{
 			};
 
 			return prev;
-		});
+		}, {});
 
 		turnLog.init = {
 			content: 'turn.start',
@@ -227,6 +227,17 @@ class MeiroGame extends Game{
 				v.metadata.checkedWall = false;
 			});
 
+			var setToDefault = (metadata) => {
+				return {
+					maze: this.maze,
+					bot: metadata,
+					logObject: [{
+						content: 'turn.err.runtime',
+						data: {}
+					}]
+				};
+			};
+
 			localeval(evaluatePrefix, {
 				code: this.bots[0].getCode(),
 				maze: JSON.stringify(this.maze),
@@ -235,6 +246,14 @@ class MeiroGame extends Game{
 				startY: START_Y,
 				saveLength: MAX_SAVE_LENGTH
 			}, EVAL_TIMEOUT, (err, logs) => {
+				try{
+					logs = JSON.parse(logs);
+				}catch(e){}
+
+				if(err || !logs){
+					logs = setToDefault(this.bots[0].metadata);
+				}
+
 				this.maze = logs.maze;
 				this.bots[0].metadata = logs.bot;
 				this.bots[0].metadata.direction = DIRECTIONS_BY_VALUE[this.bots[0].metadata.direction.value];
@@ -247,6 +266,14 @@ class MeiroGame extends Game{
 					startY: START_Y,
 					saveLength: MAX_SAVE_LENGTH
 				}, EVAL_TIMEOUT, (err1, logs1) => {
+					try{
+						logs1 = JSON.parse(logs1);
+					}catch(e){}
+
+					if(err || !logs1){
+						logs1 = setToDefault(this.bots[1].metadata);
+					}
+
 					this.maze = logs1.maze;
 					this.bots[1].metadata = logs1.bot;
 					this.bots[1].metadata.direction = DIRECTIONS_BY_VALUE[this.bots[1].metadata.direction.value];
@@ -268,7 +295,7 @@ class MeiroGame extends Game{
 						}]
 					});
 
-					var endedBot = bots.filter((bot) => {
+					var endedBot = this.bots.filter((bot) => {
 						return bot.metadata.x === END_X && bot.metadata.y === END_Y;
 					});
 
@@ -308,8 +335,8 @@ class MeiroGame extends Game{
 				turnLog.final = {
 					content: 'turn.draw',
 					data: {
-						player: [endedBot[0].getPlayer().getName(), endedBot[1].getPlayer().getName()],
-						bot: endedBot[1].getName(),
+						player: [this.bots[0].getPlayer().getName(), this.bots[1].getPlayer().getName()],
+						bot: [this.bots[0].getName(), this.bots[1].getName()],
 						escaped: false
 					}
 				};
@@ -322,7 +349,7 @@ class MeiroGame extends Game{
 	start(){
 		var gameLog = [];
 		async.eachSeries(Array.rangeOf(ROUND_COUNT), (k, cb) => {
-			this.processRound((k % 2), (log) => {
+			this.processRound((log) => {
 				gameLog[k] = log;
 				cb(null);
 			});

@@ -1,3 +1,4 @@
+"use strict";
 (function(botData, mazeData, START_X, START_Y, MAX_SAVE_LENGTH){
 	class Direction{
 		constructor(x, y, value, left, right, opposite){
@@ -58,8 +59,7 @@
 		bot.metadata.y = START_Y;
 	};
 
-	var vm = require('vm');
-	vm.runInNewContext(code,{
+	vm.runInNewContext(code, {
 		log: (content) => {
 			if(typeof content !== 'string'){
 				log('turn.err', 'turn.content.not.string', true);
@@ -116,7 +116,8 @@
 				return false;
 			}
 
-			bot.move();
+			bot.metadata.x += bot.metadata.direction.x;
+			bot.metadata.y += bot.metadata.direction.y;
 			log('turn.move');
 			return true;
 		},
@@ -175,9 +176,9 @@
 		}
 	});
 
-	return {
+	return JSON.stringify({
 		logObject: logObject,
 		maze: mazeData,
 		bot: bot.metadata
-	};
+	});
 })(JSON.parse(bot), JSON.parse(maze), startX, startY, saveLength);
