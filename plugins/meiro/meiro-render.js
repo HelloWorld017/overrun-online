@@ -28,6 +28,7 @@ var MOVEMENT_DURATION = 250;
 
 var xSize;
 var ySize;
+var gridSize;
 
 var bots = {};
 var renderObject = {};
@@ -36,16 +37,9 @@ var maze;
 
 handlers['MEIRO'] = startRender;
 
-updateHandlers.push(function(){
-	recalculateSize();
-	redrawGrid();
-});
-
 function recalculateSize(){
-	xSize = boardSize / roundLog.init.data.size;
+	xSize = boardSize / gridSize;
 	ySize = xSize;
-
-	recalculateObject();
 }
 
 function redrawGrid(){
@@ -112,11 +106,15 @@ function handleMovement(bot, movementLog, callback){
 			bot.direction = DIRECTIONS_BY_VALUE[bot.direction.right];
 			break;
 		case 'turn.move':
+			bot.x += bot.direction.x;
+			bot.y += bot.direction.y;
+			break;
 		case 'turn.teleport':
 		case 'turn.trap':
 		case 'turn.carve':
 		case 'turn.wallcutter':
 		case 'turn.text':
+			printLog()
 		case 'turn.err':
 	}
 
@@ -124,6 +122,11 @@ function handleMovement(bot, movementLog, callback){
 }
 
 function startRender(){
+	$(document).on('resize', (function(){
+		recalculateSize();
+		redrawGrid();
+	}));
+
 	ctx.strokeStyle = "#202020";
 
 	async.forEachOf(gameLog, function(roundLog, round, cb){
@@ -133,39 +136,41 @@ function startRender(){
 		ctx.strokeStyle = "#202020";
 
 		maze = roundLog.init.data.maze.tiles;
+		gridSize = roundLog.init.data.size;
 
 		recalculateSize();
 		redrawGrid();
 
-		roundLog.init.data.players.forEach(function(v){
+		async.each(roundLog.init.data.players, function(v, cb){
+			var img = new Image();
 			bots[v.player] = {
 				name: v.name,
 				player: v.player,
-				skin: v.skin,
+				skin: img,
 				direction: DIRECTIONS_BY_VALUE.N,
 				x: roundLog.init.data.start.x,
 				y: roundLog.init.data.start.y
 			};
-		});
+			img.onload = cb;
+			img.src = v.skin;
+		}, function(){
+			recalculateObject();
+			animate();
 
-		recalculateObject();
-
-		//Clone renderTarget
-		renderObject = JSON.parse(JSON.stringify(renderTarget));
-
-		async.forEachOfSeries(roundLog, function(turnLog, turn, cb1){
-			if(turn === 'final' || turn === 'init') return;
-			async.eachSeries(turnLog[0].data, function(playerLog, cb2){
-				async.eachSeries(playerLog.log, function(movementLog, callback){
-					handleMovement(bots[playerLog.player], movementLog, callback);
+			async.forEachOfSeries(roundLog, function(turnLog, turn, cb1){
+				if(turn === 'final' || turn === 'init') return;
+				async.eachSeries(turnLog[0].data, function(playerLog, cb2){
+					async.eachSeries(playerLog.log, function(movementLog, callback){
+						handleMovement(bots[playerLog.player], movementLog, callback);
+					}, function(){
+						cb2();
+					});
 				}, function(){
-					cb2();
+					cb1();
 				});
 			}, function(){
-				cb1();
+				cb();
 			});
-		}, function(){
-			cb();
 		});
 	});
 }
@@ -189,23 +194,45 @@ function recalculateObject(){
 
 	Object.keys(bots).forEach(function(k, index){
 		var v = bots[k];
+
+		var x = Math.round((xSize * v.x) + (xSize / 2));
+		var y = Math.round((ySize * v.y) + (ySize / 2));
+		var angle = (Math.atan2(v.direction.y, v.direction.x) / Math.PI * 180 + 90);
+
 		renderTarget[v.player] = {
 			name: v.name,
 			player: v.player,
 			skin: v.skin,
-			x: (xSize * v.x) + (v.x / 2),
-			y: (ySize * v.y) + (v.y / 2),
-			angle: (Math.atan2(v.direction.y, v.direction.x) / Math.PI * 180 + 90),
+			x: x,
+			y: y,
+			angle: angle,
+			size: FULL_SIZE
+		};
+
+		renderObject[v.player] = {
+			name: v.name,
+			player: v.player,
+			skin: v.skin,
+			x: x,
+			y: y,
+			angle: angle,
 			size: FULL_SIZE
 		};
 
 		if(showMultipleBots){
 			renderTarget[v.player].size = HALF_SIZE;
-			renderTarget[v.player].x = xSize * v.x + ((index === 0) ? (v.x * 1/3) : (v.x * 2/3));
+			//renderObject[v.player].size = HALF_SIZE;
+			renderTarget[v.player].x = Math.round(xSize * v.x + ((index === 0) ? (xSize * 1/3) : (xSize * 2/3)));
+			//renderObject[v.player].x = Math.round(xSize * v.x + ((index === 0) ? (xSize * 1/3) : (xSize * 2/3)));
 		}
 	});
 }
 
 function render(){
-	
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	redrawGrid();
+	async.each(renderObject, function(v, cb){
+		ctx.drawImage(v.skin, boardMinX + v.x - v.size * xSize / 2, boardMinY + v.y - v.size * ySize / 2, v.size * xSize, v.size * ySize);
+		cb();
+	});
 }

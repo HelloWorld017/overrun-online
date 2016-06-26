@@ -222,7 +222,7 @@ class MeiroGame extends Game{
 				players: this.bots.map(function(v){
 					return {
 						name: v.getName(),
-						skin: v.getSkin(),
+						skin: global.skin(v.getSkin()),
 						player: v.getPlayer().getName()
 					}
 				}),
@@ -396,7 +396,7 @@ class MeiroGame extends Game{
 						var bots = {};
 						async.each(this.bots, (v, cb) => {
 							bots[v.getPlayer().getName()] = {
-								skin: v.getSkin(),
+								skin: global.skin(v.getSkin()),
 								name: v.getName()
 							};
 							cb();
