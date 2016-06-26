@@ -30,7 +30,8 @@ var xSize;
 var ySize;
 
 var bots = {};
-var renderObjects = {};
+var renderObject = {};
+var renderTarget = {};
 var maze;
 
 handlers['MEIRO'] = startRender;
@@ -82,7 +83,7 @@ function redrawGrid(){
 		}
 
 		if(walls.E){
-			//WEST
+			//EAST
 			ctx.beginPath();
 			ctx.moveTo(boardMinX + xSize * (x + 1), boardMinY + ySize * y);
 			ctx.lineTo(boardMinX + xSize * (x + 1), boardMinY + ySize * (y + 1));
@@ -95,6 +96,7 @@ function redrawGrid(){
 function animate(){
 	requestAnimationFrame(animate);
 	TWEEN.update();
+	render();
 }
 
 function updateMovement(cb){
@@ -148,6 +150,9 @@ function startRender(){
 
 		recalculateObject();
 
+		//Clone renderTarget
+		renderObject = JSON.parse(JSON.stringify(renderTarget));
+
 		async.forEachOfSeries(roundLog, function(turnLog, turn, cb1){
 			if(turn === 'final' || turn === 'init') return;
 			async.eachSeries(turnLog[0].data, function(playerLog, cb2){
@@ -163,22 +168,44 @@ function startRender(){
 			cb();
 		});
 	});
+}
 
-	function recalculateObject(){
-		TWEEN.removeAll();
-		renderObjects = {};
+function recalculateObject(){
+	TWEEN.removeAll();
+	renderTarget = {};
 
-		Object.keys(bots).forEach(function(k){
-			var v = bots[k];
-			renderObjects[v.player] = {
-				name: v.name,
-				player: v.player,
-				skin: v.skin,
-				x: (xSize * (v.x + 1)) / 2,
-				y: (ySize * (v.y + 1)) / 2,
-				angle: Math.atan2(v.direction.y, v.direction.x),
-				size: HALF_SIZE
-			};
-		});
-	}
+	//Object.values
+	var showMultipleBots = Object.keys(bots).map(k => bots[k]).reduce((prev, curr, index, array) => {
+		if(typeof prev === 'object'){
+			if((prev.x === curr.x) && (prev.y === curr.y)){
+				if(index === array.length - 1) return true;
+
+				return prev;
+			}else{
+				return false;
+			}
+		}else return prev;
+	});
+
+	Object.keys(bots).forEach(function(k, index){
+		var v = bots[k];
+		renderTarget[v.player] = {
+			name: v.name,
+			player: v.player,
+			skin: v.skin,
+			x: (xSize * v.x) + (v.x / 2),
+			y: (ySize * v.y) + (v.y / 2),
+			angle: (Math.atan2(v.direction.y, v.direction.x) / Math.PI * 180 + 90),
+			size: FULL_SIZE
+		};
+
+		if(showMultipleBots){
+			renderTarget[v.player].size = HALF_SIZE;
+			renderTarget[v.player].x = xSize * v.x + ((index === 0) ? (v.x * 1/3) : (v.x * 2/3));
+		}
+	});
+}
+
+function render(){
+	
 }
