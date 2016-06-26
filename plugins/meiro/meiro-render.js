@@ -9,8 +9,8 @@ var Direction = function(x, y, value, left, right, opposite){
 
 var DIRECTIONS = [
 	new Direction(0, -1, 'N', 'W', 'E', 'S'),
-	new Direction(1, 0, 'W', 'S', 'N', 'E'),
-	new Direction(-1, 0, 'E', 'N', 'S', 'W'),
+	new Direction(-1, 0, 'W', 'S', 'N', 'E'),
+	new Direction(1, 0, 'E', 'N', 'S', 'W'),
 	new Direction(0, 1, 'S', 'E', 'W', 'N')
 ];
 
@@ -30,6 +30,7 @@ var xSize;
 var ySize;
 
 var bots = {};
+var renderObjects = {};
 var maze;
 
 handlers['MEIRO'] = startRender;
@@ -42,6 +43,8 @@ updateHandlers.push(function(){
 function recalculateSize(){
 	xSize = boardSize / roundLog.init.data.size;
 	ySize = xSize;
+
+	recalculateObject();
 }
 
 function redrawGrid(){
@@ -69,7 +72,7 @@ function redrawGrid(){
 			ctx.closePath();
 		}
 
-		if(walls.E){
+		if(walls.W){
 			//WEST
 			ctx.beginPath();
 			ctx.moveTo(boardMinX + xSize * x, boardMinY + ySize * y);
@@ -78,7 +81,7 @@ function redrawGrid(){
 			ctx.closePath();
 		}
 
-		if(walls.W){
+		if(walls.E){
 			//WEST
 			ctx.beginPath();
 			ctx.moveTo(boardMinX + xSize * (x + 1), boardMinY + ySize * y);
@@ -143,6 +146,8 @@ function startRender(){
 			};
 		});
 
+		recalculateObject();
+
 		async.forEachOfSeries(roundLog, function(turnLog, turn, cb1){
 			if(turn === 'final' || turn === 'init') return;
 			async.eachSeries(turnLog[0].data, function(playerLog, cb2){
@@ -158,4 +163,22 @@ function startRender(){
 			cb();
 		});
 	});
+
+	function recalculateObject(){
+		TWEEN.removeAll();
+		renderObjects = {};
+
+		Object.keys(bots).forEach(function(k){
+			var v = bots[k];
+			renderObjects[v.player] = {
+				name: v.name,
+				player: v.player,
+				skin: v.skin,
+				x: (xSize * (v.x + 1)) / 2,
+				y: (ySize * (v.y + 1)) / 2,
+				angle: Math.atan2(v.direction.y, v.direction.x),
+				size: HALF_SIZE
+			};
+		});
+	}
 }

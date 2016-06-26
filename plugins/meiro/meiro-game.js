@@ -39,8 +39,8 @@ class Direction{
 
 const DIRECTIONS = [
 	new Direction(0, -1, 'N', 'W', 'E', 'S'),
-	new Direction(1, 0, 'W', 'S', 'N', 'E'),
-	new Direction(-1, 0, 'E', 'N', 'S', 'W'),
+	new Direction(-1, 0, 'W', 'S', 'N', 'E'),
+	new Direction(1, 0, 'E', 'N', 'S', 'W'),
 	new Direction(0, 1, 'S', 'E', 'W', 'N')
 ];
 
