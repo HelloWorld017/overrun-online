@@ -23,7 +23,7 @@ module.exports = {
 		cb();
 	},
 	renderHook: {
-		'battle': '<script src="/render/meiro.js"></script>'
+		'battle': '<script src="/render/meiro.js"></script>\n<script src="/resources/js/tween.js"></script>'
 	},
 	apiList: [{
 		name: 'MEIRO-RANKED',
