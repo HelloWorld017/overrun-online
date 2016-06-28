@@ -24,7 +24,7 @@ var DIRECTIONS_BY_VALUE = {
 var FULL_SIZE = 1;
 var HALF_SIZE = 0.4;
 
-var MOVEMENT_DURATION = 250;
+var MOVEMENT_DURATION = 500;
 
 var xSize;
 var ySize;
@@ -34,6 +34,7 @@ var bots = {};
 var renderObject = {};
 var renderTarget = {};
 var maze;
+var teleporters;
 
 handlers['MEIRO'] = startRender;
 
@@ -90,14 +91,21 @@ function redrawGrid(){
 function animate(){
 	requestAnimationFrame(animate);
 	TWEEN.update();
-	render();
 }
 
-function updateMovement(cb){
+function updateMovement(bot, cb){
 	TWEEN.removeAll();
+	new TWEEN.Tween(renderObject[bot.player])
+	.to(renderTarget[bot.player], MOVEMENT_DURATION)
+	.onUpdate(function(){
+		render(bot);
+	})
+	.start();
+	setTimeout(cb, MOVEMENT_DURATION);
 }
 
 function handleMovement(bot, movementLog, callback){
+	var updateNeeded = true;
 	switch(movementLog.content){
 		case 'turn.left':
 			bot.direction = DIRECTIONS_BY_VALUE[bot.direction.left];
@@ -110,15 +118,32 @@ function handleMovement(bot, movementLog, callback){
 			bot.y += bot.direction.y;
 			break;
 		case 'turn.teleport':
+			var teleportTarget = teleporters[parseInt(movementLog.data.replace('teleport', ''))].filter(function(v){
+				return (v.x !== bot.x) && (v.y !== bot.y);
+			})[0];
+			bot.x = teleportTarget.x;
+			bot.y = teleportTarget.y;
+
 		case 'turn.trap':
 		case 'turn.carve':
 		case 'turn.wallcutter':
 		case 'turn.text':
-			printLog()
+			printLog(movementLog.data);
+			updateNeeded = false;
+			break;
 		case 'turn.err':
+			switch(movementLog.data){
+				case 'turn.move.over.wall':
+				bot.x = 0;
+				bot.y = 0;
+			}
+			printLog(bot.player + ' : ' + movementLog.data);
+			break;
 	}
-
-	updateMovement(callback);
+	if(updateNeeded){
+		recalculateObject();
+		updateMovement(bot, callback);
+	}else callback();
 }
 
 function startRender(){
@@ -136,6 +161,7 @@ function startRender(){
 		ctx.strokeStyle = "#202020";
 
 		maze = roundLog.init.data.maze.tiles;
+		teleporters = roundLog.init.data.maze.teleporters;
 		gridSize = roundLog.init.data.size;
 
 		recalculateSize();
@@ -221,14 +247,14 @@ function recalculateObject(){
 
 		if(showMultipleBots){
 			renderTarget[v.player].size = HALF_SIZE;
-			//renderObject[v.player].size = HALF_SIZE;
+			renderObject[v.player].size = HALF_SIZE;
 			renderTarget[v.player].x = Math.round(xSize * v.x + ((index === 0) ? (xSize * 1/3) : (xSize * 2/3)));
-			//renderObject[v.player].x = Math.round(xSize * v.x + ((index === 0) ? (xSize * 1/3) : (xSize * 2/3)));
+			renderObject[v.player].x = Math.round(xSize * v.x + ((index === 0) ? (xSize * 1/3) : (xSize * 2/3)));
 		}
 	});
 }
 
-function render(){
+function render(bot){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	redrawGrid();
 	async.each(renderObject, function(v, cb){

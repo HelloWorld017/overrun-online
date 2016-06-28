@@ -370,9 +370,7 @@
 			</form>
 
 			<% if(typeof bot !== 'undefined'){ %>
-				<div id="bot-code" style="display: none">
-					<%- bot.code %>
-				</div>
+				<div id="bot-code" style="display: none"><%= bot.code %></div>
 			<% } %>
 
 			<script>
@@ -393,7 +391,7 @@
 					$('#skin').val('<%= bot.skin %>');
 					$('#type').val('<%= bot.type %>');
 
-					editor.setValue($('#bot-code').html(), -1);
+					editor.setValue($('#bot-code').text(), -1);
 				<% } %>
 
 				var workspace = Blockly.inject('blockly-div', {toolbox: $('#blockly-toolbox').get(0)});

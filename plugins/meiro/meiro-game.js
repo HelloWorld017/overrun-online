@@ -263,6 +263,7 @@ class MeiroGame extends Game{
 				}catch(e){}
 
 				if(err || !logs){
+					err.stack = undefined;
 					logs = setToDefault(this.bots[0].metadata);
 				}
 
@@ -282,7 +283,8 @@ class MeiroGame extends Game{
 						logs1 = JSON.parse(logs1);
 					}catch(e){}
 
-					if(err || !logs1){
+					if(err1 || !logs1){
+						err1.stack = undefined;
 						logs1 = setToDefault(this.bots[1].metadata);
 					}
 
@@ -297,13 +299,13 @@ class MeiroGame extends Game{
 							skin: this.bots[0].getSkin(),
 							player: this.bots[0].getPlayer().getName(),
 							log: logs.logObject,
-							err: err ? err.toString() : undefined
+							err: err ? JSON.stringify(err) : undefined
 						}, {
 							name: this.bots[1].getName(),
 							skin: this.bots[1].getSkin(),
 							player: this.bots[1].getPlayer().getName(),
 							log: logs1.logObject,
-							err: err1 ? err1.toString() : undefined
+							err: err1 ? JSON.stringify(err1) : undefined
 						}]
 					});
 

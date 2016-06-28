@@ -7,7 +7,7 @@
 
 
 			function printLog(str){
-				log.append($(document.createElement('textarea')).val(str).attr('disabled', '')).append($(document.createElement('br')));
+				log.prepend($(document.createElement('textarea')).val(str).attr('disabled', ''));
 			}
 		</script>
 
@@ -45,6 +45,7 @@
 				transition: left 0.5s;
 				-webkit-transition: left 0.5s;
 				will-change: left;
+				z-index: 999;
 			}
 
 			#main-canvas {
@@ -72,6 +73,8 @@
 
 			#log-wrapper textarea {
 				color: <%= global.theme['foreground-0'] %>;
+				display: block;
+				margin-bottom: 5px;
 			}
 		</style>
 

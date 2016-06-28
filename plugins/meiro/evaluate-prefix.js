@@ -105,7 +105,7 @@
 			var currentTile = maze[currentPosition];
 			if(currentTile.placedObjects['wallcutter']){
 				bot.metadata.items.push('wallcutter');
-				currentTile.placedObject['wallcutter'] = undefined;
+				currentTile.placedObjects['wallcutter'] = undefined;
 				log('turn.wallcutter', currentPosition);
 			}
 
@@ -113,7 +113,7 @@
 				restartFromStart();
 
 				log('turn.trap', currentPosition);
-				currentTile.placedObject['trap'] = undefined;
+				currentTile.placedObjects['trap'] = undefined;
 				return false;
 			}
 
@@ -156,6 +156,18 @@
 			log('turn.carve');
 
 			return true;
+		},
+
+		x: () => {
+			return bot.metadata.x;
+		},
+
+		y: () => {
+			return bot.metadata.y;
+		},
+
+		direction: () => {
+			return bot.metadata.direction.value;
 		},
 
 		checkWall: () => {
