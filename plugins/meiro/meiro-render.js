@@ -21,6 +21,34 @@ var DIRECTIONS_BY_VALUE = {
 	S: DIRECTIONS[3]
 };
 
+var Particle = function(x, y, size, life, color, sizeReduction, motionX, motionY){
+	this.x = x;
+	this.y = y;
+	this.motionX = motionX || 0;
+	this.motionY = motionY || 0;
+	this.size = size || 50;
+	this.sizeReduction = sizeReduction || 0;
+	this.life = life || 100;
+	this.current = 0;
+	this.color = color || "#000";
+};
+
+Particle.prototype.update = function(){
+	if(this.current <= this.life){
+		this.current++;
+		this.size = Math.max(0, this.size - this.sizeReduction);
+		this.x += this.motionX;
+		this.y += this.motionY;
+	}
+};
+
+var particles = [];
+
+var colors = {
+	teleport: "#00C0FF",
+	trap: "#805000"
+};
+
 var FULL_SIZE = 1;
 var HALF_SIZE = 0.4;
 
@@ -33,6 +61,7 @@ var gridSize;
 var bots = {};
 var renderObject = {};
 var renderTarget = {};
+var particles = [];
 var maze;
 var teleporters;
 
@@ -91,6 +120,9 @@ function redrawGrid(){
 function animate(){
 	requestAnimationFrame(animate);
 	TWEEN.update();
+	particles.forEach(function(v){
+		v.update();
+	});
 }
 
 function updateMovement(bot, cb){
@@ -106,31 +138,43 @@ function updateMovement(bot, cb){
 
 function handleMovement(bot, movementLog, callback){
 	var updateNeeded = true;
+	renderObject[bot.player].animate = undefined;
 	switch(movementLog.content){
 		case 'turn.left':
 			bot.direction = DIRECTIONS_BY_VALUE[bot.direction.left];
 			break;
+
 		case 'turn.right':
 			bot.direction = DIRECTIONS_BY_VALUE[bot.direction.right];
 			break;
+
 		case 'turn.move':
 			bot.x += bot.direction.x;
 			bot.y += bot.direction.y;
 			break;
+
 		case 'turn.teleport':
 			var teleportTarget = teleporters[parseInt(movementLog.data.replace('teleport', ''))].filter(function(v){
 				return (v.x !== bot.x) && (v.y !== bot.y);
 			})[0];
 			bot.x = teleportTarget.x;
 			bot.y = teleportTarget.y;
+			renderObject[bot.player].animate = 'teleport';
+			break;
 
 		case 'turn.trap':
+			bot.x = 0;
+			bot.y = 0;
+			renderObject[bot.player].animate = 'trap';
+			break;
+
 		case 'turn.carve':
 		case 'turn.wallcutter':
 		case 'turn.text':
 			printLog(movementLog.data);
 			updateNeeded = false;
 			break;
+
 		case 'turn.err':
 			switch(movementLog.data){
 				case 'turn.move.over.wall':
@@ -141,12 +185,13 @@ function handleMovement(bot, movementLog, callback){
 			break;
 	}
 	if(updateNeeded){
-		recalculateObject();
+		recalculateObject(true);
 		updateMovement(bot, callback);
 	}else callback();
 }
 
 function startRender(){
+	garbageCollect();
 	$(document).on('resize', (function(){
 		recalculateSize();
 		redrawGrid();
@@ -181,6 +226,9 @@ function startRender(){
 			img.src = v.skin;
 		}, function(){
 			recalculateObject();
+			Object.keys(bots).forEach(function(k){
+				copyTargetToObject(k);
+			});
 			animate();
 
 			async.forEachOfSeries(roundLog, function(turnLog, turn, cb1){
@@ -201,7 +249,7 @@ function startRender(){
 	});
 }
 
-function recalculateObject(){
+function recalculateObject(removeAnimation){
 	TWEEN.removeAll();
 	renderTarget = {};
 
@@ -235,30 +283,71 @@ function recalculateObject(){
 			size: FULL_SIZE
 		};
 
-		renderObject[v.player] = {
-			name: v.name,
-			player: v.player,
-			skin: v.skin,
-			x: x,
-			y: y,
-			angle: angle,
-			size: FULL_SIZE
-		};
-
 		if(showMultipleBots){
 			renderTarget[v.player].size = HALF_SIZE;
-			renderObject[v.player].size = HALF_SIZE;
 			renderTarget[v.player].x = Math.round(xSize * v.x + ((index === 0) ? (xSize * 1/3) : (xSize * 2/3)));
-			renderObject[v.player].x = Math.round(xSize * v.x + ((index === 0) ? (xSize * 1/3) : (xSize * 2/3)));
 		}
 	});
+}
+
+function copyTargetToObject(player){
+	var target = renderTarget[player];
+	//renderObject[player] = JSON.parse(JSON.stringify(target)); skin is HTML Element!
+	renderObject[player] = {
+		name: target.name,
+		player: target.player,
+		skin: target.skin,
+		x: target.x,
+		y: target.y,
+		angle: target.angle,
+		size: target.size
+	};
+}
+
+function garbageCollect(){
+	particles = particles.filter(function(v){
+		return v.life > v.current;
+	});
+	setTimeout(garbageCollect, 5000);
 }
 
 function render(bot){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	redrawGrid();
+	renderParticle();
 	async.each(renderObject, function(v, cb){
-		ctx.drawImage(v.skin, boardMinX + v.x - v.size * xSize / 2, boardMinY + v.y - v.size * ySize / 2, v.size * xSize, v.size * ySize);
+		var x = boardMinX + v.x;
+		var y = boardMinY + v.y;
+		if(v.animate){
+			procAnimate(v);
+		}
+		ctx.drawImage(v.skin, x - v.size * xSize / 2, y - v.size * ySize / 2, v.size * xSize, v.size * ySize);
 		cb();
 	});
+}
+
+function renderParticle(){
+	particles.forEach(function(v){
+		ctx.fillStyle = v.color;
+
+		ctx.beginPath();
+		ctx.arc(v.x, v.y, v.size, 0, Math.PI * 2);
+		ctx.fill();
+	});
+}
+
+function procAnimate(v){
+	switch(v.animate){
+		case 'teleport':
+			var x = boardMinX + v.x + Math.random() * xSize / 4 - xSize / 8;
+			var y = boardMinY + v.y + Math.random() * ySize / 4 - xSize / 8;
+			particles.push(new Particle(x, y, Math.round(xSize / 8), 100, colors['teleport'], xSize / 400));
+			break;
+
+		case 'trap':
+			var x = boardMinX + v.x;
+			var y = boardMinY + v.y;
+			particles.push(new Particle(x, y, Math.round(xSize / 3), 100, colors['trap'], xSize / 400));
+			break;
+	}
 }
