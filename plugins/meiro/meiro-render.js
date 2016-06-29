@@ -21,14 +21,16 @@ var DIRECTIONS_BY_VALUE = {
 	S: DIRECTIONS[3]
 };
 
-var Particle = function(x, y, size, life, color, sizeReduction, motionX, motionY){
+var Particle = function(x, y, sizeX, sizeY, life, color, reduceX, reduceY, motionX, motionY){
 	this.x = x;
 	this.y = y;
 	this.motionX = motionX || 0;
 	this.motionY = motionY || 0;
-	this.size = size || 50;
-	this.sizeReduction = sizeReduction || 0;
-	this.life = life || 100;
+	this.sizeX = (sizeX === undefined) ? 50 : sizeX;
+	this.sizeY = (sizeY  === undefined) ? this.sizeX : sizeY;
+	this.reduceX  = reduceX || 0;
+	this.reduceY = (reduceY === undefined) ? this.reduceX : reduceY;
+	this.life = (life === undefined) ? 100 : life;
 	this.current = 0;
 	this.color = color || "#000";
 };
@@ -36,7 +38,8 @@ var Particle = function(x, y, size, life, color, sizeReduction, motionX, motionY
 Particle.prototype.update = function(){
 	if(this.current <= this.life){
 		this.current++;
-		this.size = Math.max(0, this.size - this.sizeReduction);
+		this.sizeX = Math.max(0, this.sizeX - this.reduceX);
+		this.sizeY = Math.max(0, this.sizeY - this.reduceY);
 		this.x += this.motionX;
 		this.y += this.motionY;
 	}
@@ -46,7 +49,8 @@ var particles = [];
 
 var colors = {
 	teleport: "#00C0FF",
-	trap: "#805000"
+	trap: "#805000",
+	maze: "#202020"
 };
 
 var FULL_SIZE = 1;
@@ -73,6 +77,7 @@ function recalculateSize(){
 }
 
 function redrawGrid(){
+	ctx.strokeStyle = colors['maze'];
 	Object.keys(maze).forEach(function(k){
 		var split = k.replace('x', '').split('y');
 		var x = parseInt(split[0]);
@@ -138,7 +143,7 @@ function updateMovement(bot, cb){
 
 function handleMovement(bot, movementLog, callback){
 	var updateNeeded = true;
-	renderObject[bot.player].animate = undefined;
+	renderObject[bot.player].animate = "teleport";
 	switch(movementLog.content){
 		case 'turn.left':
 			bot.direction = DIRECTIONS_BY_VALUE[bot.direction.left];
@@ -197,13 +202,21 @@ function startRender(){
 		redrawGrid();
 	}));
 
-	ctx.strokeStyle = "#202020";
+	ctx.ellipse = ctx.ellipse || function(cx, cy, rx, ry, rot, aStart, aEnd){
+		this.save();
+		this.translate(cx, cy);
+		this.rotate(rot);
+		this.translate(-rx, -ry);
+
+		this.scale(rx, ry);
+		this.arc(1, 1, 1, aStart, aEnd, false);
+		this.restore();
+	};
 
 	async.forEachOf(gameLog, function(roundLog, round, cb){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 		ctx.lineWidth = 1;
-		ctx.strokeStyle = "#202020";
 
 		maze = roundLog.init.data.maze.tiles;
 		teleporters = roundLog.init.data.maze.teleporters;
@@ -331,7 +344,7 @@ function renderParticle(){
 		ctx.fillStyle = v.color;
 
 		ctx.beginPath();
-		ctx.arc(v.x, v.y, v.size, 0, Math.PI * 2);
+		ctx.ellipse(v.x, v.y, v.sizeX, v.sizeY, 0, 0, Math.PI * 2);
 		ctx.fill();
 	});
 }
@@ -341,13 +354,13 @@ function procAnimate(v){
 		case 'teleport':
 			var x = boardMinX + v.x + Math.random() * xSize / 4 - xSize / 8;
 			var y = boardMinY + v.y + Math.random() * ySize / 4 - xSize / 8;
-			particles.push(new Particle(x, y, Math.round(xSize / 8), 100, colors['teleport'], xSize / 400));
+			particles.push(new Particle(x, y, Math.round(xSize / 8), undefined, 100, colors['teleport'], xSize / 400, undefined));
 			break;
 
 		case 'trap':
 			var x = boardMinX + v.x;
 			var y = boardMinY + v.y;
-			particles.push(new Particle(x, y, Math.round(xSize / 3), 100, colors['trap'], xSize / 400));
+			particles.push(new Particle(x, y, Math.round(xSize / 3), undefined, 100, colors['trap'], xSize / 400, undefined));
 			break;
 	}
 }
