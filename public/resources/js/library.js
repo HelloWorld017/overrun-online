@@ -11,7 +11,7 @@ Math.clamp = function(min, max, value){
 };
 
 Math.inRange = function(min, max, value){
-	if(min < max){
+	if(min > max){
 		return (max < value) && (value < min);
 	}
 

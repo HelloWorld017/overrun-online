@@ -2,6 +2,7 @@
 #TODO:90 Entry, Battle 구현
 #FIXME:0 API 구현
 #TODO:100 운영자에게 요청기능 구현
+#TODO:110 uglifyjs를 통해서 uglify한 후 편집시 beautify 시키기
 #FEATURES:0 도전과제 추가하기
 #FEATURES:10 전적의 종류를 특정 게임의 전적과 전체 전적으로 구분하기
 #FEATURES:20 게임에 매치메이킹시 봇을 아규먼트로 넘겨주지 않는 옵션 추가

@@ -24,31 +24,64 @@ var DIRECTIONS_BY_VALUE = {
 var Particle = function(x, y, sizeX, sizeY, life, color, reduceX, reduceY, motionX, motionY){
 	this.x = x;
 	this.y = y;
-	this.motionX = motionX || 0;
-	this.motionY = motionY || 0;
 	this.sizeX = (sizeX === undefined) ? 50 : sizeX;
 	this.sizeY = (sizeY  === undefined) ? this.sizeX : sizeY;
+	this.current = 0;
+	this.life = (life === undefined) ? 100 : life;
+
+	this.color = color || "#000";
 	this.reduceX  = reduceX || 0;
 	this.reduceY = (reduceY === undefined) ? this.reduceX : reduceY;
-	this.life = (life === undefined) ? 100 : life;
-	this.current = 0;
-	this.color = color || "#000";
+	this.motionX = motionX || 0;
+	this.motionY = motionY || 0;
+
+	this.render = Particle.defaultRender(this);
+
+	this.doUpdate = function(_this){
+		_this.sizeX = Math.max(0, _this.sizeX - _this.reduceX);
+		_this.sizeY = Math.max(0, _this.sizeY - _this.reduceY);
+		_this.x += _this.motionX;
+		_this.y += _this.motionY;
+	};
 };
 
 Particle.prototype.update = function(){
 	if(this.current <= this.life){
 		this.current++;
-		this.sizeX = Math.max(0, this.sizeX - this.reduceX);
-		this.sizeY = Math.max(0, this.sizeY - this.reduceY);
-		this.x += this.motionX;
-		this.y += this.motionY;
+		this.doUpdate(this);
 	}
 };
+
+Particle.defaultRender = function(v){
+	return function(ctx){
+		ctx.fillStyle = v.color;
+
+		ctx.beginPath();
+		ctx.ellipse(v.x, v.y, v.sizeX, v.sizeY, 0, 0, Math.PI * 2);
+		ctx.fill();
+	};
+};
+
+Particle.custom = function(x, y, sizeX, sizeY, life, color, init, update, render){
+	this.x = x;
+	this.y = y;
+	this.sizeX = sizeX;
+	this.sizeY = sizeY;
+	this.current = 0;
+	this.life = (life === undefined) ? 100 : life;
+	this.color = color;
+	this.doUpdate = update;
+	this.render = render || Particle.defaultRender(this);
+	init(this);
+};
+
+Particle.custom.prototype.update = Particle.prototype.update;
 
 var particles = [];
 
 var colors = {
 	teleport: "#00C0FF",
+	move: "#00A0FF",
 	trap: "#805000",
 	maze: "#202020"
 };
@@ -143,19 +176,21 @@ function updateMovement(bot, cb){
 
 function handleMovement(bot, movementLog, callback){
 	var updateNeeded = true;
-	renderObject[bot.player].animate = "teleport";
 	switch(movementLog.content){
 		case 'turn.left':
 			bot.direction = DIRECTIONS_BY_VALUE[bot.direction.left];
+			renderObject[bot.player].animate = 'rotate';
 			break;
 
 		case 'turn.right':
 			bot.direction = DIRECTIONS_BY_VALUE[bot.direction.right];
+			renderObject[bot.player].animate = 'rotate';
 			break;
 
 		case 'turn.move':
 			bot.x += bot.direction.x;
 			bot.y += bot.direction.y;
+			renderObject[bot.player].animate = 'move';
 			break;
 
 		case 'turn.teleport':
@@ -305,7 +340,6 @@ function recalculateObject(removeAnimation){
 
 function copyTargetToObject(player){
 	var target = renderTarget[player];
-	//renderObject[player] = JSON.parse(JSON.stringify(target)); skin is HTML Element!
 	renderObject[player] = {
 		name: target.name,
 		player: target.player,
@@ -341,11 +375,7 @@ function render(bot){
 
 function renderParticle(){
 	particles.forEach(function(v){
-		ctx.fillStyle = v.color;
-
-		ctx.beginPath();
-		ctx.ellipse(v.x, v.y, v.sizeX, v.sizeY, 0, 0, Math.PI * 2);
-		ctx.fill();
+		v.render(ctx, v);
 	});
 }
 
@@ -361,6 +391,52 @@ function procAnimate(v){
 			var x = boardMinX + v.x;
 			var y = boardMinY + v.y;
 			particles.push(new Particle(x, y, Math.round(xSize / 3), undefined, 100, colors['trap'], xSize / 400, undefined));
+			break;
+
+		case 'move':
+			var radAngle = Math.toRad(v.angle);
+			var cos = Math.cos(radAngle);
+			var sin = Math.sin(radAngle);
+			var x = boardMinX + v.x;
+			var y = boardMinY + v.y;
+			var offsetX = xSize * cos / 2 - xSize / 2 * -Math.sign(v.angle - 135);
+			var offsetY = ySize * sin / 2 - ySize / 2 * -Math.sign(v.angle - 135) * ((Math.inRange(-45, 45, v.angle) || Math.inRange(135, 225, v.angle)) ? -1 : 1);
+			var xs = xSize * v.size;
+			var ys = ySize * v.size;
+			var motionX = xSize / 2 * cos;
+			var motionY = ySize / 2 * sin;
+
+
+			particles.push(new Particle.custom(x, y, xSize - Math.random() * xSize / 3, 2, 100, colors['move'], function(_this){
+				_this.motionX = Math.random() * cos / 2;
+				_this.motionY = Math.random() * sin / 2;
+			}, function(){
+				this.sizeY = Math.max(0, this.sizeY - 0.2);
+			}, function(ctx, _this){
+				ctx.fillStyle = _this.color;
+
+				ctx.beginPath();
+				//v.size may differ
+				var xs = v.size * xSize;
+				var ys = v.size * ySize;
+				ctx.ellipse(
+					_this.x + v.size * offsetX + _this.motionX * xs - cos * xs / 4,
+					_this.y + v.size * offsetY + _this.motionY * ys - sin * ys / 4,
+					_this.sizeX,
+					_this.sizeY,
+					Math.PI / 2 + radAngle,
+					0,
+					Math.PI * 2);
+				ctx.fill();
+			}));
+
+			setTimeout(function(){
+				v.animate = undefined;
+			}, MOVEMENT_DURATION);
+			break;
+
+		case 'rotate':
+			//TODO
 			break;
 	}
 }
