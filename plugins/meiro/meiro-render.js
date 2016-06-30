@@ -82,8 +82,10 @@ var particles = [];
 var colors = {
 	teleport: "#00C0FF",
 	move: "#00A0FF",
+	rotate: "rgba(0, 230, 255, %a)",
 	trap: "#805000",
-	maze: "#202020"
+	maze: "#202020",
+	dialog: "#00A0FF"
 };
 
 var FULL_SIZE = 1;
@@ -176,21 +178,25 @@ function updateMovement(bot, cb){
 
 function handleMovement(bot, movementLog, callback){
 	var updateNeeded = true;
+	var clearAnimation = false;
 	switch(movementLog.content){
 		case 'turn.left':
 			bot.direction = DIRECTIONS_BY_VALUE[bot.direction.left];
 			renderObject[bot.player].animate = 'rotate';
+			clearAnimation = true;
 			break;
 
 		case 'turn.right':
 			bot.direction = DIRECTIONS_BY_VALUE[bot.direction.right];
 			renderObject[bot.player].animate = 'rotate';
+			clearAnimation = true;
 			break;
 
 		case 'turn.move':
 			bot.x += bot.direction.x;
 			bot.y += bot.direction.y;
 			renderObject[bot.player].animate = 'move';
+			clearAnimation = true;
 			break;
 
 		case 'turn.teleport':
@@ -224,6 +230,12 @@ function handleMovement(bot, movementLog, callback){
 			printLog(bot.player + ' : ' + movementLog.data);
 			break;
 	}
+	if(clearAnimation){
+		setTimeout(function(){
+			renderObject[bot.player].animate = undefined;
+		}, MOVEMENT_DURATION);
+	}
+
 	if(updateNeeded){
 		recalculateObject(true);
 		updateMovement(bot, callback);
@@ -280,20 +292,28 @@ function startRender(){
 			animate();
 
 			async.forEachOfSeries(roundLog, function(turnLog, turn, cb1){
-				if(turn === 'final' || turn === 'init') return;
+				if(turn === 'final' || turn === 'init'){
+					cb1();
+					return;
+				}
 				async.eachSeries(turnLog[0].data, function(playerLog, cb2){
 					async.eachSeries(playerLog.log, function(movementLog, callback){
 						handleMovement(bots[playerLog.player], movementLog, callback);
 					}, function(){
+						console.log('2end');
 						cb2();
 					});
 				}, function(){
+					console.log('1end');
 					cb1();
 				});
 			}, function(){
+				console.log('0end');
 				cb();
 			});
 		});
+	}, function(){
+		procEnd();
 	});
 }
 
@@ -410,8 +430,8 @@ function procAnimate(v){
 			particles.push(new Particle.custom(x, y, xSize - Math.random() * xSize / 3, 2, 100, colors['move'], function(_this){
 				_this.motionX = Math.random() * cos / 2;
 				_this.motionY = Math.random() * sin / 2;
-			}, function(){
-				this.sizeY = Math.max(0, this.sizeY - 0.2);
+			}, function(_this){
+				_this.sizeY = Math.max(0, _this.sizeY - 0.2);
 			}, function(ctx, _this){
 				ctx.fillStyle = _this.color;
 
@@ -422,21 +442,46 @@ function procAnimate(v){
 				ctx.ellipse(
 					_this.x + v.size * offsetX + _this.motionX * xs - cos * xs / 4,
 					_this.y + v.size * offsetY + _this.motionY * ys - sin * ys / 4,
-					_this.sizeX,
-					_this.sizeY,
+					_this.sizeX * v.size,
+					_this.sizeY * v.size,
 					Math.PI / 2 + radAngle,
 					0,
 					Math.PI * 2);
 				ctx.fill();
 			}));
-
-			setTimeout(function(){
-				v.animate = undefined;
-			}, MOVEMENT_DURATION);
 			break;
 
 		case 'rotate':
-			//TODO
+			var x = boardMinX + v.x;
+			var y = boardMinY + v.y;
+
+			particles.push(new Particle.custom(x, y, Math.random() * xSize, Math.random() * ySize, 100, colors['rotate'], function(_this){
+				_this.angle = Math.toRad(Math.random() * 360);
+				_this.opacity = 1;
+			}, function(_this){
+				_this.angle += Math.toRad(Math.random() * 30);
+				_this.opacity = Math.max(0, _this.opacity - 0.03);
+			}, function(ctx, _this){
+				ctx.strokeStyle = _this.color.replace('%a', _this.opacity);
+
+				ctx.beginPath();
+				//v.size may differ
+				var xs = v.size * _this.sizeX;
+				var ys = v.size * _this.sizeY;
+				ctx.ellipse(_this.x, _this.y, xs, ys, _this.angle, 0, Math.PI * 2);
+				ctx.stroke();
+			}));
 			break;
 	}
+}
+
+function procEnd(){
+	//100 step
+	var sizeY = boardSize;
+	var startY = (canvas.height - boardSize) / 2;
+	async.eachSeries(Array.rangeOf(100), function(v, cb){
+		ctx.fillStyle = colors['dialog'];
+		ctx.fillRect(0, startY, canvas.width * v / 100, boardSize);
+		setTimeout(cb, 5);
+	});
 }
