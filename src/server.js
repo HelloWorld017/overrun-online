@@ -9,6 +9,7 @@ class Server extends EventEmitter{
 		this.games = {};
 		this.gamePool = {};
 		this.matchmakers = {};
+		this.gameCounts = 0;
 	}
 
 	addToPool(game, matchmaker){

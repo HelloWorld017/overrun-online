@@ -1,3 +1,4 @@
+var blockly = require('./blockly-list');
 var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('meiro');
 var entry = require(global.pluginsrc('common-entry', 'common-router'));
 var meiro = require('./meiro-game');
@@ -16,7 +17,13 @@ module.exports = {
 	},
 	onServerInit: (app, cb) => {
 		app.use('/entry', entry('meiro', 'MEIRO'));
+		app.use('/render/meiro.js', (req, res) => {
+			res.sendFile(global.pluginsrc('meiro', 'meiro-render.js'));
+		});
 		cb();
+	},
+	renderHook: {
+		'battle': '<script src="/render/meiro.js"></script>\n<script src="/resources/js/tween.js"></script>'
 	},
 	apiList: [{
 		name: 'MEIRO-RANKED',
@@ -25,6 +32,7 @@ module.exports = {
 		name: 'MEIRO-UNRANKED',
 		content: meiro.api.content
 	}],
+	blockly: blockly,
 	entry: [{
 		name: global.translator('plugin.meiro'),
 		href: '/entry/meiro',

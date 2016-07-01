@@ -58,6 +58,25 @@ class OverrunGame extends Game{
 		});
 
 		var turnLog = {};
+
+		turnLog.init = {
+			turnCount: TURN_COUNT,
+			players: this.bots.map(function(v){
+				return {
+					name: v.getName(),
+					skin: v.getSkin(),
+					pos: {
+						x: v.boundBox.minX(),
+						y: v.boundBox.minY(),
+					},
+					rotation: v.yaw,
+					player: v.getPlayer().getName()
+				}
+			}),
+			boardSize: BOARD_SIZE,
+			maxActionAmount: MAX_ACTION_AMOUNT
+		};
+
 		var attack = this.bots[attackIndex];
 		var defence = this.bots.filter((bot, index) => {
 			return index !== attackIndex;
@@ -209,7 +228,7 @@ class OverrunGame extends Game{
 
 	start(){
 		var gameLog = [];
-		async.eachSeries(Array.rangeOf(TURN_COUNT), (k, cb) => {
+		async.eachSeries(Array.rangeOf(ROUND_COUNT), (k, cb) => {
 			this.processRound((k % 2), (log) => {
 				gameLog[k] = log;
 				cb(null);
@@ -221,20 +240,40 @@ class OverrunGame extends Game{
 			});
 
 			process.nextTick(() => {
-				this.handleWin(gameLog, (afterHandle) => {
-					if(!afterHandle) return;
+				var score = {};
+				this.players.forEach((v) => {
+					score[v.getName()] = 0;
+				});
+				async.each(gameLog, (v, cb) => {
+					score[v.final.data.player]++;
+					cb();
+				}, () => {
+					this.handleWin(gameLog, (afterHandle) => {
+						if(!afterHandle) return;
 
-					this.server.removeGame(this.gameId);
-					var date = new Date();
-
-					global.mongo
-					.collection(global.config['collection-battle'])
-					.insertOne({
-						id: this.battleId,
-						players: this.players.map((v) => v.getName()),
-						date: date.getMilliseconds(),
-						log: gameLog,
-					});
+						this.server.removeGame(this.gameId);
+						var date = new Date();
+						var bots = {};
+						async.each(this.bots, (v, cb) => {
+							bots[v.getPlayer().getName()] = {
+								skin: v.getSkin(),
+								name: v.getName()
+							};
+							cb();
+						}, () => {
+							global.mongo
+							.collection(global.config['collection-battle'])
+							.insertOne({
+								id: this.battleId,
+								players: this.players.map((v) => v.getName()),
+								date: date.getMilliseconds(),
+								dateTime: Date.now(),
+								log: gameLog,
+								score: score,
+								type: 'OVERRUN'
+							});
+						});
+					}, score);
 				});
 			});
 		});

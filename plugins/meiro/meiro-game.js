@@ -3,15 +3,28 @@ var async = require('async');
 var BotWrapper = require(global.src('bot-wrapper'));
 var Game = require(global.src('game'));
 var Library = require(global.src('library'));
-var localeval = require(global.src('evaluate'));
+var localeval = require('./meiro-evaluator');
 var process = require('process');
 
+var evaluatePrefix = require('fs').readFileSync(global.pluginsrc('meiro', './evaluate-prefix.js'), 'utf8');
+
 const GAME_NAME = "MEIRO";
+
 const START_X = 0;
 const START_Y = 0;
 const MAZE_SIZE = 10;
+const END_X = MAZE_SIZE - 1;
+const END_Y = MAZE_SIZE - 1;
+
+const TURN_COUNT = 50;
+const ROUND_COUNT = 1;
+
+const TRAP_COUNT = 1;
 const TELEPORTER_COUNT = 3;
 const WALLCUTTER_COUNT = 2;
+
+const EVAL_TIMEOUT = 500;
+const MAX_SAVE_LENGTH = 10000;
 
 class Direction{
 	constructor(x, y, value, left, right, opposite){
@@ -26,9 +39,9 @@ class Direction{
 
 const DIRECTIONS = [
 	new Direction(0, -1, 'N', 'W', 'E', 'S'),
-	new Direction(1, 0, 'W', 'S', 'N', 'E'),
-	new Direction(-1, 0, 'E', 'N', 'S', 'W'),
-	new Direction(0, -1, 'S', 'E', 'W', 'N')
+	new Direction(-1, 0, 'W', 'S', 'N', 'E'),
+	new Direction(1, 0, 'E', 'N', 'S', 'W'),
+	new Direction(0, 1, 'S', 'E', 'W', 'N')
 ];
 
 const DIRECTIONS_BY_VALUE = {
@@ -43,13 +56,11 @@ class Tile{
 		this.x = x;
 		this.y = y;
 		this.walls = {};
-		this.visibleWalls = {};
 		this.visited = false;
 		this.placedObjects = {};
 
 		DIRECTIONS.forEach((v) => {
 			this.walls[v.value] = true;
-			this.visibleWalls[v.value] = true;
 		});
 	}
 
@@ -109,12 +120,6 @@ class MeiroGame extends Game{
 				if(newX >= 0 && newY >= 0 && newX < MAZE_SIZE && newY < MAZE_SIZE && (this.maze.tiles[`x${newX}y${newY}`].visited === false)){
 					this.maze.tiles[`x${x}y${y}`].walls[d.value] = false;
 					this.maze.tiles[`x${newX}y${newY}`].walls[d.opposite] = false;
-
-					if(Math.randomRange(0, 10) < 10){
-						this.maze.tiles[`x${x}y${y}`].visibleWalls[d.value] = false;
-						this.maze.tiles[`x${newX}y${newY}`].visibleWalls[d.opposite] = false;
-					}
-
 					this.maze.tiles[`x${newX}y${newY}`].visited = true;
 					carve(newX, newY);
 				}
@@ -124,11 +129,11 @@ class MeiroGame extends Game{
 		carve(START_X, START_Y);
 
 		Array.rangeOf(TELEPORTER_COUNT).forEach((i) => {
-			getRandomUnplacedPosition((start) => {
+			this.getRandomUnplacedPosition((start) => {
 				if(start === undefined) return;
 				start.placeObject('teleport', i);
 
-				getRandomUnplacedPosition((end) => {
+				this.getRandomUnplacedPosition((end) => {
 					if(end === undefined){
 						start.placedObjects.teleport = undefined;
 						return;
@@ -141,10 +146,17 @@ class MeiroGame extends Game{
 		});
 
 		Array.rangeOf(WALLCUTTER_COUNT).forEach((i) => {
-			getRandomUnplacedPosition((pos) => {
+			this.getRandomUnplacedPosition((pos) => {
 				if(pos === undefined) return;
 
 				pos.placeObject('wallcutter', true);
+			});
+		});
+
+		Array.rangeOf(TRAP_COUNT).forEach((i) => {
+			this.getRandomUnplacedPosition((pos) => {
+				if(pos === undefined) return;
+				pos.placeObject('trap', true);
 			});
 		});
 
@@ -153,6 +165,8 @@ class MeiroGame extends Game{
 			v.metadata.y = START_Y;
 			v.metadata.direction = DIRECTIONS_BY_VALUE.N;
 			v.metadata.items = [];
+			v.metadata.usedTeleporter = [];
+			v.metadata.saveData = undefined;
 		});
 	}
 
@@ -163,7 +177,7 @@ class MeiroGame extends Game{
 	getRandomUnplacedPosition(cb){
 		async.filter(this.maze.tiles, (tile, callback) => {
 			callback(!tile.isPlaced());
-		}, (err, res) => {
+		}, (res) => {
 			cb(Array.random(res));
 		});
 	}
@@ -185,12 +199,12 @@ class MeiroGame extends Game{
 
 		var tiles = Object.keys(this.maze.tiles).reduce((prev, curr) => {
 			prev[curr] = {
-				walls: this.maze.tiles[curr],
-				placedObjects: this.maze.placedObjects
+				walls: this.maze.tiles[curr].walls,
+				placedObjects: this.maze.tiles[curr].placedObjects
 			};
 
 			return prev;
-		});
+		}, {});
 
 		turnLog.init = {
 			content: 'turn.start',
@@ -199,7 +213,19 @@ class MeiroGame extends Game{
 				maze: {
 					tiles: tiles,
 					teleporters: this.maze.teleporters
-				}
+				},
+				start: {
+					x: START_X,
+					y: START_Y
+				},
+				size: MAZE_SIZE,
+				players: this.bots.map(function(v){
+					return {
+						name: v.getName(),
+						skin: global.skin(v.getSkin()),
+						player: v.getPlayer().getName()
+					}
+				}),
 			}
 		};
 
@@ -208,46 +234,124 @@ class MeiroGame extends Game{
 				turnLog[i] = [];
 			}
 
-			var evaluators = [];
-			evaluators[0] = this.getEvaluator(bots[0], []);
-			evaluators[1] = this.getEvaluator(bots[1], []);
-
 			this.bots.forEach((v) => {
 				v.metadata.moveerr = false;
 				v.metadata.checkedWall = false;
 			});
 
-			localeval(this.bots[0].getCode(), evaluators[0].evaluator, EVAL_TIMEOUT, (err) => {
-				localeval(defence.getCode(), evaluators[1].evaluator, EVAL_TIMEOUT, (err1) => {
+			var setToDefault = (metadata) => {
+				return {
+					maze: this.maze,
+					bot: metadata,
+					logObject: [{
+						content: 'turn.err.runtime',
+						data: {}
+					}]
+				};
+			};
+
+			localeval(evaluatePrefix, {
+				code: this.bots[0].getCode(),
+				maze: JSON.stringify(this.maze),
+				bot: JSON.stringify(this.bots[0].metadata),
+				startX: START_X,
+				startY: START_Y,
+				saveLength: MAX_SAVE_LENGTH
+			}, EVAL_TIMEOUT, (err, logs) => {
+				try{
+					logs = JSON.parse(logs);
+				}catch(e){}
+
+				if(err || !logs){
+					err.stack = undefined;
+					logs = setToDefault(this.bots[0].metadata);
+				}
+
+				this.maze = logs.maze;
+				this.bots[0].metadata = logs.bot;
+				this.bots[0].metadata.direction = DIRECTIONS_BY_VALUE[this.bots[0].metadata.direction.value];
+
+				localeval(evaluatePrefix, {
+					code: this.bots[1].getCode(),
+					maze: JSON.stringify(this.maze),
+					bot: JSON.stringify(this.bots[1].metadata),
+					startX: START_X,
+					startY: START_Y,
+					saveLength: MAX_SAVE_LENGTH
+				}, EVAL_TIMEOUT, (err1, logs1) => {
+					try{
+						logs1 = JSON.parse(logs1);
+					}catch(e){}
+
+					if(err1 || !logs1){
+						err1.stack = undefined;
+						logs1 = setToDefault(this.bots[1].metadata);
+					}
+
+					this.maze = logs1.maze;
+					this.bots[1].metadata = logs1.bot;
+					this.bots[1].metadata.direction = DIRECTIONS_BY_VALUE[this.bots[1].metadata.direction.value];
+
 					turnLog[i].push({
 						content: 'meiro.turn.proceed',
 						data: [{
 							name: this.bots[0].getName(),
 							skin: this.bots[0].getSkin(),
 							player: this.bots[0].getPlayer().getName(),
-							log: evaluators[0].logs,
-							err: err ? err.toString() : undefined
+							log: logs.logObject,
+							err: err ? JSON.stringify(err) : undefined
 						}, {
 							name: this.bots[1].getName(),
 							skin: this.bots[1].getSkin(),
 							player: this.bots[1].getPlayer().getName(),
-							log: evaluators[1].logs,
-							err: err1 ? err1.toString() : undefined
+							log: logs1.logObject,
+							err: err1 ? JSON.stringify(err1) : undefined
 						}]
 					});
-					//TODO:70 check bots escaping maze.
+
+					var endedBot = this.bots.filter((bot) => {
+						return bot.metadata.x === END_X && bot.metadata.y === END_Y;
+					});
+
+					switch(endedBot.length){
+						case 1:
+							turnLog.final = {
+								content: 'turn.win',
+								data: {
+									player: endedBot[0].getPlayer().getName(),
+									bot: endedBot[0].getName(),
+									escaped: true
+								}
+							};
+							break;
+						case 2:
+							turnLog.final = {
+								content: 'turn.draw',
+								data: {
+									player: [endedBot[0].getPlayer().getName(), endedBot[1].getPlayer().getName()],
+									bot: [endedBot[0].getName(), endedBot[1].getName()],
+									escaped: true
+								}
+							};
+							break;
+					}
+
+					if(endedBot.length > 0){
+						cb({});
+						return;
+					}
 
 					cb(null);
 				});
 			});
 		}, (err) => {
-			if(!err){
+			if(turnLog.final === undefined){
 				turnLog.final = {
-					content: 'turn.win',
+					content: 'turn.draw',
 					data: {
-						type: 'defence',
-						player: bot.getPlayer().getName(),
-						bot: bot.getName()
+						player: [this.bots[0].getPlayer().getName(), this.bots[1].getPlayer().getName()],
+						bot: [this.bots[0].getName(), this.bots[1].getName()],
+						escaped: false
 					}
 				};
 			}
@@ -258,8 +362,8 @@ class MeiroGame extends Game{
 
 	start(){
 		var gameLog = [];
-		async.eachSeries(Library.rangeOf(TURN_COUNT), (k, cb) => {
-			this.processRound((k % 2), (log) => {
+		async.eachSeries(Array.rangeOf(ROUND_COUNT), (k, cb) => {
+			this.processRound((log) => {
 				gameLog[k] = log;
 				cb(null);
 			});
@@ -270,111 +374,52 @@ class MeiroGame extends Game{
 			});
 
 			process.nextTick(() => {
-				this.handleWin(gameLog, (afterHandle) => {
-					if(!afterHandle) return;
+				var score = {};
+				this.players.forEach((v) => {
+					score[v.getName()] = 0;
+				});
 
-					this.server.removeGame(this.gameId);
-					var date = new Date();
-
-					global.mongo
-						.collection(global.config['collection-battle'])
-						.insertOne({
-							id: this.battleId,
-							players: this.players.map((v) => v.getName()),
-							date: date.getMilliseconds(),
-							log: gameLog,
+				async.each(gameLog, (v, cb) => {
+					if(typeof v.final.data.player === 'object'){
+						v.final.data.player.forEach((v1) => {
+							score[v1]++;
 						});
+						cb();
+						return;
+					}
+
+					score[v.final.data.player]++;
+					cb();
+				}, () => {
+					this.handleWin(gameLog, (afterHandle) => {
+						if(!afterHandle) return;
+						this.server.removeGame(this.gameId);
+						var date = new Date();
+						var bots = {};
+						async.each(this.bots, (v, cb) => {
+							bots[v.getPlayer().getName()] = {
+								skin: global.skin(v.getSkin()),
+								name: v.getName()
+							};
+							cb();
+						}, () => {
+							global.mongo
+								.collection(global.config['collection-battle'])
+								.insertOne({
+									id: this.battleId,
+									players: this.players.map((v) => v.getName()),
+									bots: bots,
+									score: score,
+									date: date.getMilliseconds(),
+									dateTime: Date.now(),
+									log: gameLog,
+									type: 'MEIRO'
+								});
+						});
+					}, score);
 				});
 			});
 		});
-	}
-
-	getEvaluator(bot, logObject){
-		var customLog = 0;
-		var log = (content, data, isCustom) => {
-			if(isCustom){
-				if((customLog < 64 && typeof data === 'string') && data.length < 256){
-					customLog++;
-					logObject.push({
-						content: content,
-						data: data
-					});
-				}
-				return;
-			}
-
-			logObject.push({
-				content: content,
-				data: data
-			});
-		};
-
-		var evalObject = {
-			log: (content) => {
-				if(typeof content !== 'string'){
-					log('turn.err', 'turn.content.not.string', true);
-					return false;
-				}
-
-				log('turn.text', content, true);
-				return true;
-			},
-
-			turnLeft: () => {
-				bot.metadata.direction = DIRECTION_BY_VALUE[bot.metadata.direction.left];
-				log('turn.left');
-			},
-
-			turnRight: () => {
-				bot.metadata.direction = DIRECTION_BY_VALUE[bot.metadata.direction.right];
-				log('turn.right');
-			},
-
-			move: () => {
-				if(this.maze[`x${bot.metadata.x}y${bot.metadata.y}`].walls[bot.metadata.direction.value] && !bot.metadata.moveerr){
-					log('turn.move.over.wall');
-					bot.metadata.moveerr = true;
-					bot.metadata.x = START_X;
-					bot.metadata.y = START_Y;
-					return false;
-				}
-
-				bot.move();
-				log('turn.move');
-				return true;
-			},
-
-			carveWall: () => {
-				if(bot.metadata.items.indexOf('wallcutter') === -1){
-					log('turn.err', 'turn.carve.fail', true);
-					return false;
-				}
-
-				Array.remove(bot.metadata.items, bot.metadata.items.indexOf('wallcutter'));
-				DIRECTIONS.forEach((v) => {
-					this.maze[`x${bot.metadata.x}y${bot.metadata.y}`].walls[v.value] = false;
-					this.maze[`x${bot.metadata.x}y${bot.metadata.y}`].visibleWalls[v.value] = false;
-					this.maze[`x${bot.metadata.x + v.x}y${bot.metadata.y + v.y}`].walls[v.opposite] = false;
-					this.maze[`x${bot.metadata.x + v.x}y${bot.metadata.y + v.y}`].visibleWalls[v.opposite] = false;
-				});
-
-				return true;
-			},
-
-			checkWall: () => {
-				if(bot.metadata.checkedWall){
-					log('turn.err', 'turn.already.checked', true);
-					return false;
-				}
-
-				return this.maze[`x${bot.metadata.x}y${bot.metadata.y}`].visibleWalls;
-			}
-		};
-
-		return {
-			evaluator: evalObject,
-			logs: logObject //call-by-reference
-		};
 	}
 
 	handleWin(gameLog, cb){

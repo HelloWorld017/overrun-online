@@ -199,8 +199,3 @@ Array.shuffle = function(array){
 Array.clone = function(array){
 	return array.slice(0);
 };
-
-module.exports = {
-	Position: Position,
-	AABB: AABB
-};

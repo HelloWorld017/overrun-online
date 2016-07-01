@@ -11,7 +11,7 @@ var blockly = [{
 					'check': 'String'
 				}
 			],
-			color: 160,
+			colour: 160,
 			tooltip: global.translator('plugin.overrun.blockly.log.tooltip'),
 			previousStatement: null,
 			nextStatement: null
@@ -19,7 +19,7 @@ var blockly = [{
 		{
 			conv: 'move',
 			message0: global.translator('plugin.overrun.blockly.move.message'),
-			color: 160,
+			colour: 160,
 			tooltip: global.translator('plugin.overrun.blockly.move.tooltip'),
 			previousStatement: null,
 			nextStatement: null
@@ -27,7 +27,7 @@ var blockly = [{
 		{
 			conv: 'defence',
 			message0: global.translator('plugin.overrun.blockly.defence.message'),
-			color: 160,
+			colour: 160,
 			tooltip: global.translator('plugin.overrun.blockly.defence.tooltip'),
 			previousStatement: null,
 			nextStatement: null
@@ -42,6 +42,7 @@ var blockly = [{
 					'check': 'Number'
 				}
 			],
+			colour: 160,
 			tooltip: global.translator('plugin.overrun.blockly.rotate.tooltip'),
 			previousStatement: null,
 			nextStatement: null
@@ -49,39 +50,28 @@ var blockly = [{
 		{
 			conv: 'getIsDefence',
 			message0: global.translator(`plugin.overrun.blockly.getIsDefence.message`),
-			args0: [
-				{
-					'type': 'field_dropdown',
-					'name': 'VALUE',
-					'options': [['enemy', 'ENEMY'], ['me', 'ME']]
-				}
-			],
-			color: 160,
+			colour: 160,
 			tooltip: global.translator(`plugin.overrun.blockly.getIsDefence.tooltip`),
-			previousStatement: null,
-			nextStatement: null,
 			output: 'Boolean'
 		},
 		{
 			conv: 'getEnemyName',
 			message0: global.translator(`plugin.overrun.blockly.getEnemyName.message`),
-			args0: [
-				{
-					'type': 'field_dropdown',
-					'name': 'VALUE',
-					'options': [['enemy', 'ENEMY'], ['me', 'ME']]
-				}
-			],
-			color: 160,
+			colour: 160,
 			tooltip: global.translator(`plugin.overrun.blockly.getEnemyName.tooltip`),
-			previousStatement: null,
-			nextStatement: null,
 			output: 'String'
+		},
+		{
+			conv: 'getTurn',
+			message0: global.translator(`plugin.overrun.blockly.getTurn.message`),
+			colour: 160,
+			tooltip: global.translator(`plugin.overrun.blockly.getTurn.tooltip`),
+			output: 'Number'
 		}
 	]
 }];
 
-blockly[0].content = blockly[0].content.concat(['getOverall', 'getCurrent', 'getTurn', 'getYaw', 'getX', 'getY'].map((v) => {
+blockly[0].content = blockly[0].content.concat(['getOverall', 'getCurrent', 'getYaw', 'getX', 'getY'].map((v) => {
 	return {
 		conv: v,
 		message0: global.translator(`plugin.overrun.blockly.${v}.message`),
@@ -92,10 +82,8 @@ blockly[0].content = blockly[0].content.concat(['getOverall', 'getCurrent', 'get
 				'options': [['enemy', 'ENEMY'], ['me', 'ME']]
 			}
 		],
-		color: 160,
+		colour: 160,
 		tooltip: global.translator(`plugin.overrun.blockly.${v}.tooltip`),
-		previousStatement: null,
-		nextStatement: null,
 		output: 'Number'
 	};
 }));

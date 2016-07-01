@@ -38,7 +38,7 @@
 		};
 	};
 
-	var enemy = () => {
+	var getEnemy = () => {
 		return enemy;
 	};
 
@@ -84,4 +84,4 @@
 	"code";
 
 	return JSON.stringify(returnValue);
-})(overallMovement, currentMovement, turn, yaw, x, y, isDefence);
+})(overallMovement, currentMovement, turn, yaw, x, y, isDefence, enemy);

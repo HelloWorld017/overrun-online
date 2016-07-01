@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title><%= title %></title>
+<title><%= global.translator('title') %> - <%= title %></title>
 
 <meta name="description" content="<%= global.translator('desc') %>">
 <meta name="viewport" content="width=device-width, user-scalable=no">
@@ -39,6 +39,8 @@
 
 <script src="/resources/js/react.min.js"></script>
 <script src="/resources/js/react-dom.min.js"></script>
+
+<script src="/resources/js/async.min.js"></script>
 
 <% (global.headerHook[renderTarget] || []).forEach((v) => { %>
 	<%- v %>

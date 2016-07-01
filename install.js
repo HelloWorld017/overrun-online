@@ -18,9 +18,9 @@ MongoClient.connect(url, (err, db) => {
 	}).then(() => {
 		return db.createCollection(config['collection-battle']);
 	}).then(() => {
-		return db.collection(config['collection-user']).ensureIndex({name: 1, point: 1, email: 1, nickname: 1, github: 1});
+		return db.collection(config['collection-user']).createIndex({name: 1, point: 1, email: 1, nickname: 1, github: 1});
 	}).then(() => {
-		return db.collection(config['collection-battle']).ensureIndex({id: 1});
+		return db.collection(config['collection-battle']).createIndex({id: 1, dateTime: -1});
 	}).then(() => {
 		console.log(chalk.cyan("overrun-online installed successfully!"));
 		require('process').exit(0);

@@ -82,12 +82,11 @@
 
 					Blockly.JavaScript['<%- category.name %>_<%- v.conv %>'] = function(block) {
 						<% if(v.convManual === undefined){ %>
-							<% if(v.output){ %>
-								var order = Blockly.JavaScript.ORDER_MEMBER;
+							<% if(v.nextStatement !== null){ %>
+								return ['<%- v.conv %>(' + (Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || '') + ')', Blockly.JavaScript.ORDER_MEMBER];
 							<% }else{ %>
-								var order = Blockly.JavaScript.ORDER_NONE;
+								return '<%- v.conv %>(' + (Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || '') + ');\n';
 							<% } %>
-							return ['<%- v.conv %>(' + (Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_NONE) || '') + ')', order];
 						<% }else{ %>
 							<%- v.convManual %>
 						<% } %>
@@ -199,7 +198,7 @@
 				</block>
 				<block type="math_random_float"></block>
 			</category>
-			<category colour="160" name="Text">
+			<category name="Text">
 				<block type="text"></block>
 				<block type="text_join"></block>
 				<block type="text_append">
@@ -348,16 +347,18 @@
 						</p>
 						<div class="col s12">
 							<ul class="tabs">
-								<li class="tab col s3"><a class="active" href="#code"><%= global.translator('build.editor.code') %></a></li>
+								<li class="tab col s3"><a class="active" href="#codeView"><%= global.translator('build.editor.code') %></a></li>
 								<li class="tab col s3"><a href="#blockly"><%= global.translator('build.editor.blockly') %></a></li>
 							</ul>
 						</div>
 
-						<div id="code" class="col s12">
+						<div id="codeView" class="col s12">
 							<div id="code-editor"></div>
 						</div>
 
-						<div id="blockly" class="col s12" style="width: 800px; height: 600px;">
+						<div id="blockly" class="col s12" style="width: 800px; height: 650px;">
+							<button class="btn waves-effect waves-light" onclick="exportToXml()"><%= global.translator('build.blockly.export') %></button>
+							<button class="btn waves-effect waves-light" onclick="importFromXml()"><%= global.translator('build.blockly.import') %></button>
 							<div id="blockly-div" style="width: 800px; height: 600px; position: absolute; z-index: 999"></div>
 						</div>
 					</div>
@@ -369,9 +370,7 @@
 			</form>
 
 			<% if(typeof bot !== 'undefined'){ %>
-				<div id="bot-code" style="display: none">
-					<%- bot.code %>
-				</div>
+				<div id="bot-code" style="display: none"><%= bot.code %></div>
 			<% } %>
 
 			<script>
@@ -392,7 +391,7 @@
 					$('#skin').val('<%= bot.skin %>');
 					$('#type').val('<%= bot.type %>');
 
-					editor.setValue($('#bot-code').html(), -1);
+					editor.setValue($('#bot-code').text(), -1);
 				<% } %>
 
 				var workspace = Blockly.inject('blockly-div', {toolbox: $('#blockly-toolbox').get(0)});
@@ -400,7 +399,7 @@
 				var blocklySvg = $('.blocklySvg');
 				var blocklyThings = $('.blocklyWidgetDiv, .blocklyTooltipDiv, .blocklyToolboxDiv');
 
-				$('ul.tabs a[href=#code]').click(function(){
+				$('ul.tabs a[href=#codeView]').click(function(){
 					blocklyThings.css({
 						display: 'none'
 					});
@@ -414,9 +413,46 @@
 				});
 
 				workspace.addChangeListener(function(){
-					editor.setValue(Blockly.JavaScript.workspaceToCode(workspace), -1);
+					var code = Blockly.JavaScript.workspaceToCode(workspace);
+					editor.setValue(code, -1);
+					codeArea.val(code);
 				});
 
+				function storageAvailable(type) {
+					try {
+						var storage = window[type],
+							x = '__storage_test__';
+						storage.setItem(x, x);
+						storage.removeItem(x);
+						return true;
+					}
+					catch(e) {
+						return false;
+					}
+				}
+
+				function exportToXml(){
+					if(!storageAvailable('localStorage')){
+						alert('<%- global.translator('storage.unavailable') %>');
+					}
+
+					window.localStorage.setItem('blocklyxml', Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace)));
+				}
+
+				function importFromXml(){
+					if(!storageAvailable('localStorage')){
+						alert('<%- global.translator('storage.unavailable') %>');
+						return;
+					}
+
+					var xml = window.localStorage.getItem('blocklyxml');
+					if(!xml){
+						alert('<%- global.translator('build.import.nothing') %>');
+						return;
+					}
+
+					Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+				}
 			</script>
 		</section>
 

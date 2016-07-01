@@ -72,7 +72,7 @@ router.post('/password', (req, res, next) => {
 									.insert({
 										id: id,
 										reset_token: generatedToken,
-										valid_until: Date.now() + 3600
+										valid_until: Date.now() + 3600000
 									});
 
 							}else{

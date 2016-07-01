@@ -16,53 +16,39 @@ class OverrunRankedGame extends overrun.game{
 		this.resetRound();
 	}
 
-	handleWin(gameLog, callback){
-		var playerScore = 0;
-		var playerName = this.players[0].getName();
+	handleWin(gameLog, callback, score){
+		var p1 = this.players[0];
+		var p2 = this.players[1];
 
-		async.each(gameLog, (v, cb) => {
-			if(v.final.data.player === playerName){
-				playerScore++;
-				cb();
-				return;
-			}
+		if(score[p1.getName()] === score[p1.getName()]){
+			p1.getStat().draw++;
+			p2.getStat().draw++;
+		}else{
+			var win;
+			var defeat;
 
-			playerScore--;
-			cb();
-		}, (err) => {
-			var p1 = this.players[0];
-			var p2 = this.players[1];
-
-			if(playerScore === 0){
-				p1.getStat().draw++;
-				p2.getStat().draw++;
+			if(score[p1.getName()] > score[p2.getName()]){
+				//[win, defeat] = [p1, p2];
+				win = p1;
+				defeat = p2;
 			}else{
-				var win;
-				var defeat;
-
-				if(playerScore > 0){
-					//[win, defeat] = [p1, p2];
-					win = p1;
-					defeat = p2;
-				}else{
-					//[win, defeat] = [p2, p1];
-					win = p2;
-					defeat = p1;
-				}
-
-				win.point = Math.clmap(0, 1e+11, win.point + PointCalculator.win(win.getPoint(), defeat.getPoint()));
-				win.money = Math.clamp(0, 1e+11, defeat.point + PointCalculator.winMoney(win.getPoint()));
-				win.getStat().win++;
-
-				defeat.point = Math.clamp(0, 1e+11, defeat.point - PointCalculator.defeat(win.getPoint(), defeat.getPoint()));
-				defeat.money = Math.clamp(0, 1e+11, defeat.point + PointCalculator.defeatMoney(defeat.getPoint()));
-				defeat.getStat().defeat++;
+				//[win, defeat] = [p2, p1];
+				win = p2;
+				defeat = p1;
 			}
 
-			p1.saveStat();
-			p2.saveStat();
-			callback(true);
-		});
+			win.point = Math.clmap(0, 1e+11, win.point + PointCalculator.win(win.getPoint(), defeat.getPoint()));
+			win.money = Math.clamp(0, 1e+11, defeat.point + PointCalculator.winMoney(win.getPoint()));
+			win.getStat().win++;
+
+			defeat.point = Math.clamp(0, 1e+11, defeat.point - PointCalculator.defeat(win.getPoint(), defeat.getPoint()));
+			defeat.money = Math.clamp(0, 1e+11, defeat.point + PointCalculator.defeatMoney(defeat.getPoint()));
+			defeat.getStat().defeat++;
+		}
+
+		p1.saveStat();
+		p2.saveStat();
+		callback(true);
 	}
 
 	getPlayerByName(name, callback){

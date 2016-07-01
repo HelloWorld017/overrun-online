@@ -1,17 +1,147 @@
 <!DOCTYPE html>
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
+		<script>
+			var handlers = {};
+			var canvas, log, logType, trigger, gameLog;
+
+
+			function printLog(str){
+				log.prepend($(document.createElement('textarea')).val(str).attr('disabled', ''));
+			}
+		</script>
+
 		<%- include('./header', {title: global.translator('battle.title')}); %>
+		<style>
+			.log-trigger {
+				display: block;
+				position: absolute;
+				top: calc(64px + (100vh - 64px) / 10);
+				width: 50px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				background: <%= global.theme['background-0'] %>;
+				opacity: 0.4;
+				transition: opacity 0.5s, left 0.5s;
+				-webkit-transition: opacity 0.5s, left 0.5s;
+				will-change: left;
+			}
+
+			.log-trigger:hover {
+				opacity: 1;
+			}
+
+			#log-wrapper {
+				width: 200px;
+				height: calc(100vh - 64px);
+				padding: 3px;
+				position: relative;
+				left: -200px;
+				overflow-x: hidden;
+				overflow-y: auto;
+				display: inline-block;
+				background: <%= global.theme['background-0'] %>;
+				transition: left 0.5s;
+				-webkit-transition: left 0.5s;
+				will-change: left;
+				z-index: 999;
+			}
+
+			#main-canvas {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+
+			main {
+				width: 100vw;
+				height: calc(100vh - 64px);
+				display: block;
+				position: absolute;
+				margin: 0;
+				top: 64px;
+				white-space: nowrap;
+			}
+
+			nav {
+				position: relative;
+			}
+
+			#log-wrapper textarea {
+				color: <%= global.theme['foreground-0'] %>;
+				display: block;
+				margin-bottom: 5px;
+			}
+		</style>
+
+		<script src="/resources/js/library.js"></script>
 	</head>
 
-	<body>
+	<body style="overflow: hidden">
 		<% include ./navigation %>
-		<% include ./background %>
 
-		<section class="main-section">
+		<main>
+			<div id="log-wrapper">
+			</div>
+			<canvas id="main-canvas"></canvas>
+		</main>
 
-		</section>
+		<a class="log-trigger" href="#" onclick="return openLog()">
+			<i class="fa fa-list"></i>
+		</a>
+
+		<div style="display:none;" id="log-content" aria-hidden="true">
+			<%- JSON.stringify(battle.log) %>
+		</div>
 
 		<% include ./footer %>
+
+		<script>
+			canvas = $('#main-canvas').get(0);
+			log = $('#log-wrapper');
+			trigger = $('.log-trigger').get(0);
+
+			var ctx = canvas.getContext('2d');
+			_canvas = $(canvas);
+
+			var boardSize = Math.round((_canvas.height() < _canvas.width()) ? _canvas.height() / 2 : _canvas.width() / 2);
+			var boardMinX = Math.round((_canvas.width() - boardSize) / 2);
+			var boardMaxX = boardMinX + boardSize;
+			var boardMinY = Math.round((_canvas.height() - boardSize) / 2);
+			var boardMaxY = boardMinY + boardSize;
+
+			canvas.width = _canvas.width();
+			canvas.height = _canvas.height();
+
+			//Log handler
+			gameLog = JSON.parse($('#log-content').text());
+			logType = '<%- battle.type %>';
+			handlers[logType]();
+		</script>
+
+		<script>
+			var logOpened = false;
+			function openLog(){
+				if(logOpened){
+					log.css({
+						left: '-200px'
+					});
+					trigger.style.left = '0';
+					logOpened = false;
+					return false;
+				}
+
+				log.css({
+					left: '0'
+				});
+				trigger.style.left = '200px';
+				logOpened = true;
+				return false;
+			}
+		</script>
 	</body>
 </html>

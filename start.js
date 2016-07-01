@@ -18,9 +18,13 @@ global.config = objectMerge(require('./resources/server'), require('./server'));
 global.translation = objectMerge(require('./resources/translation-' + global.config.lang), require('./translation-' + global.config.lang));
 global.theme = objectMerge(require('./resources/theme'), require('./theme'));
 global.translator = require('./src/translator');
-global.key = (process.env.NODE_ENV || 'development') === 'development' ? new NodeRSA({b: 512}, {encryptionScheme: 'pkcs1'}) : new NodeRSA({b: 4096});
+global.key = (process.env.NODE_ENV || 'development') === 'development' ? new NodeRSA({b: 512}, {encryptionScheme: 'pkcs1'}) : new NodeRSA({b: 4096}, {encryptionScheme: 'pkcs1'});
 global.mongo = undefined;
 global.server = undefined;
+global.skin = function(skin){
+	return (((global.config['shop-items'].skins[skin] || {}).icon) || ('/resources/image/skins/' + skin));
+};
+
 global.src = requireSource.src;
 global.pluginsrc = requireSource.plugin;
 global.version = SERVER_VERSION;
