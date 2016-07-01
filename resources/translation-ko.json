@@ -109,6 +109,7 @@
 
 	"shop.title": "상점",
 	"shop.category.skins": "스킨",
+	"shop.category.pass": "참가 패스",
 	"shop.money": "%money%원",
 	"shop.current.money": "현재 돈: %money%원",
 	"shop.bought": "정상적으로 구매했습니다.",
@@ -184,6 +185,13 @@
 	"plugin.meiro.blockly.carveWall.tooltip": "wallcutter 아이템이 필요합니다",
 	"plugin.meiro.blockly.items.message": "가지고 있는 아이템들",
 	"plugin.meiro.blockly.items.tooltip": "",
+	"plugin.meiro.blockly.x.message": "x 좌표",
+	"plugin.meiro.blockly.x.tooltip": "현재 x 좌표를 반환합니다",
+	"plugin.meiro.blockly.y.message": "y 좌표",
+	"plugin.meiro.blockly.y.tooltip": "현재 y 좌표를 반환합니다",
+	"plugin.meiro.blockly.direction.message": "방향",
+	"plugin.meiro.blockly.direction.tooltip": "현재 바라보는 방향을 N, W, E, S 이 4중의 하나로 반환합니다",
+	"shop.item.pass.meiro": "Meiro 참가패스",
 
 	"plugin.overrun": "Overrun",
 	"plugin.overrun.ranked": "overrun 랭크전",

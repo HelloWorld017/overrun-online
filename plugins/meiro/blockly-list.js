@@ -2,21 +2,6 @@ var blockly = [{
 	name: 'Meiro',
 	content: [
 		{
-			conv: 'checkWall',
-			message0: global.translator(`plugin.meiro.blockly.checkWall.message`),
-			colour: 260,
-			tooltip: global.translator(`plugin.meiro.blockly.checkWall.tooltip`),
-			output: 'Number'
-		},
-		{
-			conv: 'load',
-			message0: global.translator(`plugin.meiro.blockly.load.message`),
-			colour: 260,
-			tooltip: global.translator(`plugin.meiro.blockly.load.tooltip`),
-			output: 'String'
-		},
-
-		{
 			conv: 'items',
 			message0: global.translator(`plugin.meiro.blockly.items.message`),
 			colour: 260,
@@ -55,5 +40,26 @@ blockly[0].content = blockly[0].content.concat(['log', 'save'].map((v) => {
 		nextStatement: null
 	};
 }));
+
+blockly[0].content = blockly[0].content.concat(['checkWall', 'x', 'y'].map((v) => {
+	return {
+		conv: v,
+		message0: global.translator(`plugin.meiro.blockly.${v}.message`),
+		colour: 260,
+		tooltip: global.translator(`plugin.meiro.blockly.${v}.tooltip`),
+		output: 'Number'
+	};
+}));
+
+blockly[0].content = blockly[0].content.concat(['direction', 'load'].map((v) => {
+	return {
+		conv: 'load',
+		message0: global.translator(`plugin.meiro.blockly.${v}.message`),
+		colour: 260,
+		tooltip: global.translator(`plugin.meiro.blockly.${v}.tooltip`),
+		output: 'String'
+	};
+}));
+
 
 module.exports = blockly;

@@ -300,15 +300,12 @@ function startRender(){
 					async.eachSeries(playerLog.log, function(movementLog, callback){
 						handleMovement(bots[playerLog.player], movementLog, callback);
 					}, function(){
-						console.log('2end');
 						cb2();
 					});
 				}, function(){
-					console.log('1end');
 					cb1();
 				});
 			}, function(){
-				console.log('0end');
 				cb();
 			});
 		});
