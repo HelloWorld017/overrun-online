@@ -15,7 +15,7 @@ class UnrankedMatchmaker{
 		if(player.currentGame !== undefined){
 			response.json({
 				'game-finish': false,
-				err: global.translator('err.matchmake.ingame')
+				err: global.translator('error.matchmake.ingame')
 			});
 			return;
 		}
@@ -23,7 +23,7 @@ class UnrankedMatchmaker{
 		if(player.entryTick < Date.now()){
 			response.json({
 				'game-finish': false,
-				err: global.translator('err.matchmake.tick')
+				err: global.translator('error.matchmake.tick')
 			});
 			return;
 		}
@@ -41,7 +41,7 @@ class UnrankedMatchmaker{
 					console.error(err.toString());
 					response.json({
 						'game-finish': false,
-						err: global.translator('err.internalserver')
+						err: global.translator('error.internalserver')
 					});
 					return;
 				}
@@ -49,7 +49,7 @@ class UnrankedMatchmaker{
 				if(players.length <= 0){
 					response.json({
 						'game-finish': false,
-						err: global.translator('err.matchmake.noplayer')
+						err: global.translator('error.matchmake.noplayer')
 					});
 					return;
 				}
@@ -59,7 +59,7 @@ class UnrankedMatchmaker{
 				if(!againstPlayer.bots[argument[1]]){
 					response.json({
 						'game-finish': false,
-						err: global.translator('err.matchmake.nobot')
+						err: global.translator('error.matchmake.nobot')
 					});
 					return;
 				}

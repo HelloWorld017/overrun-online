@@ -1,7 +1,7 @@
+var api = require('./api-list');
 var blockly = require('./blockly-list');
 var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('meiro');
 var entry = require(global.pluginsrc('common-entry', 'common-router'));
-var meiro = require('./meiro-game');
 var MeiroRankedGame = require('./meiro-ranked-game');
 var MeiroUnrankedGame = require('./meiro-unranked-game');
 var UnrankedMatchmaker = require(global.src('matchmake-unranked'));
@@ -16,9 +16,12 @@ module.exports = {
 		cb();
 	},
 	onServerInit: (app, cb) => {
-		app.use('/entry', entry('meiro', 'MEIRO'));
+		app.use('/entry', entry('meiro', 'MEIRO', 'orange'));
 		app.use('/render/meiro.js', (req, res) => {
 			res.sendFile(global.pluginsrc('meiro', 'meiro-render.js'));
+		});
+		app.use('/resources/image/pass/meiro.svg', (req, res) => {
+			res.sendFile(global.pluginsrc('meiro', 'meiro-pass.svg'));
 		});
 		cb();
 	},
@@ -27,10 +30,10 @@ module.exports = {
 	},
 	apiList: [{
 		name: 'MEIRO-RANKED',
-		content: meiro.api.content
+		content: api
 	}, {
 		name: 'MEIRO-UNRANKED',
-		content: meiro.api.content
+		content: api
 	}],
 	blockly: blockly,
 	entry: [{

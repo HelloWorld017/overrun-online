@@ -432,17 +432,5 @@ MeiroGame.getName = () => {
 };
 
 module.exports = {
-	game: MeiroGame,
-	api: {
-		name: 'MEIRO-',
-		content: {
-			title: global.translator('plugin.overrun.api.title'),
-			content: ['log', 'turnLeft', 'turnRight', 'move', 'carveWall', 'checkWall'].map((v) => {
-				return {
-					title: global.translator(`plugin.meiro.api.${v}.title`),
-					content: global.translator(`plugin.meiro.api.${v}.content`)
-				};
-			})
-		}
-	}
+	game: MeiroGame
 };

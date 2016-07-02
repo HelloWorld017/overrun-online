@@ -10,7 +10,7 @@ function view(template){
 	return PLUGIN_VIEW_PATH + template;
 }
 
-function requestRouter(pluginName, entryName, acceptsTypes){
+function requestRouter(pluginName, entryName, className, acceptsTypes){
 	acceptsTypes = acceptsTypes || [entryName + '-RANKED', entryName + '-UNRANKED'];
 	router = express.Router();
 
@@ -39,7 +39,8 @@ function requestRouter(pluginName, entryName, acceptsTypes){
 		res.render(view('entry'), {
 			pluginName: pluginName,
 			entryName: entryName + '-RANKED',
-			bot: req.params.bot
+			bot: req.params.bot,
+			className: className
 		});
 	});
 

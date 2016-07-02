@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<svg width="512" height="512" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<rect width="512" height="512" fill="#ff9800"/>
+	<polygon points="283,64 448,229 229,448 64,283 283,64" fill="#fff"/>
+	<polygon points="0,119 512,119 283,64 0,119" fill="#ff9800"/>
+
+	<!-- core -->
+	<path d="M199,238 H259 C274,238 274,238 274,253 V313 C274,328 274,328 259,328 H199 C184,328 184,328 184,313 V253 C184,238 184,238 199,238" fill="transparent" stroke="#ff9800" stroke-width="10" transform="rotate(45 229 283)"/>
+	<line x1="219" y1="238" x2="219" y2="208" stroke="#ff9800" stroke-width="10" transform="rotate(45 229 283)"/>
+	<line x1="239" y1="238" x2="239" y2="178" stroke="#ff9800" stroke-width="10" transform="rotate(45 229 283)"/>
+
+	<line x1="274" y1="273" x2="304" y2="273" stroke="#ff9800" stroke-width="10" transform="rotate(45 229 283)"/>
+	<line x1="274" y1="293" x2="334" y2="293" stroke="#ff9800" stroke-width="10" transform="rotate(45 229 283)"/>
+
+	<line x1="219" y1="328" x2="219" y2="388" stroke="#ff9800" stroke-width="10" transform="rotate(45 229 283)"/>
+	<line x1="239" y1="328" x2="239" y2="358" stroke="#ff9800" stroke-width="10" transform="rotate(45 229 283)"/>
+
+	<line x1="184" y1="273" x2="124" y2="273" stroke="#ff9800" stroke-width="10" transform="rotate(45 229 283)"/>
+	<line x1="184" y1="293" x2="154" y2="293" stroke="#ff9800" stroke-width="10" transform="rotate(45 229 283)"/>
+</svg>

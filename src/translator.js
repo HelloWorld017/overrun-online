@@ -25,7 +25,15 @@ const COLOR_MAPPING = {
 };
 
 var translate = (key, options) => {
-	var translation = global.translation[key] || key;
+	var translation = (global.translation[key] === undefined) ? key : global.translation[key];
+
+	if(typeof translation === 'object'){
+		if(translation.join !== undefined){
+			translation = translation.join('\n');
+		}else{
+			translation = JSON.stringify(translation);
+		}
+	}
 	options = options || {};
 
 	Object.keys(options).forEach((k) => {

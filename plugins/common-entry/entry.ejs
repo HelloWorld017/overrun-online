@@ -41,13 +41,13 @@
 		<section class="main-section entry-section valign-wrapper">
 			<div class="main-entry">
 				<div class="entry-wrapper">
-					<a class="btn entry waves-effect waves-light" href="javascript:entry('<%= entryName %>')">
+					<a class="btn entry waves-effect waves-light <%= className %>" href="javascript:entry('<%= entryName %>')">
 						<%= global.translator('plugin.common.entry.ranked') %>
 					</a>
 				</div>
 
 				<div class="entry-wrapper">
-					<a class="btn entry waves-effect waves-light" href="/entry/<%= pluginName %>/unranked/<%= bot %>">
+					<a class="btn entry waves-effect waves-light <%= className %>" href="/entry/<%= pluginName %>/unranked/<%= bot %>">
 						<%= global.translator('plugin.common.entry.unranked') %>
 					</a>
 				</div>

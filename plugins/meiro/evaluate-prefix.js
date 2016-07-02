@@ -29,6 +29,7 @@
 		metadata: botData
 	};
 	bot.metadata.direction = DIRECTIONS_BY_VALUE[bot.metadata.direction.value];
+	bot.metadata.lastmove = '';
 
 	var maze = mazeData.tiles;
 
@@ -59,7 +60,7 @@
 		bot.metadata.y = START_Y;
 	};
 
-	var maxMovement = 128;
+	var maxMovement = 64;
 	var currentMovement = 0;
 
 	var check = () => {
@@ -83,19 +84,19 @@
 		},
 
 		turnLeft: () => {
-			if(check()) return;
+			if(check()) return false;
 			bot.metadata.direction = DIRECTIONS_BY_VALUE[bot.metadata.direction.left];
 			log('turn.left');
 		},
 
 		turnRight: () => {
-			if(check()) return;
+			if(check()) return false;
 			bot.metadata.direction = DIRECTIONS_BY_VALUE[bot.metadata.direction.right];
 			log('turn.right');
 		},
 
 		move: () => {
-			if(check()) return;
+			if(check()) return false;
 			if(bot.metadata.moveerr){
 				log('turn.err', 'turn.cannot.move', true);
 				return false;
@@ -114,7 +115,8 @@
 
 				log('turn.trap', currentPosition);
 				currentTile.placedObjects['trap'] = undefined;
-				return false;
+				bot.metadata.lastmove = 'trap';
+				return true;
 			}
 
 			var teleporterIndex = undefined;
@@ -126,18 +128,21 @@
 				bot.metadata.y = teleportTarget.y;
 				bot.metadata.usedTeleporter.push(teleporterIndex);
 				log('turn.teleport', 'teleport' + teleporterIndex);
+				bot.metadata.lastmove = 'teleport';
 				return true;
 			}
 
 			if(currentTile.walls[bot.metadata.direction.value]){
 				restartFromStart();
 				log('turn.err', 'turn.move.over.wall', true);
+				bot.metadata.lastmove = 'wall';
 				return false;
 			}
 
 			bot.metadata.x += bot.metadata.direction.x;
 			bot.metadata.y += bot.metadata.direction.y;
 			log('turn.move');
+			bot.metadata.lastmove = 'normal';
 			return true;
 		},
 
@@ -206,6 +211,36 @@
 
 		items: () => {
 			return JSON.parse(JSON.stringify(bot.metadata.items));
+		},
+
+		objects: () => {
+			var results = [];
+			Object.keys(maze).forEach((k) => {
+				if(Object.keys(maze[k].placedObjects).map((v) => {return maze[k].placedObjects[v] !== undefined;}).length > 0){
+					var match = k.match(/x(\d)y(\d)/);
+					var placedObjects = maze[k].placedObjects;
+					results.push({
+						x: match[1],
+						y: match[2],
+						items: JSON.parse(JSON.stringify(Object.keys(placedObjects).map(function(v){
+							if(v === 'teleporter'){
+								return {
+									name: 'teleporter',
+									teleporterNumber: placedObjects[v]
+								};
+							}
+
+							return {
+								name: v
+							};
+						})))
+					});
+				}
+			});
+		},
+
+		moveResult: () => {
+			return bot.metadata.lastmove;
 		}
 	});
 

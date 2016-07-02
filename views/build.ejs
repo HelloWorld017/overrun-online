@@ -70,12 +70,26 @@
 				});
 			}
 
+			<%
+				var filter = (object, predicate) => {
+					var newObject = {};
+					Object.keys(object).forEach((k) => {
+						if(predicate(k)) newObject[k] = object[k];
+					});
+
+					return newObject;
+				};
+			%>
+
+			var blocks = [];
 			<% blockly.forEach((category) => { %>
 				<% category.content.forEach((v) => { %>
 					Blockly.Blocks['<%- category.name %>_<%- v.conv %>'] = {
 						init: function(){
 							this.jsonInit(
-								<%- JSON.stringify(v) %>
+								<%- JSON.stringify(filter(v, (k) => {
+									return (k !== 'conv') && (k !== 'convManual');
+								})) %>
 							);
 						}
 					};
@@ -102,6 +116,12 @@
 
 			.blocklyWidgetDiv, .blocklyTooltipDiv, .blocklyToolboxDiv {
 				z-index: 999;
+			}
+
+			.warn {
+				font-size: 1.5rem;
+				font-weight: bold;
+				color: crimson;
 			}
 		</style>
 
@@ -343,7 +363,7 @@
 					</a>
 					<div class="row">
 						<p class="warn">
-							<%= global.translator('build.editor.do.not.both') %>
+							<%- global.translator('build.editor.do.not.both') %>
 						</p>
 						<div class="col s12">
 							<ul class="tabs">

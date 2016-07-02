@@ -15,7 +15,7 @@ class MatchMaker{
 		if(player.currentGame !== undefined){
 			response.json({
 				'game-finish': false,
-				err: global.translator('err.matchmake.ingame')
+				err: global.translator('error.matchmake.ingame')
 			});
 			return;
 		}
@@ -23,7 +23,7 @@ class MatchMaker{
 		if(player.entryTick < Date.now()){
 			response.json({
 				'game-finish': false,
-				err: global.translator('err.matchmake.tick')
+				err: global.translator('error.matchmake.tick')
 			});
 			return;
 		}
@@ -54,10 +54,18 @@ class MatchMaker{
 				]
 			})
 			.toArray((err, res) => {
+				if(err){
+					response.json({
+						'game-finish': false,
+						err: global.translator('error.internalserver')
+					});
+					return;
+				}
+
 				if(res.length <= 0){
 					response.json({
 						'game-finish': false,
-						err: global.translator('err.matchmake.noplayer')
+						err: global.translator('error.matchmake.noplayer')
 					});
 					return;
 				}

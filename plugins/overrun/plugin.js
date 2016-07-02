@@ -16,9 +16,12 @@ module.exports = {
 		cb();
 	},
 	onServerInit: (app, cb) => {
-		app.use('/entry', entry('overrun', 'OVERRUN'));
+		app.use('/entry', entry('overrun', 'OVERRUN' ,'blue'));
 		app.use('/render/overrun.js', (req, res) => {
 			res.sendFile(global.pluginsrc('overrun', 'overrun-render.js'));
+		});
+		app.use('/resources/image/pass/overrun.svg', (req, res) => {
+			res.sendFile(global.pluginsrc('overrun', 'overrun-pass.svg'));
 		});
 		cb();
 	},
@@ -36,7 +39,7 @@ module.exports = {
 	entry: [{
 		name: global.translator('plugin.overrun'),
 		href: '/entry/overrun',
-		className: 'orange',
+		className: 'blue',
 		checkPlayer: checkPass
 	}],
 };
