@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<svg width="512" height="512" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<path d="M 128,256 A 128,128 0 0,1 384,256"/>
+	<path d="M 128,256 L 64,256 L 32,226 L 256,226 Z"/>
+	<path d="M 145,192 L 64,256 L 32,226 L 256,226 Z"/>
+	<!-- WIP -->
+</svg>

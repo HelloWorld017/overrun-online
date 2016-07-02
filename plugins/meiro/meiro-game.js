@@ -131,7 +131,7 @@ class MeiroGame extends Game{
 		Array.rangeOf(TELEPORTER_COUNT).forEach((i) => {
 			this.getRandomUnplacedPosition((start) => {
 				if(start === undefined) return;
-				start.placeObject('teleport', i);
+				start.placeObject('teleporter', i);
 
 				this.getRandomUnplacedPosition((end) => {
 					if(end === undefined){
@@ -139,7 +139,7 @@ class MeiroGame extends Game{
 						return;
 					}
 
-					end.placeObject('teleport', i);
+					end.placeObject('teleporter', i);
 					this.maze.teleporters[i] = [start, end];
 				});
 			});
@@ -223,7 +223,8 @@ class MeiroGame extends Game{
 					return {
 						name: v.getName(),
 						skin: global.skin(v.getSkin()),
-						player: v.getPlayer().getName()
+						player: v.getPlayer().getName(),
+						md5: v.getPlayer().getHashedEmail()
 					}
 				}),
 			}

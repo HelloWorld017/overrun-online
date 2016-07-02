@@ -233,7 +233,7 @@
 					};
 
 					if(placedObject === 'teleporter'){
-						result.teleporterNumber = maze[k].placedObjects[v];
+						results.teleporterNumber = maze[k].placedObjects[placedObject];
 					}
 
 					results.push(result);

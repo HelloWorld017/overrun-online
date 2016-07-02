@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg width="512" height="512" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<clipPath id="clip">
+			<polygon points="0,256 128,34 384,34 512,256, 384,478 128,478" fill="#000"/>
+		</clipPath>
+	</defs>
+	<polygon points="0,256 128,34 384,34 512,256, 384,478 128,478" fill="transparent" stroke-width="80" stroke="#0000ff" clip-path="url(#clip)"/>
+</svg>

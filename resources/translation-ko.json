@@ -31,7 +31,7 @@
 
 	"email.verify.title": "이메일을 인증해주세요.",
 	"email.verify.masthead": "overrun-online에 가입하시려면 이메일 인증이 필요합니다.",
-	"email.verify.desc": "하단의 링크를 클릭해서 이매일 인증을 완료해주세요. 만일, 가입하신 적이 없으시다면 이 이메일을 무시해주세요.",
+	"email.verify.desc": "하단의 링크를 클릭해서 이메일 인증을 완료해주세요. 만일, 가입하신 적이 없으시다면 이 이메일을 무시해주세요.",
 	"email.verify.link": "이메일 인증하기",
 
 	"entry.title": "엔트리",

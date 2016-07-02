@@ -4,6 +4,7 @@ var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('meiro');
 var entry = require(global.pluginsrc('common-entry', 'common-router'));
 var MeiroRankedGame = require('./meiro-ranked-game');
 var MeiroUnrankedGame = require('./meiro-unranked-game');
+var path = require('path');
 var UnrankedMatchmaker = require(global.src('matchmake-unranked'));
 
 module.exports = {
@@ -21,7 +22,13 @@ module.exports = {
 			res.sendFile(global.pluginsrc('meiro', 'meiro-render.js'));
 		});
 		app.use('/resources/image/pass/meiro.svg', (req, res) => {
-			res.sendFile(global.pluginsrc('meiro', 'meiro-pass.svg'));
+			res.sendFile(path.join(global.pluginsrc('meiro', 'image'), 'meiro-pass.svg'));
+		});
+		app.use('/meiro/teleporter.svg', (req, res) => {
+			res.sendFile(path.join(global.pluginsrc('meiro', 'image'), 'meiro-teleporter.svg'));
+		});
+		app.use('/meiro/trap.svg', (req, res) => {
+			res.sendFile(path.join(global.pluginsrc('meiro', 'image'), 'meiro-trap.svg'));
 		});
 		cb();
 	},

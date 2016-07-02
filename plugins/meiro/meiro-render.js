@@ -85,7 +85,12 @@ var colors = {
 	rotate: "rgba(0, 230, 255, %a)",
 	trap: "#805000",
 	maze: "#202020",
-	dialog: "#00A0FF"
+	dialog: "#00A0FF",
+	teleporter: {
+		0: [255, 50, 50],
+		1: [50, 255, 50],
+		2: [50, 50, 255]
+	}
 };
 
 var FULL_SIZE = 1;
@@ -103,6 +108,7 @@ var renderTarget = {};
 var particles = [];
 var maze;
 var teleporters;
+var images = {};
 
 handlers['MEIRO'] = startRender;
 
@@ -153,6 +159,22 @@ function redrawGrid(){
 			ctx.lineTo(boardMinX + xSize * (x + 1), boardMinY + ySize * (y + 1));
 			ctx.stroke();
 			ctx.closePath();
+		}
+
+		var objects = Object.keys(maze[k].placedObjects).filter(function(v){
+			return maze[k].placedObjects[v] !== undefined;
+		});
+
+		if(objects.length > 0){
+			switch(objects[0]){
+				case 'teleporter':
+					ctx.drawImage(images['teleporter' + maze[k].placedObjects['teleporter']], boardMinX + xSize * x, boardMinY + ySize * y, xSize, ySize);
+					break;
+
+				case 'trap':
+					ctx.drawImage(images['trap'], boardMinX + xSize * x, boardMinY + ySize * y, xSize, ySize);
+					break;
+			}
 		}
 	});
 }
@@ -270,43 +292,93 @@ function startRender(){
 		gridSize = roundLog.init.data.size;
 
 		recalculateSize();
-		redrawGrid();
-
-		async.each(roundLog.init.data.players, function(v, cb){
+		async.each(['trap', 'teleporter'], function(v, cb){
 			var img = new Image();
-			bots[v.player] = {
-				name: v.name,
-				player: v.player,
-				skin: img,
-				direction: DIRECTIONS_BY_VALUE.N,
-				x: roundLog.init.data.start.x,
-				y: roundLog.init.data.start.y
-			};
-			img.onload = cb;
-			img.src = v.skin;
-		}, function(){
-			recalculateObject();
-			Object.keys(bots).forEach(function(k){
-				copyTargetToObject(k);
-			});
-			animate();
-
-			async.forEachOfSeries(roundLog, function(turnLog, turn, cb1){
-				if(turn === 'final' || turn === 'init'){
-					cb1();
-					return;
-				}
-				async.eachSeries(turnLog[0].data, function(playerLog, cb2){
-					async.eachSeries(playerLog.log, function(movementLog, callback){
-						handleMovement(bots[playerLog.player], movementLog, callback);
+			var _cb = cb;
+			if(v === 'teleporter'){
+				_cb = function(){
+					var nCanvas = document.createElement('canvas');
+					var nCtx = nCanvas.getContext('2d');
+					nCanvas.width = 64;
+					nCanvas.height = 64;
+					async.each(Array.rangeOf(Object.keys(teleporters).length), function(v, cb){
+						nCtx.drawImage(img, 0, 0, 64, 64);
+						var imgData = nCtx.getImageData(0, 0, img.width, img.height);
+						for(var y = 0; y < imgData.height; y++){
+							for(var x = 0; x < imgData.width; x++){
+								var i = (x * 4) + (y * 4 * img.width);
+								if(imgData.data[i + 3] !== 0){
+									imgData.data[i] = colors.teleporter[v][0];
+									imgData.data[i + 1] = colors.teleporter[v][1];
+									imgData.data[i + 2] = colors.teleporter[v][2];
+								}
+							}
+						}
+						nCtx.putImageData(imgData, 0, 0, 0, 0, imgData.width, imgData.height);
+						images['teleporter' + v] = new Image();
+						images['teleporter' + v].onload = cb;
+						images['teleporter' + v].src = nCanvas.toDataURL();
 					}, function(){
-						cb2();
+						cb();
+					});
+				};
+			}
+			img.onload = _cb;
+			img.src = '/meiro/' + v + '.svg';
+			images[v] = img;
+		}, function(){
+			async.each(roundLog.init.data.players, function(v, cb){
+				var img = new Image();
+				bots[v.player] = {
+					player: v.player,
+					skin: img,
+					direction: DIRECTIONS_BY_VALUE.N,
+					x: roundLog.init.data.start.x,
+					y: roundLog.init.data.start.y
+				};
+
+				img.setAttribute('crossOrigin', 'anonymous');
+				img.onload = function(){
+					var nCanvas = document.createElement('canvas');
+					var nCtx = nCanvas.getContext('2d');
+					nCanvas.width = 64;
+					nCanvas.height = 64;
+
+					nCtx.drawImage(img, 0, 0, 64, 64);
+					var img2 = new Image();
+					img2.setAttribute('crossOrigin', 'anonymous');
+					img2.onload = function(){
+						nCtx.drawImage(img2, 32, 32, 32, 32);
+						img.onload = cb;
+						img.src = nCanvas.toDataURL();
+					};
+					img2.src = "https://www.gravatar.com/avatar/" + v.md5 + "?s=200";
+				};
+				img.src = v.skin;
+			}, function(){
+				recalculateObject();
+				Object.keys(bots).forEach(function(k){
+					copyTargetToObject(k);
+				});
+				animate();
+
+				async.forEachOfSeries(roundLog, function(turnLog, turn, cb1){
+					if(turn === 'final' || turn === 'init'){
+						cb1();
+						return;
+					}
+					async.eachSeries(turnLog[0].data, function(playerLog, cb2){
+						async.eachSeries(playerLog.log, function(movementLog, callback){
+							handleMovement(bots[playerLog.player], movementLog, callback);
+						}, function(){
+							cb2();
+						});
+					}, function(){
+						cb1();
 					});
 				}, function(){
-					cb1();
+					cb();
 				});
-			}, function(){
-				cb();
 			});
 		});
 	}, function(){
@@ -385,7 +457,11 @@ function render(bot){
 		if(v.animate){
 			procAnimate(v);
 		}
-		ctx.drawImage(v.skin, x - v.size * xSize / 2, y - v.size * ySize / 2, v.size * xSize, v.size * ySize);
+		ctx.save();
+		ctx.translate(x, y);
+		ctx.rotate(Math.toRad(v.angle));
+		ctx.drawImage(v.skin, - v.size * xSize / 2,  - v.size * ySize / 2, v.size * xSize, v.size * ySize);
+		ctx.restore();
 		cb();
 	});
 }
