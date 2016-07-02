@@ -16,7 +16,7 @@ const MAZE_SIZE = 10;
 const END_X = MAZE_SIZE - 1;
 const END_Y = MAZE_SIZE - 1;
 
-const TURN_COUNT = 50;
+const TURN_COUNT = 60;
 const ROUND_COUNT = 1;
 
 const TRAP_COUNT = 1;
@@ -250,6 +250,7 @@ class MeiroGame extends Game{
 				};
 			};
 
+			var callbackCalled = false;
 			localeval(evaluatePrefix, {
 				code: this.bots[0].getCode(),
 				maze: JSON.stringify(this.maze),
@@ -258,12 +259,14 @@ class MeiroGame extends Game{
 				startY: START_Y,
 				saveLength: MAX_SAVE_LENGTH
 			}, EVAL_TIMEOUT, (err, logs) => {
+				if(callbackCalled) return;
+				callbackCalled = true;
 				try{
 					logs = JSON.parse(logs);
 				}catch(e){}
 
 				if(err || !logs){
-					err.stack = undefined;
+					if(typeof err === 'object') err.stack = undefined;
 					logs = setToDefault(this.bots[0].metadata);
 				}
 
@@ -271,6 +274,7 @@ class MeiroGame extends Game{
 				this.bots[0].metadata = logs.bot;
 				this.bots[0].metadata.direction = DIRECTIONS_BY_VALUE[this.bots[0].metadata.direction.value];
 
+				var sCallbackCalled = false;
 				localeval(evaluatePrefix, {
 					code: this.bots[1].getCode(),
 					maze: JSON.stringify(this.maze),
@@ -279,12 +283,15 @@ class MeiroGame extends Game{
 					startY: START_Y,
 					saveLength: MAX_SAVE_LENGTH
 				}, EVAL_TIMEOUT, (err1, logs1) => {
+					if(sCallbackCalled) return;
+					sCallbackCalled = true;
+
 					try{
 						logs1 = JSON.parse(logs1);
 					}catch(e){}
 
 					if(err1 || !logs1){
-						err1.stack = undefined;
+						if(typeof err1 === 'object') err1.stack = undefined;
 						logs1 = setToDefault(this.bots[1].metadata);
 					}
 

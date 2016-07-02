@@ -16,7 +16,7 @@
 	"build.blockly.export": "임시저장",
 	"build.blockly.import": "불러오기",
 	"build.edit": "코드 편집",
-	"build.editor.do.not.both": "절대로 코드 편집기와 블럭 편집기를 같이 사용하지 마세요!<<br>>짜던 코드가 덮어씌워질 수 있습니다!",
+	"build.editor.do.not.both": "절대로 코드 편집기와 블럭 편집기를 같이 사용하지 마세요!<<br>>짜던 코드가 덮어쓰일 수 있습니다!",
 	"build.editor.code": "코드 편집기",
 	"build.editor.blockly": "블럭 편집기",
 	"build.api": "API 문서 보기",
@@ -233,6 +233,8 @@
 	"plugin.meiro.blockly.direction.tooltip": "현재 바라보는 방향을 N, W, E, S 이 4중의 하나로 반환합니다",
 	"plugin.meiro.blockly.moveResult.message": "이동한 결과",
 	"plugin.meiro.blockly.moveResult.tooltip": "맨 마지막으로 이동한 결과를 반환합니다. 함정에 걸렸을 경우 trap, 텔레포트 했을 경우 teleport, 벽에 막힌경우 wall, 정상적으로 이동한 경우 normal을 반환합니다.",
+	"plugin.meiro.blockly.objects.message": "미로 위 물체들 가져오기",
+	"plugin.meiro.blockly.objects.tooltip": "미로 위에 배치되어 있는 물체들을 x, y, name(물체명: trap, teleporter, wallcutter 등), teleporterNumber(텔레포터 일 경우에만)이 있는 오브젝트의 리스트로 반환합니다.",
 	"shop.item.pass.meiro": "Meiro 참가패스",
 
 	"plugin.overrun": "Overrun",

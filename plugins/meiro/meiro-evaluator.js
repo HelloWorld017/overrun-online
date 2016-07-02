@@ -1,36 +1,33 @@
 //source from localeval by espadrine
 //license: cc-by-3.0
-var child;
-var startChild = function startChild() {
-	var cp = require('child_process');
-	child = cp.fork(__dirname + '/child.js');
-};
+var cp = require('child_process');
+var child = undefined;
 
-var evaluator = function(code, sandbox, timeout, cb) {
-	if (child == null) {
-	  startChild();
-	}
-	var th = setTimeout(function() {
-		child.kill('SIGKILL');
-		if (cb) {
-			cb(new Error('The script took more than ' + timeout + 'ms. Abort.'));
-		}
-		startChild();
-	}, timeout);
-	child.once('message', function(m) {
-		clearTimeout(th);
-		if (cb) {
-			if (m.error) {
-				console.log(JSON.stringify(m.error));
-				cb(m.error);
-			} else cb(null, m.result);
+var evaluator = (code, sandbox, timeout, cb) => {
+	if(child === undefined) child = cp.fork(__dirname + '/child.js');
+	var processed = false;
+
+	child.once('message', (message) => {
+		processed = true;
+		if(message.error){
+			cb(message.error);
+		}else{
+			cb(null, message.result);
 		}
 	});
-	child.send({ code: code, sandbox: sandbox });
-};
 
-evaluator.clear = function() {
-	child.kill('SIGKILL');
+	child.send({code: code, sandbox: sandbox});
+
+	setTimeout(() => {
+		try{
+			if(!processed){
+				child.kill('SIGKILL');
+				child = cp.fork(__dirname +'/child.js');
+				cb("Timeout!");
+				return;
+			}
+		}catch(e){}
+	}, timeout);
 };
 
 module.exports = evaluator;

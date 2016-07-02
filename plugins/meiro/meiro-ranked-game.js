@@ -37,7 +37,7 @@ class MeiroRankedGame extends meiro.game{
 				defeat = p1;
 			}
 
-			win.point = Math.clmap(0, 1e+11, win.point + PointCalculator.win(win.getPoint(), defeat.getPoint()));
+			win.point = Math.clamp(0, 1e+11, win.point + PointCalculator.win(win.getPoint(), defeat.getPoint()));
 			win.money = Math.clamp(0, 1e+11, defeat.point + PointCalculator.winMoney(win.getPoint()));
 			win.getStat().win++;
 

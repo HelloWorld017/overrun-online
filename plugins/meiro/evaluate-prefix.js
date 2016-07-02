@@ -79,6 +79,11 @@
 				return false;
 			}
 
+			if(content.length >= 256){
+				log('turn.err', 'turn.log.too.long', true);
+				return false;
+			}
+
 			log('turn.text', content, true);
 			return true;
 		},
@@ -216,27 +221,25 @@
 		objects: () => {
 			var results = [];
 			Object.keys(maze).forEach((k) => {
-				if(Object.keys(maze[k].placedObjects).map((v) => {return maze[k].placedObjects[v] !== undefined;}).length > 0){
+				var placedObjects = Object.keys(maze[k].placedObjects).filter((v) => {return maze[k].placedObjects[v] !== undefined;});
+				if(placedObjects.length > 0){
 					var match = k.match(/x(\d)y(\d)/);
-					var placedObjects = maze[k].placedObjects;
-					results.push({
+					var placedObject = placedObjects[0];
+
+					var result = {
 						x: match[1],
 						y: match[2],
-						items: JSON.parse(JSON.stringify(Object.keys(placedObjects).map(function(v){
-							if(v === 'teleporter'){
-								return {
-									name: 'teleporter',
-									teleporterNumber: placedObjects[v]
-								};
-							}
+						name: placedObject
+					};
 
-							return {
-								name: v
-							};
-						})))
-					});
+					if(placedObject === 'teleporter'){
+						result.teleporterNumber = maze[k].placedObjects[v];
+					}
+
+					results.push(result);
 				}
 			});
+			return results;
 		},
 
 		moveResult: () => {
