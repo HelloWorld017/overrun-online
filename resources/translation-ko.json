@@ -15,10 +15,14 @@
 	"build.game": "목표로 하는 게임",
 	"build.blockly.export": "임시저장",
 	"build.blockly.import": "불러오기",
+	"build.import.notiong": "불러올 저장된 데이터가 없습니다",
 	"build.edit": "코드 편집",
 	"build.editor.do.not.both": "절대로 코드 편집기와 블럭 편집기를 같이 사용하지 마세요!<<br>>짜던 코드가 덮어쓰일 수 있습니다!",
 	"build.editor.code": "코드 편집기",
 	"build.editor.blockly": "블럭 편집기",
+	"build.editor.test": "봇 테스트",
+	"build.editor.test.no": "지정한 게임에 대한 테스트가 존재하지 않습니다.",
+	"build.editor.test.start": "테스트",
 	"build.api": "API 문서 보기",
 	"build.create": "봇 생성!",
 
@@ -127,6 +131,8 @@
 	"shop.item.skins.default": "기본 스킨",
 	"shop.item.skins.triangles": "삼각형",
 
+	"storage.unavailable": "저장소를 사용할 수 없습니다.",
+
 	"title": "overrun",
 	"tutorial.title": "튜토리얼",
 
@@ -163,6 +169,8 @@
 	"plugin.common.entry.title": "엔트리",
 	"plugin.common.entry.ranked": "랭크전",
 	"plugin.common.entry.unranked": "친선전",
+	"plugin.common.entry.unranked.friend": "대결상대 선택",
+	"plugin.common.entry.unranked.bots": "대결할 봇 선택",
 
 	"plugin.json.parse.message": "%1를 JSON으로 파싱",
 	"plugin.json.parse.tooltip": "바뀐 문자열에서 오브젝트나 리스트를 가져옵니다.",

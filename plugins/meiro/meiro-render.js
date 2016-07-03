@@ -102,6 +102,8 @@ var xSize;
 var ySize;
 var gridSize;
 
+var animateRequested = false;
+var gcRequested = false;
 var bots = {};
 var renderObject = {};
 var renderTarget = {};
@@ -172,7 +174,8 @@ function redrawGrid(){
 					break;
 
 				case 'trap':
-					ctx.drawImage(images['trap'], boardMinX + xSize * x, boardMinY + ySize * y, xSize, ySize);
+				case 'wallcutter':
+					ctx.drawImage(images[objects[0]], boardMinX + xSize * x, boardMinY + ySize * y, xSize, ySize);
 					break;
 			}
 		}
@@ -265,11 +268,14 @@ function handleMovement(bot, movementLog, callback){
 }
 
 function startRender(){
-	garbageCollect();
-	$(document).on('resize', (function(){
-		recalculateSize();
-		redrawGrid();
-	}));
+	if(!gcRequested){
+		garbageCollect();
+		$(document).on('resize', (function(){
+			recalculateSize();
+			redrawGrid();
+		}));
+		gcRequested = true;
+	}
 
 	ctx.ellipse = ctx.ellipse || function(cx, cy, rx, ry, rot, aStart, aEnd){
 		this.save();
@@ -292,7 +298,7 @@ function startRender(){
 		gridSize = roundLog.init.data.size;
 
 		recalculateSize();
-		async.each(['trap', 'teleporter'], function(v, cb){
+		async.each(['trap', 'teleporter', 'wallcutter'], function(v, cb){
 			var img = new Image();
 			var _cb = cb;
 			if(v === 'teleporter'){
@@ -360,7 +366,10 @@ function startRender(){
 				Object.keys(bots).forEach(function(k){
 					copyTargetToObject(k);
 				});
-				animate();
+				if(!animateRequested){
+					animate();
+					animateRequested = truel
+				}
 
 				async.forEachOfSeries(roundLog, function(turnLog, turn, cb1){
 					if(turn === 'final' || turn === 'init'){
@@ -549,7 +558,6 @@ function procAnimate(v){
 }
 
 function procEnd(){
-	//100 step
 	var sizeY = boardSize;
 	var startY = (canvas.height - boardSize) / 2;
 	async.eachSeries(Array.rangeOf(100), function(v, cb){

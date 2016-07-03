@@ -4,8 +4,10 @@ var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('meiro');
 var entry = require(global.pluginsrc('common-entry', 'common-router'));
 var MeiroRankedGame = require('./meiro-ranked-game');
 var MeiroUnrankedGame = require('./meiro-unranked-game');
+var MeiroTestGame = require('./meiro-test-game');
 var path = require('path');
 var UnrankedMatchmaker = require(global.src('matchmake-unranked'));
+var TestMatchmaker = require(global.src('matchmake-test'));
 
 module.exports = {
 	name: 'Meiro',
@@ -14,6 +16,7 @@ module.exports = {
 	onLoad: (cb) => {
 		global.server.addToPool(MeiroRankedGame);
 		global.server.addToPool(MeiroUnrankedGame, UnrankedMatchmaker);
+		global.server.addToPool(MeiroTestGame, TestMatchmaker(global.server, MeiroTestGame, global.config['plugin-meiro-test-arg']), true);
 		cb();
 	},
 	onServerInit: (app, cb) => {
@@ -21,19 +24,25 @@ module.exports = {
 		app.use('/render/meiro.js', (req, res) => {
 			res.sendFile(global.pluginsrc('meiro', 'meiro-render.js'));
 		});
+
+		app.use('/render/meiro-test.js', (req, res) => {
+			res.sendFile(global.pluginsrc('meiro', 'meiro-test.js'));
+		});
+
 		app.use('/resources/image/pass/meiro.svg', (req, res) => {
 			res.sendFile(path.join(global.pluginsrc('meiro', 'image'), 'meiro-pass.svg'));
 		});
-		app.use('/meiro/teleporter.svg', (req, res) => {
-			res.sendFile(path.join(global.pluginsrc('meiro', 'image'), 'meiro-teleporter.svg'));
-		});
-		app.use('/meiro/trap.svg', (req, res) => {
-			res.sendFile(path.join(global.pluginsrc('meiro', 'image'), 'meiro-trap.svg'));
+
+		['teleporter', 'trap', 'wallcutter'].forEach((v) => {
+			app.use('/meiro/' + v + '.svg', (req, res) => {
+				res.sendFile(path.join(global.pluginsrc('meiro', 'image'), 'meiro-' + v + '.svg'));
+			});
 		});
 		cb();
 	},
 	renderHook: {
-		'battle': '<script src="/render/meiro.js"></script>\n<script src="/resources/js/tween.js"></script>'
+		'battle': '<script src="/render/meiro.js"></script>\n<script src="/resources/js/tween.js"></script>',
+		'build': '<script src="/render/meiro.js"></script>\n<script src="/render/meiro-test.js"></script>'
 	},
 	apiList: [{
 		name: 'MEIRO-RANKED',

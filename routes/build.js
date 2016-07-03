@@ -60,6 +60,12 @@ router.all('/edit/:id', (req, res, next) => {
 
 		res.locals.user.bots[req.params.id] = new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code, req.body.type);
 		res.locals.user.saveBots();
+		if(req.xhr){
+			res.json({
+				id: req.params.id
+			});
+			return;
+		}
 		res.redirect('/me');
 		return;
 	}
@@ -122,6 +128,12 @@ router.all('/', (req, res, next) => {
 
 		res.locals.user.bots.push(new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code, req.body.type));
 		res.locals.user.saveBots();
+		if(req.xhr){
+			res.json({
+				id: res.locals.user.bots.length - 1
+			});
+			return;
+		}
 		res.redirect('/me');
 		return;
 	}

@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
-		<script>
-			var handlers = {};
-			var canvas, log, logType, trigger, gameLog;
-
-
-			function printLog(str){
-				log.prepend($(document.createElement('textarea')).val(str).attr('disabled', ''));
-			}
-		</script>
+		<% include ./battle-script-pre %>
 
 		<%- include('./header', {title: global.translator('battle.title')}); %>
 		<style>
@@ -99,31 +91,15 @@
 		</div>
 
 		<% include ./footer %>
-
+		<% include ./battle-script %>
+		
 		<script>
-			canvas = $('#main-canvas').get(0);
-			log = $('#log-wrapper');
-			trigger = $('.log-trigger').get(0);
-
-			var ctx = canvas.getContext('2d');
-			_canvas = $(canvas);
-
-			var boardSize = Math.round((_canvas.height() < _canvas.width()) ? _canvas.height() / 2 : _canvas.width() / 2);
-			var boardMinX = Math.round((_canvas.width() - boardSize) / 2);
-			var boardMaxX = boardMinX + boardSize;
-			var boardMinY = Math.round((_canvas.height() - boardSize) / 2);
-			var boardMaxY = boardMinY + boardSize;
-
-			canvas.width = _canvas.width();
-			canvas.height = _canvas.height();
 
 			//Log handler
 			gameLog = JSON.parse($('#log-content').text());
 			logType = '<%- battle.type %>';
 			handlers[logType]();
-		</script>
 
-		<script>
 			var logOpened = false;
 			function openLog(){
 				if(logOpened){

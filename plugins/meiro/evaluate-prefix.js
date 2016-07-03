@@ -106,28 +106,42 @@
 				log('turn.err', 'turn.cannot.move', true);
 				return false;
 			}
-
+			
 			var currentPosition = `x${bot.metadata.x}y${bot.metadata.y}`;
+			var nextPosition = `x${bot.metadata.x + bot.metadata.direction.x}y${bot.metadata.y + bot.metadata.direction.y}`
 			var currentTile = maze[currentPosition];
-			if(currentTile.placedObjects['wallcutter']){
-				bot.metadata.items.push('wallcutter');
-				currentTile.placedObjects['wallcutter'] = undefined;
-				log('turn.wallcutter', currentPosition);
+			var nextTile = maze[nextPosition];
+
+			bot.metadata.x += bot.metadata.direction.x;
+			bot.metadata.y += bot.metadata.direction.y;
+			log('turn.move');
+
+			if(currentTile.walls[bot.metadata.direction.value]){
+				restartFromStart();
+				log('turn.err', 'turn.move.over.wall', true);
+				bot.metadata.lastmove = 'wall';
+				return false;
 			}
 
-			if(currentTile.placedObjects['trap']){
+			if(nextTile.placedObjects['wallcutter']){
+				bot.metadata.items.push('wallcutter');
+				nextTile.placedObjects['wallcutter'] = undefined;
+				log('turn.wallcutter', nextPosition);
+			}
+
+			if(nextTile.placedObjects['trap']){
 				restartFromStart();
 
-				log('turn.trap', currentPosition);
-				currentTile.placedObjects['trap'] = undefined;
+				log('turn.trap', nextPosition);
+				nextTile.placedObjects['trap'] = undefined;
 				bot.metadata.lastmove = 'trap';
 				return true;
 			}
 
 			var teleporterIndex = undefined;
-			if((teleporterIndex = currentTile.placedObjects['teleporter']) !== undefined && bot.metadata.usedTeleporter.indexOf(teleporterIndex) === -1){
-				var teleportTarget = mazeData.teleporters[teleporterIndex].filter(function(v){
-					return (v.x !== bot.metadata.x) && (v.y !== bot.metadata.y);
+			if((teleporterIndex = nextTile.placedObjects['teleporter']) !== undefined && bot.metadata.usedTeleporter.indexOf(teleporterIndex) === -1){
+				var teleportTarget = mazeData.teleporters[teleporterIndex].filter((v) => {
+					return `x${v.x}y${v.y}` !== nextPosition;
 				})[0];
 				bot.metadata.x = teleportTarget.x;
 				bot.metadata.y = teleportTarget.y;
@@ -137,16 +151,6 @@
 				return true;
 			}
 
-			if(currentTile.walls[bot.metadata.direction.value]){
-				restartFromStart();
-				log('turn.err', 'turn.move.over.wall', true);
-				bot.metadata.lastmove = 'wall';
-				return false;
-			}
-
-			bot.metadata.x += bot.metadata.direction.x;
-			bot.metadata.y += bot.metadata.direction.y;
-			log('turn.move');
 			bot.metadata.lastmove = 'normal';
 			return true;
 		},
