@@ -13,7 +13,7 @@ class TestMatchmaker{
 	}
 
 	entry(player, bot, response, argument){
-		if(player.entryTick < Date.now()){
+		if(player.entryTick > Date.now()){
 			response.json({
 				'game-finish': false,
 				err: global.translator('error.matchmake.tick')
@@ -21,7 +21,7 @@ class TestMatchmaker{
 			return;
 		}
 
-		argument = this.argument;
+		argument = this.argument.split('-');
 
 		player.updateTimer();
 

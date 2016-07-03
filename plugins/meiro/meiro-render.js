@@ -368,7 +368,7 @@ function startRender(){
 				});
 				if(!animateRequested){
 					animate();
-					animateRequested = truel
+					animateRequested = true;
 				}
 
 				async.forEachOfSeries(roundLog, function(turnLog, turn, cb1){
