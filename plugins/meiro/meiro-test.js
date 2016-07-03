@@ -13,7 +13,17 @@ test['MEIRO-RANKED'] = function(){
 				return;
 			}
 
+			if(ingame){
+				stopRequested = function(){
+					wholeLog = data;
+					gameLog = data.log;
+					logType = data.type;
+					handlers[logType]();
+				};
+				return;
+			}
 			//Log handler
+			wholeLog = data;
 			gameLog = data.log;
 			logType = data.type;
 			handlers[logType]();

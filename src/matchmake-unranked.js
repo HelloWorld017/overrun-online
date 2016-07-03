@@ -20,7 +20,7 @@ class UnrankedMatchmaker{
 			return;
 		}
 
-		if(player.entryTick > Date.now()){
+		if(player.entryTimer > Date.now()){
 			response.json({
 				'game-finish': false,
 				err: global.translator('error.matchmake.tick')

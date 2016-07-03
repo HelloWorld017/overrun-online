@@ -3,6 +3,9 @@
 	<head prefix="og: http://ogp.me/ns#">
 		<script>
 			var test = [];
+			function printLog(str){
+				log.prepend($(document.createElement('textarea')).val(str).attr('disabled', ''));
+			}
 		</script>
 
 		<% include ./battle-script-pre %>
@@ -171,13 +174,15 @@
 						</div>
 
 						<div id="blockly" class="col s12" style="width: 800px; height: 650px;">
-							<button class="btn waves-effect waves-light" onclick="exportToXml()"><%= global.translator('build.blockly.export') %></button>
-							<button class="btn waves-effect waves-light" onclick="importFromXml()"><%= global.translator('build.blockly.import') %></button>
+							<button class="btn waves-effect waves-light" onclick="exportToXml(); return false;"><%= global.translator('build.blockly.export') %></button>
+							<button class="btn waves-effect waves-light" onclick="importFromXml(); return false;"><%= global.translator('build.blockly.import') %></button>
+							<span><%= global.translator('build.blockly.click') %></span>
 							<div id="blockly-div" style="width: 800px; height: 600px; position: absolute; z-index: 999"></div>
 						</div>
 
 						<div id="testView" class="col s12">
 							<button class="btn waves-effect waves-light" onclick="testBot(); return false;"><%= global.translator('build.editor.test.start') %></button>
+							<span class="warn"><%= global.translator('build.editor.test.save') %></span>
 							<canvas style="display: block; width: 100%; height: 600px;" id="main-canvas"></canvas>
 							<div style="display: block; background: <%= global.theme['background-0'] %>; width: 100%; height: 300px" id="log-wrapper"></div>
 						</div>

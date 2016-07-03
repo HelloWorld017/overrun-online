@@ -102,6 +102,9 @@ var xSize;
 var ySize;
 var gridSize;
 
+var stopRequested = false;
+var ingame = false;
+var currTurn = 0;
 var animateRequested = false;
 var gcRequested = false;
 var bots = {};
@@ -201,7 +204,7 @@ function updateMovement(bot, cb){
 	setTimeout(cb, MOVEMENT_DURATION);
 }
 
-function handleMovement(bot, movementLog, callback){
+function handleMovement(bot, movementLog, callback, playerLog){
 	var updateNeeded = true;
 	var clearAnimation = false;
 	switch(movementLog.content){
@@ -226,7 +229,7 @@ function handleMovement(bot, movementLog, callback){
 
 		case 'turn.teleport':
 			var teleportTarget = teleporters[parseInt(movementLog.data.replace('teleport', ''))].filter(function(v){
-				return (v.x !== bot.x) && (v.y !== bot.y);
+				return (v.x !== bot.x) || (v.y !== bot.y);
 			})[0];
 			bot.x = teleportTarget.x;
 			bot.y = teleportTarget.y;
@@ -240,9 +243,10 @@ function handleMovement(bot, movementLog, callback){
 			break;
 
 		case 'turn.carve':
+			//TODO 구현하기
 		case 'turn.wallcutter':
 		case 'turn.text':
-			printLog(movementLog.data);
+			printLog(bot.player + " : " + movementLog.data);
 			updateNeeded = false;
 			break;
 
@@ -254,6 +258,12 @@ function handleMovement(bot, movementLog, callback){
 			}
 			printLog(bot.player + ' : ' + movementLog.data);
 			break;
+
+		case 'turn.err.runtime':
+			try{
+				printLog(bot.player + ' : \n' + JSON.parse(playerLog.err));
+			}catch(e){}
+
 	}
 	if(clearAnimation){
 		setTimeout(function(){
@@ -268,6 +278,9 @@ function handleMovement(bot, movementLog, callback){
 }
 
 function startRender(){
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+	ingame = true;
 	if(!gcRequested){
 		garbageCollect();
 		$(document).on('resize', (function(){
@@ -335,13 +348,6 @@ function startRender(){
 		}, function(){
 			async.each(roundLog.init.data.players, function(v, cb){
 				var img = new Image();
-				bots[v.player] = {
-					player: v.player,
-					skin: img,
-					direction: DIRECTIONS_BY_VALUE.N,
-					x: roundLog.init.data.start.x,
-					y: roundLog.init.data.start.y
-				};
 
 				img.setAttribute('crossOrigin', 'anonymous');
 				img.onload = function(){
@@ -358,6 +364,16 @@ function startRender(){
 						img.onload = cb;
 						img.src = nCanvas.toDataURL();
 					};
+
+					bots[v.player] = {
+						player: v.player,
+						skin: img,
+						playerSkin : img2,
+						direction: DIRECTIONS_BY_VALUE.N,
+						x: roundLog.init.data.start.x,
+						y: roundLog.init.data.start.y
+					};
+
 					img2.src = "https://www.gravatar.com/avatar/" + v.md5 + "?s=200";
 				};
 				img.src = v.skin;
@@ -376,21 +392,45 @@ function startRender(){
 						cb1();
 						return;
 					}
+					currTurn = turn;
 					async.eachSeries(turnLog[0].data, function(playerLog, cb2){
-						async.eachSeries(playerLog.log, function(movementLog, callback){
+						async.eachSeries(playerLog.log, function(movementLog, callback, playerLog){
+							if(stopRequested){
+								callback(true);
+								return;
+							}
 							handleMovement(bots[playerLog.player], movementLog, callback);
 						}, function(){
+							if(stopRequested){
+								cb2(true);
+								return;
+							}
 							cb2();
 						});
 					}, function(){
+						if(stopRequested){
+							cb1(true);
+							return;
+						}
 						cb1();
 					});
 				}, function(){
+					if(stopRequested){
+						cb(true);
+						return;
+					}
 					cb();
 				});
 			});
 		});
 	}, function(){
+		ingame = false;
+		if(stopRequested){
+			var _stopRequested = stopRequested;
+			stopRequested = undefined;
+			_stopRequested();
+			return;
+		}
 		procEnd();
 	});
 }
@@ -473,6 +513,8 @@ function render(bot){
 		ctx.restore();
 		cb();
 	});
+	ctx.font = (xSize - 5) + 'px "Exo 2"';
+	ctx.fillText(currTurn, _canvas.width() - xSize, _canvas.height() - ySize);
 }
 
 function renderParticle(){
@@ -560,9 +602,26 @@ function procAnimate(v){
 function procEnd(){
 	var sizeY = boardSize;
 	var startY = (canvas.height - boardSize) / 2;
+	var scores = Object.keys(wholeLog.score);
+	scores.sort(function(v1, v2){
+		return wholeLog.score[v2] - wholeLog.score[v1];
+	});
+
+	var draw = (wholeLog.score[scores[0]] === wholeLog.score[scores[1]]);
+
 	async.eachSeries(Array.rangeOf(100), function(v, cb){
 		ctx.fillStyle = colors['dialog'];
 		ctx.fillRect(0, startY, canvas.width * v / 100, boardSize);
+		if(draw){
+			ctx.drawImage(bots[scores[0]].playerSkin, canvas.width / 2 - 3 * xSize, canvas.height / 2 - 2 * ySize, 2 * xSize, 2 * ySize);
+			ctx.drawImage(bots[scores[1]].playerSkin, canvas.width / 2 + xSize, canvas.height / 2 - 2 * ySize, 2 * xSize, 2 * ySize);
+		}else ctx.drawImage(bots[scores[0]].playerSkin, canvas.width / 2 - 2 * xSize, canvas.height / 2 - 3 * ySize, 4 * xSize, 4 * ySize);
+
+		ctx.font = '45px "Exo 2"';
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+		ctx.fillStyle = "#fff";
+		ctx.fillText(draw ? 'Draw' : 'Win', canvas.width / 2, canvas.height / 2 + 2 * ySize);
 		setTimeout(cb, 5);
 	});
 }

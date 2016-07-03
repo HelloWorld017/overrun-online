@@ -2,7 +2,6 @@
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
 		<% include ./battle-script-pre %>
-
 		<%- include('./header', {title: global.translator('battle.title')}); %>
 		<style>
 			.log-trigger {
@@ -63,12 +62,19 @@
 				position: relative;
 			}
 
-			#log-wrapper textarea {
+			#log-wrapper textarea, #log-wrapper input {
 				color: <%= global.theme['foreground-0'] %>;
 				display: block;
 				margin-bottom: 5px;
 			}
 		</style>
+		<script src="/resources/js/socket.io.min.js"></script>
+		<script>
+			var socket = io();
+			function printLog(str){
+				chat.after($(document.createElement('textarea')).val(str).attr('disabled', ''));
+			}
+		</script>
 	</head>
 
 	<body style="overflow: hidden">
@@ -76,6 +82,12 @@
 
 		<main>
 			<div id="log-wrapper">
+				<div id="chat" style="margin-bottom: 5px;">
+					<form onsubmit="schat(); return false;">
+						<input type="text" id="chat-content">
+						<button type="submit" style="width: 100%" class="btn waves-effect waves-light"></button>
+					</form>
+				</div>
 			</div>
 			<canvas id="main-canvas"></canvas>
 		</main>
@@ -85,16 +97,27 @@
 		</a>
 
 		<div style="display:none;" id="log-content" aria-hidden="true">
-			<%- JSON.stringify(battle.log) %>
+			<%- JSON.stringify(battle) %>
 		</div>
 
 		<% include ./footer %>
 		<% include ./battle-script %>
 
 		<script>
+			var chat = $('#chat');
+			var chatc = $('#chat-content');
+			var schat = function(){
+				socket.emit('chat', chatc.val());
+				chatc.val('');
+			};
 
+			socket.on('text', function(data){
+				printLog(data.nickname + '(' + data.user + ') : ' + data.content);
+			});
 			//Log handler
-			gameLog = JSON.parse($('#log-content').text());
+			wholeLog = JSON.parse($('#log-content').text());
+			socket.emit('join room', wholeLog.id);
+			gameLog = wholeLog.log;
 			logType = '<%- battle.type %>';
 			handlers[logType]();
 

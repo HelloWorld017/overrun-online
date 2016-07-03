@@ -167,31 +167,29 @@ MongoClient.connect(url, (err, client) => {
 						if(typeof data !== 'string') return;
 						data = data.replace(/[^a-zA-Z0-9-_:.]/g, '');
 
-						socket.get('room', (err, room) => {
-							if(!err && room){
-								socket.leave(room);
-							}
-							socket.set('room', data);
-							socket.join(data);
-						});
+						if(socket.room !== undefined){
+							socket.leave(socket.room);
+						}
+
+						socket.room = data;
+						socket.join(data);
 					});
 
 					socket.on('chat', (data) => {
-						socket.get('room', (err, room) => {
-							if(err || !room) return;
+						if(socket.room === undefined) return;
+						if(typeof data !== 'string') return;
 
-							var user = (global.users[socket.handshake.session.userid]);
-							if(user && (socket.handshake.session.token !== user.token)) user = undefined;
-							if(user && user.unregistered) user = undefined;
+						var user = (global.users[socket.handshake.session.userid]);
+						if(user && (socket.handshake.session.token !== user.token)) user = undefined;
+						if(user && user.unregistered) user = undefined;
 
-							if(user === undefined) return;
+						if(user === undefined) return;
 
-							io.sockets.in(room).emit('text', {
-								user: user.getName(),
-								nickname: user.nickname,
-								emailhash: user.getHashedEmail(),
-								content: data
-							});
+						io.sockets.in(socket.room).emit('text', {
+							user: user.getName(),
+							nickname: user.nickname,
+							emailhash: user.getHashedEmail(),
+							content: data
 						});
 					});
 				});
