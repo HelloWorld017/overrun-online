@@ -6,6 +6,7 @@ var MeiroRankedGame = require('./meiro-ranked-game');
 var MeiroUnrankedGame = require('./meiro-unranked-game');
 var MeiroTestGame = require('./meiro-test-game');
 var path = require('path');
+var translations = JSON.stringify(require('./meiro-game-translation'));
 var UnrankedMatchmaker = require(global.src('matchmake-unranked'));
 var TestMatchmaker = require(global.src('matchmake-test'));
 
@@ -29,6 +30,10 @@ module.exports = {
 			res.sendFile(global.pluginsrc('meiro', 'meiro-test.js'));
 		});
 
+		app.use('/render/meiro-translate.js', (req, res) => {
+			res.status(200).send('var meiroTranslations = ' + translations + ';');
+		});
+
 		app.use('/resources/image/pass/meiro.svg', (req, res) => {
 			res.sendFile(path.join(global.pluginsrc('meiro', 'image'), 'meiro-pass.svg'));
 		});
@@ -41,8 +46,8 @@ module.exports = {
 		cb();
 	},
 	renderHook: {
-		'battle': '<script src="/render/meiro.js"></script>\n<script src="/resources/js/tween.js"></script>',
-		'build': '<script src="/render/meiro.js"></script>\n<script src="/render/meiro-test.js"></script>'
+		'battle': '<script src="/render/meiro-translate.js"></script>\n<script src="/render/meiro.js"></script>',
+		'build': '<script src="/render/meiro-translate.js"></script>\n<script src="/render/meiro.js"></script>\n<script src="/render/meiro-test.js"></script>'
 	},
 	apiList: [{
 		name: 'MEIRO-RANKED',

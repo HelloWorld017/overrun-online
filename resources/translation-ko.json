@@ -288,6 +288,16 @@
 	"plugin.meiro.blockly.moveResult.tooltip": "맨 마지막으로 이동한 결과를 반환합니다. 함정에 걸렸을 경우 trap, 텔레포트 했을 경우 teleport, 벽에 막힌경우 wall, 정상적으로 이동한 경우 normal을 반환합니다.",
 	"plugin.meiro.blockly.objects.message": "미로 위 물체들 가져오기",
 	"plugin.meiro.blockly.objects.tooltip": "미로 위에 배치되어 있는 물체들을 x, y, name(물체명: trap, teleporter, wallcutter 등), teleporterNumber(텔레포터 일 경우에만)이 있는 오브젝트의 리스트로 반환합니다.",
+
+	"plugin.meiro.turn.max.exceed": "1턴에 이동가능한 최대 횟수를 초과하였습니다.",
+	"plugin.meiro.turn.content.not.string": "출력할 내용이 문자열이 아닙니다.",
+	"plugin.meiro.turn.log.too.long": "출력할 내용의 길이가 너무 깁니다.",
+	"plugin.meiro.turn.cannot.move": "함정에 걸리거나 벽을 넘은 후에는 더 이상 이동할 수 없습니다.",
+	"plugin.meiro.turn.move.over.wall": "벽을 넘어서 이동하였습니다.",
+	"plugin.meiro.carve.fail": "wallcutter 아이템이 없습니다.",
+	"plugin.meiro.already.checked": "이번 턴에는 이미 한번 벽을 체크하였습니다.",
+	"plugin.meiro.save.not.string": "세이브 할 내용이 문자열이 아닙니다.",
+	"plugin.meiro.save.too.long": "세이브 할 내용이 너무 깁니다.",
 	"shop.item.pass.meiro": "Meiro 참가패스",
 
 	"plugin.overrun": "Overrun",

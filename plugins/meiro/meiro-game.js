@@ -271,6 +271,9 @@ class MeiroGame extends Game{
 				if(err || !logs){
 					if(typeof err === 'object') err.stack = undefined;
 					if(err !== 'Timeout!') logs = setToDefault(this.bots[0].metadata);
+					else logs.logObject.push({
+						content: 'turn.err.runtime'
+					});
 				}
 
 				this.maze = logs.maze;
@@ -298,6 +301,9 @@ class MeiroGame extends Game{
 					if(err1 || !logs1){
 						if(typeof err1 === 'object') err1.stack = undefined;
 						if(err1 !== 'Timeout!') logs1 = setToDefault(this.bots[1].metadata);
+						else logs1.logObject.push({
+							content: 'turn.err.runtime'
+						});
 					}
 
 					this.maze = logs1.maze;

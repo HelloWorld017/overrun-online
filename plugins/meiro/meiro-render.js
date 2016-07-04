@@ -243,8 +243,22 @@ function handleMovement(bot, movementLog, callback, playerLog){
 			break;
 
 		case 'turn.carve':
-			//TODO 구현하기
+			var v = bot.direction;
+			var targetTile = maze[`x${bot.x + v.x}y${bot.y + v.y}`];
+			if(targetTile !== undefined){
+				maze[`x${bot.x}y${bot.y}`].walls[v.value] = false;
+				targetTile.walls[v.opposite] = false;
+			}
+
+			var x = boardMinX + bot.x * xSize + xSize / 2 + v.x * xSize / 2;
+			var y = boardMinY + bot.y * ySize + ySize / 2 + v.y * ySize / 2;
+			for(var i = 0; i < 10; i++) particles.push(new Particle(x, y, Math.round(xSize / 7), undefined, 200, colors['wall'], xSize / 400, undefined, Math.random(), Math.random()));
+			break;
+
 		case 'turn.wallcutter':
+			maze[movementLog.data].placedObjects.wallcutter = undefined;
+			break;
+
 		case 'turn.text':
 			printLog(bot.player + " : " + movementLog.data);
 			updateNeeded = false;
@@ -253,10 +267,12 @@ function handleMovement(bot, movementLog, callback, playerLog){
 		case 'turn.err':
 			switch(movementLog.data){
 				case 'turn.move.over.wall':
-				bot.x = 0;
-				bot.y = 0;
+					bot.x = 0;
+					bot.y = 0;
+					break;
 			}
-			printLog(bot.player + ' : ' + movementLog.data);
+
+			printLog(bot.player + ' : ' + meiroTranslations[movementLog.data]);
 			break;
 
 		case 'turn.err.runtime':
@@ -394,7 +410,7 @@ function startRender(){
 					}
 					currTurn = turn;
 					async.eachSeries(turnLog[0].data, function(playerLog, cb2){
-						async.eachSeries(playerLog.log, function(movementLog, callback, playerLog){
+						async.eachSeries(playerLog.log, function(movementLog, callback){
 							if(stopRequested){
 								callback(true);
 								return;
@@ -534,7 +550,7 @@ function procAnimate(v){
 		case 'trap':
 			var x = boardMinX + v.x;
 			var y = boardMinY + v.y;
-			particles.push(new Particle(x, y, Math.round(xSize / 3), undefined, 100, colors['trap'], xSize / 400, undefined));
+			particles.push(new Particle(x, y, Math.round(xSize / 3), undefined, 200, colors['trap'], xSize / 400, undefined));
 			break;
 
 		case 'move':

@@ -106,7 +106,7 @@
 				log('turn.err', 'turn.cannot.move', true);
 				return false;
 			}
-			
+
 			var currentPosition = `x${bot.metadata.x}y${bot.metadata.y}`;
 			var nextPosition = `x${bot.metadata.x + bot.metadata.direction.x}y${bot.metadata.y + bot.metadata.direction.y}`
 			var currentTile = maze[currentPosition];
@@ -162,10 +162,15 @@
 			}
 
 			Array.remove(bot.metadata.items, bot.metadata.items.indexOf('wallcutter'));
-			DIRECTIONS.forEach((v) => {
+
+			var v = bot.metadata.direction;
+
+			var targetTile = maze[`x${bot.metadata.x + v.x}y${bot.metadata.y + v.y}`];
+			if(targetTile !== undefined){
+				//Prevents carving the outermost wall
 				maze[`x${bot.metadata.x}y${bot.metadata.y}`].walls[v.value] = false;
-				maze[`x${bot.metadata.x + v.x}y${bot.metadata.y + v.y}`].walls[v.opposite] = false;
-			});
+				targetTile.walls[v.opposite] = false;
+			}
 
 			log('turn.carve');
 
