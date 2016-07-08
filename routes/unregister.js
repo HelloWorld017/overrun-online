@@ -7,46 +7,54 @@ var NotLoggedInError = errors.NotLoggedInError;
 var ServerError = errors.ServerError;
 
 router.all('/', (req, res, next) => {
-    if(req.method === 'POST'){
-        if(!req.body.token){
-            next(new InvalidDataError());
-            return;
-        }
+	if(req.method === 'POST'){
+		if(!req.body.token){
+			next(new InvalidDataError());
+			return;
+		}
 
-        if(!res.locals.auth){
-            next(new NotLoggedInError());
-            return;
-        }
+		if(!res.locals.auth){
+			next(new NotLoggedInError());
+			return;
+		}
 
-        if(req.session.csrftoken !== req.body.token){
-            next(new InvalidDataError());
-            return;
-        }
+		if(req.session.csrftoken !== req.body.token){
+			next(new InvalidDataError());
+			return;
+		}
 
-        res.locals.user.unregistered = true;
-        global.mongo
-        .collection(global.config['collection-user'])
-        .findOneAndUpdate({id: res.locals.user.getName()}, {unregistered: true})
-        .then(() => {
-            res.redirect('/logout');
-        }, () => {});
+		res.locals.user.unregistered = true;
+		global.mongo
+			.collection(global.config['collection-user'])
+			.findOneAndUpdate({id: res.locals.user.getName()}, {unregistered: true})
+			.then(() => {
+				res.locals.logout((err) => {
+					if(err){
+						console.error(err.message);
+						next(new ServerError());
+						return;
+					}
 
-        return;
-    }
+					res.redirect('/');
+				});
+			}, () => {});
 
-    var token = createToken(1024);
+		return;
+	}
 
-    req.session.csrftoken = token;
-    req.session.save((err) => {
-        if(err){
-            next(new ServerError());
-            return;
-        }
+	var token = createToken(1024);
 
-        res.render('unregister', {
-            token: token
-        });
-    })
+	req.session.csrftoken = token;
+	req.session.save((err) => {
+		if(err){
+			next(new ServerError());
+			return;
+		}
+
+		res.render('unregister', {
+			token: token
+		});
+	});
 });
 
 module.exports = router;

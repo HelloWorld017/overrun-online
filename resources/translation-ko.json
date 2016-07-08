@@ -139,6 +139,12 @@
 	"tutorial.title": "튜토리얼",
 
 	"unregister.title": "회원탈퇴",
+	"unregister.masthead": "회원탈퇴",
+	"unregister.desc": "당신은 현재 회원을 탈퇴하시려고 하시고 계십니다. 만일 이것이 의도된 행동이라면 하단의 인증란에 '승인합니다' 라고 입력 후 회원탈퇴 버튼을 누르시면 됩니다.",
+	"unregister.confirm": "인증",
+	"unregister.submit": "회원탈퇴",
+	"unregister.confirm.text": "승인합니다",
+	"unregister.confirm.not.equal": "인증란의 내용이 '승인합니다'와 같지 않습니다.",
 
 	"update.title": "유저정보 수정",
 	"update.name": "닉네임",
@@ -146,6 +152,7 @@
 	"update.email": "이메일",
 	"update.password": "비밀번호",
 	"update.password.check": "비밀번호 확인",
+	"update.pic.title": "유저사진 변경",
 	"update.pw.original": "기존 비밀번호",
 	"update.pw.password": "새 비밀번호",
 	"update.pw.password.check": "새 비밀번호 확인",

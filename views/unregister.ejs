@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head prefix="og: http://ogp.me/ns#">
+		<%- include('./header', {title: global.translator('unregister.title')}) %>
+		<script>
+			var confirm;
+			var confirmLabel;
+			var confirmStr = '<%= global.translator('unregister.confirm.text') %>';
+
+			$(document).ready(function(){
+				confirm = $('#confirm');
+				confirmLabel = $('label[for=confirm]');
+				confirm.on('change', function(){
+					if(!confirm.hasClass('invalid') && confirm.val() !== confirmStr){
+						confirm.addClass('invalid');
+						if(confirm.hasClass('valid')) confirm.removeClass('valid');
+						confirmLabel.text('<%- global.translator('unregister.confirm.not.equal') %>');
+
+					}else if(!confirm.hasClass('valid') && confirm.val() === confirmStr){
+						confirm.addClass('valid');
+						if(confirm.hasClass('invalid')) confirm.removeClass('invalid');
+						confirmLabel.text('<%- global.translator('unregister.confirm') %>');
+					}
+				});
+			});
+
+			function doConfirm(){
+				var token = $('#token');
+
+				if(confirm.val() === confirmStr){
+					token.val('<%= token %>');
+					return true;
+				}else return false;
+			}
+		</script>
+	</head>
+
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+		<section class="main-section">
+			<h3><%= global.translator('unregister.masthead') %></h3>
+			<p><%= global.translator('unregister.desc') %></p>
+			<form onsubmit="return doConfirm()">
+				<input type="hidden" name="token" id="token" value="">
+				<div class="row">
+					<div class="input-field col s9">
+						<label for="confirm"><%= global.translator('unregister.confirm') %></label>
+						<input id="confirm" type="text">
+					</div>
+
+					<div class="input-field col s3">
+						<button type="submit" class="btn waves-effect waves-light" style="width: 100%">
+							<%= global.translator('unregister.submit') %>
+						</button>
+					</div>
+				</div>
+			</form>
+		</section>
+
+		<% include ./footer %>
+	</body>
+</html>
