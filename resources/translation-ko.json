@@ -139,6 +139,7 @@
 	"storage.unavailable": "저장소를 사용할 수 없습니다.",
 
 	"title": "overrun",
+	"title.full": "overrun-online",
 	"tutorial.title": "튜토리얼",
 
 	"unregister.title": "회원탈퇴",
