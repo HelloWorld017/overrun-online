@@ -1,10 +1,10 @@
 {
 	"background-0": "#202020",
-	"background-1": "#00C0A0",
+	"background-1": "rgba(0, 0, 0, 0)",
 	"background-2": "#FFF",
 	"background-3": "#00C0A0",
 	"background-4": "#3EB489",
-	
+
 	"foreground-0": "#FFFFFF",
 	"foreground-1": "#202020",
 

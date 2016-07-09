@@ -24,11 +24,11 @@
 			}
 
 			#log-wrapper {
-				width: 200px;
+				width: 300px;
 				height: calc(100vh - 64px);
 				padding: 3px;
 				position: relative;
-				left: -200px;
+				left: -300px;
 				overflow-x: hidden;
 				overflow-y: auto;
 				display: inline-block;
@@ -82,10 +82,13 @@
 
 		<main>
 			<div id="log-wrapper">
-				<div id="chat" style="margin-bottom: 5px;">
+				<div id="chat" style="margin-bottom: 20px;">
 					<form onsubmit="schat(); return false;">
-						<input type="text" id="chat-content">
-						<button type="submit" style="width: 100%" class="btn waves-effect waves-light"></button>
+						<input type="text" id="chat-content" placeholder="<%= global.translator('battle.chat') %>">
+						<button type="submit" style="width: 100%" class="btn waves-effect waves-light">
+							<i class="fa fa-paper-plane"></i>
+							<%= global.translator('battle.chat.send') %>
+						</button>
 					</form>
 				</div>
 			</div>
@@ -125,7 +128,7 @@
 			function openLog(){
 				if(logOpened){
 					log.css({
-						left: '-200px'
+						left: '-300px'
 					});
 					trigger.style.left = '0';
 					logOpened = false;
@@ -135,7 +138,7 @@
 				log.css({
 					left: '0'
 				});
-				trigger.style.left = '200px';
+				trigger.style.left = '300px';
 				logOpened = true;
 				return false;
 			}

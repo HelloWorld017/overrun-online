@@ -10,7 +10,6 @@
 
 			.battle-collection {
 				text-align: center;
-				height: 100px;
 			}
 
 			.battle-user-name {
@@ -31,8 +30,8 @@
 			<h3><%- global.translator('index.recent.match') %></h3>
 			<div class="collection">
 				<% battles.forEach((battle) => { %>
-					<a class="collection-item battle-collection" href="/battle/results/<%= battle.id %>">
-						<div class="left user-badge">
+					<a class="collection-item battle-collection row" href="/battle/results/<%= battle.id %>">
+						<div class="left user-badge s12 m4">
 							<% if(battle.bots !== undefined){ %>
 								<img src="<%= battle.bots[battle.players[0]].skin %>" class="circle bot-icon">
 							<% } %>
@@ -43,7 +42,7 @@
 							<% } %>
 						</div>
 						<span class="user-divider">:</span>
-						<div class="right user-badge">
+						<div class="right user-badge s12 m4">
 							<% if(battle.bots !== undefined){ %>
 								<img src="<%= battle.bots[battle.players[1]].skin %>" class="circle bot-icon">
 							<% } %>

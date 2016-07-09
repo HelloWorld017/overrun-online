@@ -5,7 +5,7 @@
 	"db-port": "27017",
 	"db-name": "overrun",
 
-	"entry-timer": "60000",
+	"entry-timer": 60000,
 
 	"collection-auth": "auth",
 	"collection-battle": "battle",

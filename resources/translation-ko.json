@@ -7,6 +7,9 @@
 	"authenticate.finish.masthead": "이메일이 성공적으로 인증되었습니다!",
 	"authenticate.finish.desc": "이제 로그인 페이지로 돌아가셔서 로그인해주세요.",
 
+	"battle.title": "경기 결과",
+	"battle.chat": "보낼 메시지를 입력하세요...",
+	"battle.chat.send": "보내기",
 	"bot.type": "%type%",
 
 	"build.title": "봇 제작",
@@ -59,8 +62,8 @@
 	"error.matchmake.tick": "다음 경기를 진행하기까지 조금만 더 기다려 주세요.",
 	"error.matchmake.noplayer": "경기를 같이 진행할 상대방이 존재하지 않습니다. :(",
 	"error.matchmake.nobot": "해당 봇이 존재하지 않습니다.",
-	"error.passwordnotequal": "이름과 비밀번호를 다시 한번 확인해주세요.",
-	"error.sameidalreadyjoined": "동일한 이름이나 이메일이 이미 존재합니다.",
+	"error.passwordnotequal": "유저명과 비밀번호를 다시 한번 확인해주세요.",
+	"error.sameidalreadyjoined": "동일한 유저명이나 이메일이 이미 존재합니다.",
 	"error.internalserver": "서버측에서 오류가 발생하였습니다.",
 	"error.title": "앗!",
 	"error.toolongcode": "코드가 너무나도 깁니다!",
@@ -79,14 +82,14 @@
 
 	"join.title": "가입",
 	"join.name": "닉네임",
-	"join.id": "이름",
+	"join.id": "유저명",
 	"join.email": "이메일",
 	"join.password": "비밀번호",
 	"join.password.check": "비밀번호 확인",
 	"join.submit": "가입",
 
 	"login.title": "로그인",
-	"login.id": "이름",
+	"login.id": "유저명",
 	"login.password": "비밀번호",
 	"login.submit": "로그인",
 
@@ -96,7 +99,7 @@
 
 	"missing.title": "아이디/비밀번호 찾기",
 	"missing.email": "이메일",
-	"missing.id": "이름",
+	"missing.id": "유저명",
 	"missing.id.result": "아이디 찾기 결과",
 	"missing.id.result.desc": "당신의 아이디는 <<samp>>%id%<</samp>> 입니다.",
 	"missing.id.result.masthead": "결과",
@@ -148,7 +151,7 @@
 
 	"update.title": "유저정보 수정",
 	"update.name": "닉네임",
-	"update.id": "이름",
+	"update.id": "유저명",
 	"update.email": "이메일",
 	"update.password": "비밀번호",
 	"update.password.check": "비밀번호 확인",
@@ -170,7 +173,7 @@
 	"validate.minlength": "{0}글자 이상이어야 합니다.",
 	"validate.regex": "부적절한 문자를 포함하고 있습니다.",
 	"validate.required": "필수적인 항목입니다.",
-	"validate.remote.id": "이름이 중복되었습니다.",
+	"validate.remote.id": "유저명이 중복되었습니다.",
 	"validate.remote.email": "이메일이 중복되었습니다.",
 
 	"plugin.common.entry.select.title": "봇 선택",

@@ -2,14 +2,127 @@
 <html lang="<%= global.config.lang %>">
 	<head prefix="og: http://ogp.me/ns#">
 		<%- include('./header', {title: global.translator('about.title')}); %>
+		<style>
+			nav {
+				position: initial !important;
+			}
+
+			section {
+				padding: 1rem;
+			}
+
+			.masthead {
+				min-height: 350px;
+				width: 100%;
+				z-index: -3;
+				position: relative;
+				top: -64px;
+				display: none;
+			}
+
+			@media only screen and (min-aspect-ratio: 4/3) and (min-width: 992px){
+				.masthead {
+					display: block;
+					height: 100vh;
+				}
+
+				.masthead-text {
+					width: 100%;
+					height: 100%;
+					text-align: center;
+					position: absolute;
+					top: 0;
+					left: 0;
+				}
+
+				.masthead-text:before {
+					content: "";
+					height: 100%;
+					display: inline-block;
+					vertical-align: middle;
+				}
+			}
+		</style>
+		<script src="/resources/js/geopattern-1.2.3.min.js"></script>
+		<script src="/resources/js/particle.js"></script>
 	</head>
 
 	<body>
 		<% include ./navigation %>
-		<% include ./background %>
-		<section class="main-section">
-			<h3><%= global.translator('about.title') %></h3>
-		</section>
+		<main>
+			<canvas id="canvas" class="masthead" style="width: 100%; z-index: -3"></canvas>
+			<h3 class="masthead-text"><%= global.translator('title') %></h3>
+			<script>
+				var _canvas = $('#canvas');
+				var canvas = _canvas.get(0);
+				var ctx = canvas.getContext('2d');
+				//var mx, my;
+
+				var patterns = ['triangles', 'squares', 'chevrons', 'diamonds', 'mosaicSquares'];
+
+				var pattern = GeoPattern.generate(Math.random().toString(), {
+					color: '<%= global.theme['background-3'] %>',
+					//baseColor: '<%= global.theme['background-3'] %>',
+					generator: patterns[Math.round(Math.random() * (patterns.length - 1))]
+				});
+
+				//var imgData;
+
+				function reset(){
+					canvas.width = _canvas.width();
+					canvas.height = _canvas.height();
+					draw();
+					//imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+				}
+
+				var img = new Image();
+				img.onload = function(){
+					$(window).on('resize', function(){
+						reset();
+					});
+					reset();
+					//Particle.garbageCollect();
+				};
+				img.src = pattern.toDataUri();
+
+				function draw(){
+					for(var y = 0; y <= canvas.height; y += img.height){
+						for(var x = 0; x <= canvas.width; x += img.width){
+
+							ctx.drawImage(img, x, y);
+						}
+					}
+				}
+
+				/*
+				_canvas.on('mousemove', function(e){
+					mx = e.pageX - $(this).offset().left;
+					my = e.pageY - $(this).offset().top;
+				});
+
+				function update(){
+					if(mx !== undefined && my !== undefined){
+						particles.push(new Particle(mx, my, Math.random() * 10, Math.random() * 10, 100, getColor(mx, my), 0.01, 0.01, Math.random() * 10, Math.random() * 10));
+					}
+				}
+
+				function render(){
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					for(var i = 0; i < 4; i++) update();
+					draw();
+					Particle.renderParticle(ctx);
+					requestAnimationFrame(render);
+				}
+
+				function getColor(x, y){
+					var curr = y * imgData.height * 4 + x * 4;
+					return 'rgba(' + imgData.data[curr] + ',' + imgData.data[curr + 1] + ',' + imgData.data[curr + 2] + ',' + imgData.data[curr + 3] + ')';
+				} */
+			</script>
+			<section>
+				<h3><%= global.translator('about.')</h3>
+			</section>
+		</main>
 
 		<% include ./footer %>
 	</body>
