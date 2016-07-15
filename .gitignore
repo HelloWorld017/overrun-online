@@ -52,3 +52,7 @@ jspm_packages
 !/plugins/common-blockly/
 !/plugins/meiro/
 !/plugins/overrun/
+
+#Plugin Translations
+/translations/*
+!/translations/.gitkeep

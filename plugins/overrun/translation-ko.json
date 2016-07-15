@@ -1,0 +1,26 @@
+{
+	"plugin.overrun": "Overrun",
+	"plugin.overrun.ranked": "overrun 랭크전",
+	"plugin.overrun.unranked": "overrun 친선전",
+	"plugin.overrun.api.title": "",
+	"plugin.overrun.api.log.title": "",
+	"plugin.overrun.api.log.content": "",
+	"plugin.overrun.api.enemy.title": "",
+	"plugin.overrun.api.enemy.content": "",
+	"plugin.overrun.api.status.title": "",
+	"plugin.overrun.api.status.content": "",
+	"plugin.overrun.api.move.title": "",
+	"plugin.overrun.api.move.content": "",
+	"plugin.overrun.api.rotate.title": "",
+	"plugin.overrun.api.rotate.content": "",
+	"plugin.overrun.api.defence.title": "",
+	"plugin.overrun.api.defence.content": "",
+
+	"plugin.overrun.blockly.log.message": "%1이라고 말하기",
+	"plugin.overrun.blockly.log.tooltip": "",
+	"plugin.overrun.blockly.move.message": "이동하기",
+	"plugin.overrun.blockly.move.tooltip": "",
+	"plugin.overrun.blockly.rotate.message": "%1도 만큼 회전하기",
+	"plugin.overrun.blockly.defence.message": "방어하기",
+	"plugin.overrun.blockly.defence.tooltip": ""
+}

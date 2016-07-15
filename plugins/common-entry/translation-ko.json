@@ -1,0 +1,9 @@
+{
+	"plugin.common.entry.select.title": "봇 선택",
+	"plugin.common.entry.select.desc": "봇을 선택하여 주세요!",
+	"plugin.common.entry.title": "엔트리",
+	"plugin.common.entry.ranked": "랭크전",
+	"plugin.common.entry.unranked": "친선전",
+	"plugin.common.entry.unranked.friend": "대결상대 선택",
+	"plugin.common.entry.unranked.bots": "대결할 봇 선택"
+}

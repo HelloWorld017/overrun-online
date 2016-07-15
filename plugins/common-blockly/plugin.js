@@ -1,3 +1,12 @@
+var fs = require('fs');
+global.loadTranslation({
+	name: 'blockly',
+	translations: {
+		'default': 'ko',
+		'ko': fs.readFileSync(global.pluginsrc('common-blockly', 'translation-ko.json'), 'utf8')
+	}
+});
+
 module.exports = {
 	name: 'Common Blockly',
 	author: 'Khinenw',

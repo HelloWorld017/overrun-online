@@ -38,6 +38,7 @@
 					position: absolute;
 					top: 0;
 					left: 0;
+					z-index: -5;
 				}
 
 				.masthead-text:before {
@@ -55,7 +56,7 @@
 	<body>
 		<% include ./navigation %>
 		<main>
-			<canvas id="canvas" class="masthead" style="width: 100%; z-index: -3"></canvas>
+			<canvas id="canvas" class="masthead" style="width: 100%; z-index: -5"></canvas>
 			<h3 class="masthead-text"><%= global.translator('title.full') %></h3>
 			<script>
 				var _canvas = $('#canvas');

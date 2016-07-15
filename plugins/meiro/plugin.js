@@ -1,3 +1,12 @@
+var fs = require('fs');
+global.loadTranslation({
+	name: 'meiro',
+	translations: {
+		'default': 'ko',
+		'ko': fs.readFileSync(global.pluginsrc('meiro', 'translation-ko.json'), 'utf8')
+	}
+});
+
 var api = require('./api-list');
 var blockly = require('./blockly-list');
 var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('meiro');

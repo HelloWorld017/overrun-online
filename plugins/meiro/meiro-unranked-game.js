@@ -28,7 +28,7 @@ MeiroUnrankedGame.getReadableName = () => {
 MeiroUnrankedGame.getOptions = () => {
 	return {
 		'accepts_bot_type': ['MEIRO-RANKED', 'MEIRO-UNRANKED'],
-		'show_to_bot_type': true,
+		'show_to_bot_type': false,
 		'check': checkPass
 	};
 };

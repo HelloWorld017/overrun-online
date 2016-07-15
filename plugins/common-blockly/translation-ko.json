@@ -1,0 +1,18 @@
+{
+	"plugin.json.parse.message": "%1를 JSON으로 파싱",
+	"plugin.json.parse.tooltip": "바뀐 문자열에서 오브젝트나 리스트를 가져옵니다.",
+	"plugin.json.stringify.message": "%1를 JSON화",
+	"plugin.json.stringify.tooltip": "오브젝트나 리스트를 문자열로 바꿉니다.",
+
+	"plugin.type.parseInt.message": "%1을 숫자로",
+	"plugin.type.parseInt.tooltip": "텍스트 숫자로 바꿉니다.",
+	"plugin.type.toString.message": "%1을 텍스트로",
+	"plugin.type.toString.tooltip": "숫자를 텍스트로 바꿉니다.",
+
+	"plugin.object.set.message": "오브젝트 %1의 속성이름 %2를 다음으로 설정:%3",
+	"plugin.object.set.tooltip": "오브젝트의 속성을 설정합니다. 변수와 같이 사용하세요!",
+	"plugin.object.get.message": "오브젝트 %1의 속성이름 %2를 가져오기",
+	"plugin.object.get.tooltip": "오브젝트에서 속성을 가져옵니다.",
+	"plugin.object.newObject.message": "새로운 오브젝트",
+	"plugin.object.newObject.tooltip": "새로운 오브젝트를 만듭니다. 오브젝트는 여러 개의 속성을 가질 수 있는 컨테이너입니다."
+}
