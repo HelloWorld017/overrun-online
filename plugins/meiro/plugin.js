@@ -7,6 +7,8 @@ global.loadTranslation({
 	}
 });
 
+var meiroConfig = global.generateAndLoad('meiro-config.json', fs.readFileSync(global.pluginsrc('meiro', 'meiro-config.json'), 'utf8'));
+
 var api = require('./api-list');
 var blockly = require('./blockly-list');
 var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('meiro');
@@ -26,7 +28,7 @@ module.exports = {
 	onLoad: (cb) => {
 		global.server.addToPool(MeiroRankedGame);
 		global.server.addToPool(MeiroUnrankedGame, UnrankedMatchmaker);
-		global.server.addToPool(MeiroTestGame, TestMatchmaker(global.server, MeiroTestGame, global.config['plugin-meiro-test-arg']), true);
+		global.server.addToPool(MeiroTestGame, TestMatchmaker(global.server, MeiroTestGame, meiroConfig['plugin-meiro-test-arg']), true);
 		cb();
 	},
 	onServerInit: (app, cb) => {

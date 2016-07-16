@@ -140,6 +140,13 @@ async.forEachOf(global.plugins, (plugin, pluginName, cb) => {
 				return;
 			}
 
+			if(req.xhr){
+				res.json({
+					error: err.message
+				});
+				return;
+			}
+
 			res.render('alert', {
 				error: err
 			});

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head prefix="og: http://ogp.me/ns#">
+		<%- include('header', {title: global.translator('error.title')}) %>
+		<style>
+			.content-divider-wrapper {
+				width: 30rem;
+				margin-top: 30px;
+				margin-left: auto;
+				margin-right: auto;
+				margin-bottom: 0;
+			}
+
+			.content-divider {
+				box-sizing: border-box;
+				border-style: solid;
+				border-color: #616161;
+				border-width: 3px 0 0 0;
+				border-radius: 30px;
+				text-align: center;
+				height: 30px;
+				margin-bottom: 0;
+			}
+
+			.content-divider:after {
+				content: 'OR';
+				display: inline-block;
+				position: relative;
+				font-family: 'Lato', 'Spoqa Han Sans', sans-serif !important;
+				top: -15px;
+				padding: 0 15px;
+				background: #fff;
+				color: #616161;
+				font-size: 18px;
+			}
+
+			.content-divider:before {
+				display: block;
+				content: '';
+				height: 30px;
+				margin-top: -31px;
+				border-style: solid;
+				border-color: #616161;
+				border-width: 0 0 3px 0;
+				border-radius: 30px;
+			}
+
+			h3 {
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+
+		<script>
+			setTimeout(function(){
+				location.reload();
+			}, 5000);
+		</script>
+	</head>
+	<body>
+		<% include ./navigation %>
+		<% include ./background %>
+
+		<section class="main-section" style="padding-right: 10px;">
+			<h1 style="font-size: 10em; text-align: center">
+				<img src="/resources/image/no-battle.svg" width="256px" height="256px">
+			</h1>
+
+			<h3 style="text-align: center">
+				<%= global.translator('battle.in.progress') %>
+			</h3>
+
+			<div class="content-divider-wrapper">
+				<hr class="content-divider">
+			</div>
+
+			<h3 style="text-align: center">
+				<%= global.translator('battle.not.found') %>
+			</h3>
+		</section>
+		<% include ./footer %>
+	</body>
+</html>

@@ -50,7 +50,6 @@
 			}
 		</style>
 		<script src="/resources/js/geopattern-1.2.3.min.js"></script>
-		<script src="/resources/js/particle.js"></script>
 	</head>
 
 	<body>
@@ -62,23 +61,18 @@
 				var _canvas = $('#canvas');
 				var canvas = _canvas.get(0);
 				var ctx = canvas.getContext('2d');
-				//var mx, my;
 
 				var patterns = ['triangles', 'squares', 'chevrons', 'diamonds', 'mosaicSquares'];
 
 				var pattern = GeoPattern.generate(Math.random().toString(), {
 					color: '<%= global.theme['background-3'] %>',
-					//baseColor: '<%= global.theme['background-3'] %>',
 					generator: patterns[Math.round(Math.random() * (patterns.length - 1))]
 				});
-
-				//var imgData;
 
 				function reset(){
 					canvas.width = _canvas.width();
 					canvas.height = _canvas.height();
 					draw();
-					//imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 				}
 
 				var img = new Image();
@@ -87,7 +81,6 @@
 						reset();
 					});
 					reset();
-					//Particle.garbageCollect();
 				};
 				img.src = pattern.toDataUri();
 
@@ -99,31 +92,6 @@
 						}
 					}
 				}
-
-				/*
-				_canvas.on('mousemove', function(e){
-					mx = e.pageX - $(this).offset().left;
-					my = e.pageY - $(this).offset().top;
-				});
-
-				function update(){
-					if(mx !== undefined && my !== undefined){
-						particles.push(new Particle(mx, my, Math.random() * 10, Math.random() * 10, 100, getColor(mx, my), 0.01, 0.01, Math.random() * 10, Math.random() * 10));
-					}
-				}
-
-				function render(){
-					ctx.clearRect(0, 0, canvas.width, canvas.height);
-					for(var i = 0; i < 4; i++) update();
-					draw();
-					Particle.renderParticle(ctx);
-					requestAnimationFrame(render);
-				}
-
-				function getColor(x, y){
-					var curr = y * imgData.height * 4 + x * 4;
-					return 'rgba(' + imgData.data[curr] + ',' + imgData.data[curr + 1] + ',' + imgData.data[curr + 2] + ',' + imgData.data[curr + 3] + ')';
-				} */
 			</script>
 			<section class="container">
 				<h2 class="mobile only"><%= global.translator('title.full') %></h2>
@@ -131,14 +99,20 @@
 				<div class="row">
 					<div class="col s12 m4">
 						<div class="icon-block">
-
+							<i class="fa fa-code"></i>
 						</div>
 					</div>
 
 					<div class="col s12 m4">
+						<div class="icon-block">
+							<i class="fa fa-gamepad"></i>
+						</div>
 					</div>
 
 					<div class="col s12 m4">
+						<div class="icon-block">
+
+						</div>
 					</div>
 				</div>
 			</section>

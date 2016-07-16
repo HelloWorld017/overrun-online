@@ -37,6 +37,8 @@
 			var modalHeader = undefined;
 			var modalContent = undefined;
 			var type = undefined;
+			var changed = false;
+			var submitted = false;
 
 			$(document).ready(function(){
 				$('ul.tabs').tabs();
@@ -63,6 +65,14 @@
 				type = $('#type');
 
 				$('.modal-trigger').leanModal();
+
+				$('#code-form').on('submit', function(){
+					submitted = true;
+				});
+
+				$('#code-form input, #code-form textarea').on('change', function(){
+					changed = true;
+				});
 			});
 
 			function openAPI(){
@@ -77,6 +87,18 @@
 					});
 				});
 			}
+
+			window.onbeforeunload = function(e){
+				if(changed && !submitted){
+					e = e || window.event;
+
+					if(e){
+						e.returnValue = '<%= global.translator('build.unload') %>';
+					}
+
+					return '<%= global.translator('build.unload') %>';
+				}
+			};
 		</script>
 
 		<style>
@@ -206,18 +228,20 @@
 				editor.setAutoScrollEditorIntoView(true);
 				editor.setOption("maxLines", 100);
 				editor.setOption("minLines", 30);
-				editor.getSession().on('change', function(){
-					codeArea.val(editor.getSession().getValue());
-				});
 				editor.setValue('', -1);
-
 				<% if(typeof bot !== 'undefined'){ %>
 					$('#name').val('<%= bot.name %>');
 					$('#skin').val('<%= bot.skin %>');
 					$('#type').val('<%= bot.type %>');
 
 					editor.setValue($('#bot-code').text(), -1);
+					codeArea.val(editor.getSession().getValue());
 				<% } %>
+
+				editor.getSession().on('change', function(){
+					codeArea.val(editor.getSession().getValue());
+					changed = true;
+				});
 
 				var workspace = Blockly.inject('blockly-div', {toolbox: $('#blockly-toolbox').get(0)});
 
@@ -241,6 +265,7 @@
 					var code = Blockly.JavaScript.workspaceToCode(workspace);
 					editor.setValue(code, -1);
 					codeArea.val(code);
+					changed = true;
 				});
 
 				function storageAvailable(type) {
@@ -301,7 +326,3 @@
 		</div>
 	</body>
 </html>
-
-<%#
-	#TODO:20 Add bot testing
-%>

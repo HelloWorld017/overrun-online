@@ -26,6 +26,21 @@ global.skin = function(skin){
 	return (((global.config['shop-items'].skins[skin] || {}).icon) || ('/resources/image/skins/' + skin));
 };
 
+global.generateAndLoad = (target, defaultContent) => {
+	try{
+		fs.accessSync(path.join('./', target), fs.F_OK);
+	}catch(err){
+		if(err){
+			fs.writeFileSync(path.join('./', target), defaultContent);
+			console.log(global.translator('server.create', {
+				file: path.join('./', target)
+			}));
+		}
+	}
+
+	return require('./' + target);
+};
+
 global.src = requireSource.src;
 global.pluginsrc = requireSource.plugin;
 global.version = SERVER_VERSION;

@@ -138,12 +138,22 @@ router.all('/', (req, res, next) => {
 		return;
 	}
 
-	res.render('build', {
-		skin: res.locals.user.skins,
-		bot: undefined,
-		target: '/build',
-		games: global.server.gamePool,
-		blockly: global.blockly
+	var token = createToken(1024);
+	req.session.csrftoken = token;
+	req.session.save((err) => {
+		if(err){
+			next(new ServerError());
+			return;
+		}
+
+		res.render('build', {
+			skin: res.locals.user.skins,
+			bot: undefined,
+			target: '/build',
+			games: global.server.gamePool,
+			blockly: global.blockly,
+			token: token
+		});
 	});
 });
 
