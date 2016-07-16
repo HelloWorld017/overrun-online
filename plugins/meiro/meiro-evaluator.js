@@ -26,7 +26,10 @@ var evaluator = (code, sandbox, timeout, cb) => {
 				cb("Timeout!");
 				return;
 			}
-		}catch(e){}
+		}catch(e){
+			console.log(e);
+			cb("Err!");
+		}
 	}, timeout);
 };
 

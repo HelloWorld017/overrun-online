@@ -1,0 +1,33 @@
+{
+	"tutorial.createbot": "봇을 제작하기",
+	"tutorial.createbot.0.title": "0. 봇 제작창 열기",
+	"tutorial.createbot.0.content": "시스템메뉴 > 봇 제작 버튼을 누릅니다.",
+	"tutorial.createbot.1.title": "1. 봇 이름, 스킨, 게임 선택",
+	"tutorial.createbot.1.content": "봇의 이름, 스킨, 게임을 선택합니다.<<br>>스킨, 게임이 없을경우 상점에서 스킨과 패스를 구매하시면 됩니다.",
+	"tutorial.createbot.2.title": "2. 코드 편집",
+	"tutorial.createbot.2.content": "봇의 코드를 편집합니다.<<br>>API 문서 보기 버튼을 눌러서 API를 확인 가능합니다.",
+	"tutorial.createbot.3.title": "2-1. 블록으로 편집",
+	"tutorial.createbot.3.content": "프로그래밍이 어려우신 분들은 블록 편집기를 선택하고 블록을 끌어서 배치하면 됩니다.",
+	"tutorial.createbot.4.title": "3. 봇 테스트",
+	"tutorial.createbot.4.content": "봇 테스트를 선택하고 버튼을 눌러 봇이 정상작동하는지 확인합니다.<<br>>이후 봇 생성! 버튼을 눌러 완료합니다.",
+
+	"tutorial.entry": "경기 진행하기",
+	"tutorial.entry.0.title": "0. 엔트리창 열기",
+	"tutorial.entry.0.content": "상단바의 엔트리 버튼을 누릅니다.<<br>>이후 자신이 플레이 할 게임을 선택합니다.<<br>>플레이 할 게임이 없는 경우, 상점에서 패스를 구매하시면 됩니다.",
+	"tutorial.entry.1.title": "1. 봇을 선택하기",
+	"tutorial.entry.1.content": "자신이 제작해둔 봇 중에서 다른 플레이어의 봇과 겨룰 봇을 선택합니다.",
+	"tutorial.entry.2.title": "2. 경기 방식 선택하기",
+	"tutorial.entry.2.content": "랭크전과 친선전 중의 하나를 선택합니다.<<br>>랭크전은 모르는 상대와 경기를 진행하는 대신 보상이 있고, 친선전은 보상은 없지만 친구와 경기가 가능합니다.",
+	"tutorial.entry.3.title": "2-1. 친구 선택하기",
+	"tutorial.entry.3.content": "친선전을 선택한 경우, 친구 목록 중에서 같이 경기를 치룰 한명을 선택하고, 그 친구의 봇을 선택합니다.",
+	"tutorial.entry.4.title": "3. 기다리기",
+	"tutorial.entry.4.content": "조금만 기다리시면 경기가 끝나고 경기영상이 보여질 것입니다.",
+
+	"tutorial.editbot": "봇을 수정하기",
+	"tutorial.editbot.0.title": "0. 개인 페이지 열기",
+	"tutorial.editbot.0.content": "상단바의 유저 메뉴 > 개인 페이지 버튼을 누릅니다.",
+	"tutorial.editbot.1.title": "1. 편집할 봇 선택하기",
+	"tutorial.editbot.1.content": "소유중인 봇 중에서 편집할 봇을 누릅니다.",
+	"tutorial.editbot.2.title": "2. 편집하기",
+	"tutorial.editbot.2.content": "봇의 코드를 편집합니다."
+}

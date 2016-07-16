@@ -12,6 +12,7 @@ var PasswordNotEqualError = errors.PasswordNotEqualError;
 var SameIdAlreadyJoinedError = errors.SameIdAlreadyJoinedError;
 var ServerError = errors.ServerError;
 var InvalidDataError = errors.InvalidDataError;
+var InvalidTokenError = errors.InvalidTokenError;
 
 router.all('/', (req, resp, next) => {
 	if(req.method === 'POST'){
@@ -22,11 +23,6 @@ router.all('/', (req, resp, next) => {
 
 		if(!req.body['g-recaptcha-response']){
 			next(new CaptchaError());
-			return;
-		}
-
-		if(!req.session.rsa){
-			next(new InvalidTokenError());
 			return;
 		}
 

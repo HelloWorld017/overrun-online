@@ -1,0 +1,110 @@
+[
+	{
+		"title": "tutorial.createbot",
+		"images": [
+			{
+				"src": "/creating-bots/0.png",
+				"caption": {
+					"title": "tutorial.createbot.0.title",
+					"content": "tutorial.createbot.0.content"
+				}
+			},
+			{
+				"src": "/creating-bots/1.png",
+				"caption": {
+					"title": "tutorial.createbot.1.title",
+					"content": "tutorial.createbot.1.content"
+				}
+			},
+			{
+				"src": "/creating-bots/2.png",
+				"caption": {
+					"title": "tutorial.createbot.2.title",
+					"content": "tutorial.createbot.2.content"
+				}
+			},
+			{
+				"src": "/creating-bots/3.png",
+				"caption": {
+					"title": "tutorial.createbot.3.title",
+					"content": "tutorial.createbot.3.content"
+				}
+			},
+			{
+				"src": "/creating-bots/4.png",
+				"caption": {
+					"title": "tutorial.createbot.4.title",
+					"content": "tutorial.createbot.4.content"
+				}
+			}
+		]
+	},
+
+	{
+		"title": "tutorial.entry",
+		"images": [
+			{
+				"src": "/entry/0.png",
+				"caption": {
+					"title": "tutorial.entry.0.title",
+					"content": "tutorial.entry.0.content"
+				}
+			},
+			{
+				"src": "/entry/1.png",
+				"caption": {
+					"title": "tutorial.entry.1.title",
+					"content": "tutorial.entry.1.content"
+				}
+			},
+			{
+				"src": "/entry/2.png",
+				"caption": {
+					"title": "tutorial.entry.2.title",
+					"content": "tutorial.entry.2.content"
+				}
+			},
+			{
+				"src": "/entry/3.png",
+				"caption": {
+					"title": "tutorial.entry.3.title",
+					"content": "tutorial.entry.3.content"
+				}
+			},
+			{
+				"src": "/entry/4.png",
+				"caption": {
+					"title": "tutorial.entry.4.title",
+					"content": "tutorial.entry.4.content"
+				}
+			}
+		]
+	},
+
+	{
+		"title": "tutorial.editbot",
+		"images": [
+			{
+				"src": "/editing-bots/0.png",
+				"caption": {
+					"title": "tutorial.editbot.0.title",
+					"content": "tutorial.editbot.0.content"
+				}
+			},
+			{
+				"src": "/editing-bots/1.png",
+				"caption": {
+					"title": "tutorial.editbot.1.title",
+					"content": "tutorial.editbot.1.content"
+				}
+			},
+			{
+				"src": "/editing-bots/2.png",
+				"caption": {
+					"title": "tutorial.editbot.2.title",
+					"content": "tutorial.editbot.2.content"
+				}
+			}
+		]
+	}
+]

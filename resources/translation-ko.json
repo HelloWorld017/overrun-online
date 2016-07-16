@@ -1,5 +1,27 @@
 {
+	"about.code": [
+		"간단한 코드를 짜보며 프로그래밍의 기초에 대해서 배울 수 있습니다.<<br>>",
+		"프로그래밍의 프도 몰라도 블럭을 쌓듯이 코드를 짤 수 있습니다."
+	],
+	"about.game": [
+		"게임을 통해 자신의 봇을 상대방의 봇과 겨뤄볼 수 있습니다.<<br>>",
+		"게임을 하면 포인트와 돈을 벌 수 있습니다.<<br>>",
+		"돈을 모와 스킨과 같은 아이템을 구매하세요."
+	],
+	"about.algorithm": [
+		"최적의 알고리즘을 찾기 위해 노력해보세요!<<br>>",
+		"알고리즘이 더 최적화될 수록 게임에서 우세해질 것입니다."
+	],
 	"about.title": "overrun-online이란",
+	"about.developer": "개발자",
+	"about.developer.content": [
+		"<<div class='chip'>>",
+		"<<a href='https://khinenw.tk'>>",
+		"<<img src='https://avatars2.githubusercontent.com/u/3919433?v=3&amp;s=50'>>",
+		"Khinenw",
+		"<</a>>",
+		"<</div>>"
+	],
 
 	"alert.checkemail": "이메일의 받은 편지함을 확인하여 주세요.",
 
@@ -33,6 +55,9 @@
 	"build.api": "API 문서 보기",
 	"build.create": "봇 생성!",
 	"build.unload": "변경사항이 저장되지 않을 수 있습니다.",
+
+	"command.unknown": "$1알려지지 않은 명령어 : %command%$",
+	"command.translation": "$6번역을 로딩 하였습니다.$",
 
 	"desc": "overrun-online은 알고리즘을 작성해 서로 싸우는 게임입니다.",
 
@@ -84,6 +109,7 @@
 	"index.recent.match": "최근 경기",
 
 	"join.title": "가입",
+	"join.confirm": "현재 완전한 회원탈퇴 기능을 제공하고 있지 않으며, 회원탈퇴 후에도 모든 정보가 서버에 남아있을 것입니다.<<br>> 이 사이트에 가입하게 되면 이에 동의한 것으로 간주됩니다.",
 	"join.name": "닉네임",
 	"join.id": "유저명",
 	"join.email": "이메일",

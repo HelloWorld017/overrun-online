@@ -50,6 +50,7 @@ jspm_packages
 !/plugins/common-entry/
 !/plugins/common-pass/
 !/plugins/common-blockly/
+!/plugins/common-tutorial/
 !/plugins/meiro/
 !/plugins/overrun/
 

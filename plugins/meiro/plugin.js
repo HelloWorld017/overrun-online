@@ -1,12 +1,12 @@
-var fs = require('fs');
 global.loadTranslation({
 	name: 'meiro',
 	translations: {
 		'default': 'ko',
-		'ko': fs.readFileSync(global.pluginsrc('meiro', 'translation-ko.json'), 'utf8')
+		'ko': global.pluginsrc('meiro', 'translation-ko.json')
 	}
 });
 
+var fs = require('fs');
 var meiroConfig = global.generateAndLoad('meiro-config.json', fs.readFileSync(global.pluginsrc('meiro', 'meiro-config.json'), 'utf8'));
 
 var api = require('./api-list');

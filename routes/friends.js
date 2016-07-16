@@ -36,6 +36,8 @@ router.get('/add/:user', (req, res, next) => {
 		return;
 	}
 
+	//TODO 친구목록의 최대 크기 지정하기
+	
 	global.mongo
 		.collection(global.config['collection-user'])
 		.find({name: req.params.user})

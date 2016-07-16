@@ -1,9 +1,8 @@
-var fs = require('fs');
 global.loadTranslation({
 	name: 'blockly',
 	translations: {
 		'default': 'ko',
-		'ko': fs.readFileSync(global.pluginsrc('common-blockly', 'translation-ko.json'), 'utf8')
+		'ko': global.pluginsrc('common-blockly', 'translation-ko.json')
 	}
 });
 

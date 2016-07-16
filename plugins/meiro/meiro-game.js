@@ -23,7 +23,7 @@ const TRAP_COUNT = 1;
 const TELEPORTER_COUNT = 3;
 const WALLCUTTER_COUNT = 2;
 
-const EVAL_TIMEOUT = 500;
+const EVAL_TIMEOUT = 750;
 const MAX_SAVE_LENGTH = 10000;
 
 class Direction{
@@ -263,17 +263,15 @@ class MeiroGame extends Game{
 				if(callbackCalled) return;
 				callbackCalled = true;
 				try{
-					logs = JSON.parse(logs);
+					if(logs !== undefined) logs = JSON.parse(logs);
 				}catch(e){
 					err = e;
 				}
 
 				if(err || !logs){
+					if((process.env.NODE_ENV || 'development') === 'development') console.log(err);
 					if(typeof err === 'object') err.stack = undefined;
-					if(err !== 'Timeout!') logs = setToDefault(this.bots[0].metadata);
-					else logs.logObject.push({
-						content: 'turn.err.runtime'
-					});
+					logs = setToDefault(this.bots[0].metadata);
 				}
 
 				this.maze = logs.maze;
@@ -293,17 +291,15 @@ class MeiroGame extends Game{
 					sCallbackCalled = true;
 
 					try{
-						logs1 = JSON.parse(logs1);
+						if(logs1 !== undefined) logs1 = JSON.parse(logs1);
 					}catch(e){
 						err1 = e;
 					}
 
 					if(err1 || !logs1){
+						if((process.env.NODE_ENV || 'development') === 'development') console.log(err1);
 						if(typeof err1 === 'object') err1.stack = undefined;
-						if(err1 !== 'Timeout!') logs1 = setToDefault(this.bots[1].metadata);
-						else logs1.logObject.push({
-							content: 'turn.err.runtime'
-						});
+						logs1 = setToDefault(this.bots[1].metadata);
 					}
 
 					this.maze = logs1.maze;

@@ -1,9 +1,8 @@
-var fs = require('fs');
 global.loadTranslation({
 	name: 'entry',
 	translations: {
 		'default': 'ko',
-		'ko': fs.readFileSync(global.pluginsrc('common-entry', 'translation-ko.json'), 'utf8')
+		'ko': global.pluginsrc('common-entry', 'translation-ko.json')
 	}
 });
 

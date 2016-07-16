@@ -2,11 +2,12 @@ var async = require('async');
 var chalk = require('chalk');
 var fs = require('fs');
 var http = require('http');
-var path = require('path');
-var objectMerge = require('object-merge');
 var MongoClient = require('mongodb').MongoClient;
 var NodeRSA = require('node-rsa');
+var objectMerge = require('object-merge');
+var path = require('path');
 var requireSource = require('./src/require-source');
+var rl = require('readline').createInterface(process.stdin, process.stdout);
 var Server = require('./src/server');
 var sharedsession = require("express-socket.io-session");
 
@@ -14,10 +15,13 @@ const SERVER_VERSION = "alpha 0.0.0 1603260001";
 const SERVER_VERSION_CODE = "$2Lime Sidewinder$";
 const SERVER_VERSION_CODE_UNICODE = "$2ライム ヨコバイガラガラヘビ$";
 
+rl.setPrompt('>>');
+
 global.config = objectMerge(require('./resources/server'), require('./server'));
 global.translation = objectMerge(require('./resources/translation-' + global.config.lang), require('./translation-' + global.config.lang));
 global.theme = objectMerge(require('./resources/theme'), require('./theme'));
 global.translator = require('./src/translator');
+global.tutorial = [];
 global.loadTranslation = require('./src/load-translation');
 global.key = (process.env.NODE_ENV || 'development') === 'development' ? new NodeRSA({b: 512}, {encryptionScheme: 'pkcs1'}) : new NodeRSA({b: 4096}, {encryptionScheme: 'pkcs1'});
 global.mongo = undefined;
@@ -51,6 +55,34 @@ global.plugins = {};
 global.entryList = [];
 global.apiList = {};
 global.blockly = [];
+
+global.cmd = {
+	'translation': () => {
+		delete require.cache[require.resolve('./translation-' + global.config.lang)];
+		delete require.cache[require.resolve('./resources/translation-' + global.config.lang)];
+
+		global.translation = objectMerge(require('./resources/translation-' + global.config.lang), require('./translation-' + global.config.lang));
+		global.loadTranslation.reload();
+		console.log(global.translator('command.translation'));
+	},
+	'debug': () => {
+		debugger;
+	},
+	'exit': () => {
+		process.exit(0);
+	},
+	'help': () => {
+		console.log(chalk.cyan(Object.keys(global.cmd).sort().join('\n')));
+	}
+};
+
+rl.on('line', (input) => {
+	var cmd = input.split(' ')[0];
+	if(global.cmd[cmd] !== undefined) global.cmd[cmd](input);
+	else console.log(global.translator('command.unknown', {
+		command: cmd
+	}));
+});
 
 console.log(global.translator('server.load', {
 	version: SERVER_VERSION,

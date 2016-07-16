@@ -1,3 +1,61 @@
-<%#
-	#TODO:30 Implement View
-%>
+<!DOCTYPE html>
+<html lang="<%= global.config.lang %>">
+	<head prefix="og: http://ogp.me/ns#">
+		<%- include('./header', {title: global.translator('tutorial.title')}); %>
+		<style>
+			nav {
+				position: initial !important;
+			}
+
+			.caption-bg {
+				background: rgba(0, 0, 0, 0.5);
+				padding: 10px;
+			}
+
+			.caption-content {
+				font-size: 1rem;
+			}
+		</style>
+
+		<script>
+			$(document).on('ready', function(){
+				$('.slider').slider({full_width: true});
+			});
+		</script>
+	</head>
+
+	<body>
+		<% include ./navigation %>
+		<main>
+			<section class="container">
+				<h3><%= global.translator('tutorial.title') %></h3>
+				<% global.tutorial.forEach((v) => { %>
+					<div class="content-divider-wrapper">
+						<hr class="content-divider">
+					</div>
+
+					<h4><%= global.translator(v.title) %></h4>
+					<div class="slider">
+						<ul class="slides">
+							<% v.images.forEach((images) => { %>
+								<li>
+									<img src="<%= images.src %>">
+									<% if(images.caption){ %>
+										<div class="caption left-align caption-bg">
+											<h4><%- global.translator(images.caption.title) %></h4>
+											<p class="caption-content"><%- global.translator(images.caption.content) %></p>
+										</div>
+									<% } %>
+								</li>
+							<% }) %>
+						</ul>
+					</div>
+				<% }); %>
+
+				<br>
+			</section>
+		</main>
+
+		<% include ./footer %>
+	</body>
+</html>

@@ -48,6 +48,12 @@
 					vertical-align: middle;
 				}
 			}
+
+			h3.fa {
+				display: block !important;
+				text-align: center;
+				font-size: 3rem;
+			}
 		</style>
 		<script src="/resources/js/geopattern-1.2.3.min.js"></script>
 	</head>
@@ -95,25 +101,30 @@
 			</script>
 			<section class="container">
 				<h2 class="mobile only"><%= global.translator('title.full') %></h2>
-				<h3><%= global.translator('about.text') %></h3>
+				<p><%= global.translator('desc') %></p>
 				<div class="row">
 					<div class="col s12 m4">
-						<div class="icon-block">
-							<i class="fa fa-code"></i>
-						</div>
+						<h3 class="fa fa-code"></h3>
+						<%- global.translator('about.code') %>
+					</div>
+
+					<div class="content-divider-wrapper hide-on-med-and-up col s12">
+						<hr class="content-divider divide-no">
 					</div>
 
 					<div class="col s12 m4">
-						<div class="icon-block">
-							<i class="fa fa-gamepad"></i>
-						</div>
+						<h3 class="fa fa-gamepad"></h3>
+						<%- global.translator('about.game') %>
 					</div>
 
 					<div class="col s12 m4">
-						<div class="icon-block">
-
-						</div>
+						<h3 class="fa fa-plug"></h3>
+						<%- global.translator('about.algorithm') %>
 					</div>
+				</div>
+				<div class="row">
+					<h3><%= global.translator('about.developer') %></h3>
+					<p><%- global.translator('about.developer.content') %></p>
 				</div>
 			</section>
 		</main>
@@ -121,6 +132,3 @@
 		<% include ./footer %>
 	</body>
 </html>
-<%#
-	#TODO:60 Implement view
-%>
