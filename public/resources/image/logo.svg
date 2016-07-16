@@ -6,11 +6,19 @@
 			<stop offset="0%" stop-color="#00C0A0"/>
 			<stop offset="100%" stop-color="#3EB489"/>
 		</linearGradient>
+
+		<pattern id="pattern" x="0" y="0" width="56" height="100" patternUnits="userSpaceOnUse">
+			<!-- svg pattern by lea verou -->
+			<path d="M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100" fill="none" stroke="#fff" stroke-width="2"/>
+			<path d="M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34" fill="none" stroke="#fff" stroke-width="2"/>
+		</pattern>
+
+		<mask id="mask">
+			<path d="M180,0 A180,180 0 1 0 360,180 L360,0 Z" fill="#fff"/>
+		</mask>
 	</defs>
 
-	<path d="M180,0 A180,180 0 1 0 360,180 L360,0 Z" fill="url(#gradient)"/>
-
-	<text x="180" y="180" text-anchor="middle" alignment-baseline="middle" font-family="Exo 2" font-size="90" fill="white">
-		r
-	</text>
+	<rect x="0" y="0" width="360" height="360" mask="url(#mask)" fill="url(#gradient)"/>
+	<rect x="0" y="0" width="360" height="360" mask="url(#mask)" fill="url(#pattern)"/>
+	<path d="M 150,120 V 240 V 180 A 100,100 0 0 1 210,130" fill="transparent" stroke="#fff" stroke-width="10"/>
 </svg>
