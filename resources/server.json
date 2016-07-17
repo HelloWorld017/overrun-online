@@ -23,8 +23,8 @@
 	"recaptcha-secret": "",
 	"session-secret": "",
 
-	"gmail-id": "",
-	"gmail-pw": "",
+	"mailgun-api": "",
+	"mailgun-domain": "",
 
 	"email-from": "overrun-online (no reply)",
 	"email-from-address": "no-reply@khinenw.tk",

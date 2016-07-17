@@ -1,7 +1,13 @@
 var ejs = require('ejs');
 var fs = require('fs');
+var mg = require('nodemailer-mailgun-transport');
 
-var transporter = require('nodemailer').createTransport(`smtps://${global.config['gmail-id']}%40gmail.com:${global.config['gmail-pw']}@smtp.gmail.com`);
+var auth = {
+	api_key: global.config['mailgun-api'],
+	domain: global.config['mailgun-domain'];
+};
+
+var transporter = require('nodemailer').createTransport();
 
 var bodyTemplate = {
 	from: `"${global.config['email-from']}" <${global.config['email-from-address']}>`
@@ -27,4 +33,3 @@ module.exports = {
 		});
 	}
 };
-
