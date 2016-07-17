@@ -4,7 +4,7 @@ var mg = require('nodemailer-mailgun-transport');
 
 var auth = {
 	api_key: global.config['mailgun-api'],
-	domain: global.config['mailgun-domain'];
+	domain: global.config['mailgun-domain']
 };
 
 var transporter = require('nodemailer').createTransport();
