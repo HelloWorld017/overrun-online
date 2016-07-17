@@ -10,6 +10,7 @@ var fs = require('fs');
 var meiroConfig = global.generateAndLoad('meiro-config.json', fs.readFileSync(global.pluginsrc('meiro', 'meiro-config.json'), 'utf8'));
 
 var api = require('./api-list');
+var bcrypt = require('bcrypt-nodejs');
 var blockly = require('./blockly-list');
 var checkPass = require(global.pluginsrc('common-pass', 'check-pass'))('meiro');
 var entry = require(global.pluginsrc('common-entry', 'common-router'));
@@ -29,6 +30,63 @@ module.exports = {
 		global.server.addToPool(MeiroRankedGame);
 		global.server.addToPool(MeiroUnrankedGame, UnrankedMatchmaker);
 		global.server.addToPool(MeiroTestGame, TestMatchmaker(global.server, MeiroTestGame, meiroConfig['plugin-meiro-test-arg']), true);
+		global.cmd.meirotest = (cmd) => {
+			global.mongo
+				.collection(global.config['collection-user'])
+				.find({name: 'MeiroTester'})
+				.toArray((err, res) => {
+					if(err || res.length > 0){
+						console.log(global.translator('plugin.meiro.already.created'));
+						return;
+					}
+					var pw = require(global.src('create-token'))(24);
+					bcrypt.genSalt(8, (err1, salt) => {
+						if(err1){
+							console.log(err1);
+							return;
+						}
+						bcrypt.hash(pw, salt, undefined, (err2, hash) => {
+							if(err2){
+								console.log(err2);
+								return;
+							}
+							global.mongo
+								.collection(global.config['collection-user'])
+								.insert({
+									name: 'MeiroTester',
+									nickname: 'Meiro Tester',
+									email: 'khinenw@khinenw.tk',
+									pw: hash,
+									friends: [],
+									unregistered: false,
+									emailVerified: true,
+									bots: [
+										{
+											skin: 'default',
+											name: 'Tester',
+											code: fs.readFileSync(global.pluginsrc('meiro', 'meiro-testbot.js'), 'utf8'),
+											type: 'MEIRO-RANKED'
+										}
+									],
+									skins: ['default'],
+									stat: {
+										win: 0,
+										defeat: 0,
+										draw: 0
+									},
+									point: 0,
+									money: 0,
+									github: ''
+								}).then(() => {
+									console.log(global.translator('plugin.meiro.created', {
+										pw: pw
+									}));
+								});
+							});
+						});
+				});
+		};
+
 		cb();
 	},
 	onServerInit: (app, cb) => {

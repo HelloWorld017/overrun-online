@@ -2,6 +2,13 @@
 	"plugin.meiro": "Meiro",
 	"plugin.meiro.ranked": "Meiro 랭크전",
 	"plugin.meiro.unranked": "Meiro 친선전",
+	"plugin.meiro.already.created": "$1이미 생성되었습니다.$",
+	"plugin.meiro.created": [
+		"$6테스터 계정이 생성되었습니다.",
+		"ID: MeiroTester",
+		"PW: %pw%",
+		"(랜덤 생성됨)$"
+	],
 
 	"plugin.meiro.api.title": "Meiro API",
 	"plugin.meiro.api.rule.title": "게임 규칙",

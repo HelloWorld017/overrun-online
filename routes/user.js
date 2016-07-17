@@ -10,7 +10,10 @@ var InvalidDataError = errors.InvalidDataError;
 router.get('/:user', (req, res, next) => {
 	global.mongo
 		.collection(global.config['collection-user'])
-		.find({name: req.params.user})
+		.find({
+			name: req.params.user,
+			unregistered: false
+		})
 		.toArray((err, arr) => {
 			if(err){
 				next(new ServerError());
