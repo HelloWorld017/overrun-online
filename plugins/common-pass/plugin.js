@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'Common Pass',
 	author: 'Khinenw',
-	version: 'alpha 0.0.0 201604290001',
+	version: 'alpha 1.0.0 201607170001',
 	onLoad: (cb) => {
 		global.server.on('player.save', (player) => {
 			global.mongo

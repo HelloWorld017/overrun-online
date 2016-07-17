@@ -9,7 +9,7 @@ global.loadTranslation({
 module.exports = {
 	name: 'Common Blockly',
 	author: 'Khinenw',
-	version: 'alpha 0.0.0 201606250001',
+	version: 'alpha 1.0.0 201607170001',
 	blockly: [
 		{
 			name: 'JSON',

@@ -25,7 +25,7 @@ var TestMatchmaker = require(global.src('matchmake-test'));
 module.exports = {
 	name: 'Meiro',
 	author: 'Khinenw',
-	version: 'alpha 0.0.0 201604020001',
+	version: 'alpha 1.0.0 201607170001',
 	onLoad: (cb) => {
 		global.server.addToPool(MeiroRankedGame);
 		global.server.addToPool(MeiroUnrankedGame, UnrankedMatchmaker);

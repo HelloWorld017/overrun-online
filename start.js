@@ -11,7 +11,7 @@ var rl = require('readline').createInterface(process.stdin, process.stdout);
 var Server = require('./src/server');
 var sharedsession = require("express-socket.io-session");
 
-const SERVER_VERSION = "alpha 0.0.0 1603260001";
+const SERVER_VERSION = "alpha 1.0.0 1607170001";
 const SERVER_VERSION_CODE = "$2Lime Sidewinder$";
 const SERVER_VERSION_CODE_UNICODE = "$2ライム ヨコバイガラガラヘビ$";
 

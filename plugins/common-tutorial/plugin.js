@@ -12,7 +12,7 @@ var path = require('path');
 module.exports = {
 	name: 'Common Tutorial',
 	author: 'Khinenw',
-	version: 'alpha 0.0.0 201607160001',
+	version: 'alpha 1.0.0 201607170001',
 	onLoad: (cb) => {
 		global.tutorial = global.tutorial.concat(require('./tutorial'));
 		cb();
