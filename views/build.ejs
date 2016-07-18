@@ -212,7 +212,10 @@
 				</div>
 
 				<textarea id="code" name="code" style="display: none"></textarea>
-
+				<p>
+					<input type="checkbox" id="playable" name="playable" checked="false"/>
+					<label for="playable"><%= global.translator('build.playable') %></label>
+				</p>
 				<button class="btn waves-effect waves-light" type="submit"><%= global.translator('build.create') %></button>
 			</form>
 
@@ -233,6 +236,7 @@
 					$('#name').val('<%= bot.name %>');
 					$('#skin').val('<%= bot.skin %>');
 					$('#type').val('<%= bot.type %>');
+					$('#playable').checked = <%= bot.playable %>;
 
 					editor.setValue($('#bot-code').text(), -1);
 					codeArea.val(editor.getSession().getValue());

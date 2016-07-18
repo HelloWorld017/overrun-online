@@ -23,7 +23,7 @@ class Player{
 		this.point = data.point;
 		this.emailVerified = data.emailVerified;
 		this.unregistered = data.unregistered;
-		this.bots = data.bots.map((v) => {return new Bot(this, v.skin, v.name, v.code, v.type);});
+		this.bots = data.bots.map((v) => {return new Bot(this, v.skin, v.name, v.code, v.type, v.playable);});
 		this.github = data.github || "";
 		this.entryTimer = data.entryTimer || 0;
 		this.isAdmin = data.isAdmin || false;
@@ -124,7 +124,8 @@ class Player{
 							skin: v.skin,
 							name: v.name,
 							code: v.code,
-							type: v.type
+							type: v.type,
+							playable: v.playable
 						};
 					})
 				}

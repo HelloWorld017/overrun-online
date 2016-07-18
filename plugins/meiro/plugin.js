@@ -65,7 +65,8 @@ module.exports = {
 											skin: 'default',
 											name: 'Tester',
 											code: fs.readFileSync(global.pluginsrc('meiro', 'meiro-testbot.js'), 'utf8'),
-											type: 'MEIRO-RANKED'
+											type: 'MEIRO-RANKED',
+											playable: false
 										}
 									],
 									skins: ['default'],

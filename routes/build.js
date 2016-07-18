@@ -9,6 +9,32 @@ var NotLoggedInError = errors.NotLoggedInError;
 var ServerError = errors.ServerError;
 var TooManyBotsError = errors.TooManyBotsError;
 
+var testVal = (req) => {
+	if(req.body.name === undefined || req.body.skin === undefined || req.body.code === undefined || req.body.type === undefined || req.body.playable === undefined){
+		return (new InvalidDataError());
+	}
+
+	if(!/[A-Za-z0-9가-힣ㄱ-ㅎ-+_()]{3,20}/.test(req.body.name)){
+		return (new InvalidDataError());
+	}
+
+	if(res.locals.user.skins.indexOf(req.body.skin) === -1){
+		return (new InvalidDataError());
+	}
+
+	if(global.server.gamePool[req.body.type] === undefined){
+		return (new InvalidDataError());
+	}
+
+	if(req.body.code.length > global.config['max-code-length']){
+		return (new TooLongCodeError());
+	}
+
+	req.body.playable = req.body.playable ? true : false;
+
+	return undefined;
+};
+
 router.all('/edit/:id', (req, res, next) => {
 	if(!res.locals.auth){
 		next(new NotLoggedInError());
@@ -28,8 +54,8 @@ router.all('/edit/:id', (req, res, next) => {
 	}
 
 	if(req.method === 'POST'){
-		if(req.body.name === undefined || req.body.skin === undefined || req.body.code === undefined || req.body.token === undefined || req.body.type === undefined){
-			next(new InvalidDataError());
+		if(req.body.token === undefined){
+			next(new InvalidTokenError());
 			return;
 		}
 
@@ -38,27 +64,13 @@ router.all('/edit/:id', (req, res, next) => {
 			return;
 		}
 
-		if(!/[A-Za-z0-9가-힣ㄱ-ㅎ-+_()]{3,20}/.test(req.body.name)){
-			next(new InvalidDataError());
+		var tested = testVal(req);
+		if(tested !== undefined){
+			next(tested);
 			return;
 		}
 
-		if(res.locals.user.skins.indexOf(req.body.skin) === -1){
-			next(new InvalidDataError());
-			return;
-		}
-
-		if(global.server.gamePool[req.body.type] === undefined){
-			next(new InvalidDataError());
-			return;
-		}
-
-		if(req.body.code.length > global.config['max-code-length']){
-			next(new TooLongCodeError());
-			return;
-		}
-
-		res.locals.user.bots[req.params.id] = new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code, req.body.type);
+		res.locals.user.bots[req.params.id] = new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code, req.body.type, req.body.playable);
 		res.locals.user.saveBots();
 		if(req.xhr){
 			res.json({
@@ -96,23 +108,10 @@ router.all('/', (req, res, next) => {
 	}
 
 	if(req.method === 'POST'){
-		if(req.body.name === undefined || req.body.skin === undefined || req.body.code === undefined || req.body.type === undefined){
-			next(new InvalidDataError());
-			return;
-		}
 
-		if(!/[A-Za-z0-9가-힣ㄱ-ㅎ-+_() ]{3,20}/.test(req.body.name)){
-			next(new InvalidDataError());
-			return;
-		}
-
-		if(res.locals.user.skins.indexOf(req.body.skin) === -1){
-			next(new InvalidDataError());
-			return;
-		}
-
-		if(global.server.gamePool[req.body.type] === undefined){
-			next(new InvalidDataError());
+		var tested = testVal(req);
+		if(tested !== undefined){
+			next(tested);
 			return;
 		}
 
@@ -121,12 +120,7 @@ router.all('/', (req, res, next) => {
 			return;
 		}
 
-		if(req.body.code.length > global.config['max-code-length']){
-			next(new TooLongCodeError());
-			return;
-		}
-
-		res.locals.user.bots.push(new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code, req.body.type));
+		res.locals.user.bots.push(new Bot(res.locals.user, req.body.skin, req.body.name, req.body.code, req.body.type, req.body.playable));
 		res.locals.user.saveBots();
 		if(req.xhr){
 			res.json({

@@ -40,7 +40,9 @@ class MatchMaker{
 							$elemMatch: {
 								type: {
 									$in: acceptsBotType
-								}
+								},
+
+								playable: true
 							}
 						}
 					},

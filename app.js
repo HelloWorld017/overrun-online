@@ -87,14 +87,14 @@ app.use((req, res, next) => {
 		_render.call(res, name, options, cb);
 	};
 
-	//Anti SQL Injection
-	async.map(req.body, (v, cb) => {
+	var checkValue = (v, cb) => {
+		if(typeof v === 'boolean') v = (v ? 1 : 0);
 		cb(null, (typeof v === 'string' || typeof v === 'number') ? v : '');
-	}, (err, result) => {
+	};
+	//Anti SQL Injection
+	async.map(req.body, checkValue, (err, result) => {
 		req.body = result;
-		async.map(req.query, (v, cb) => {
-			cb(null, (typeof v === 'string' || typeof v === 'number') ? v : "");
-		}, (err2, result2) => {
+		async.map(req.query, checkValue, (err2, result2) => {
 			req.query = result2;
 			next();
 		});
