@@ -52,7 +52,6 @@ jspm_packages
 !/plugins/common-blockly/
 !/plugins/common-tutorial/
 !/plugins/meiro/
-!/plugins/overrun/
 
 #Plugin Translations
 /translations/*
