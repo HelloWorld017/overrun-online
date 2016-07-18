@@ -47,11 +47,6 @@
 		},
 
 		"pass": {
-			"overrun": {
-				"icon": "/resources/image/pass/overrun.svg",
-				"money": "0"
-			},
-
 			"meiro": {
 				"icon": "/resources/image/pass/meiro.svg",
 				"money": "0"
