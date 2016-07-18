@@ -6,7 +6,7 @@ class Bot{
 		this.name = name;
 		this.code = code;
 		this.type = type;
-		this.playable = playable || true;
+		this.playable = playable;
 	}
 }
 

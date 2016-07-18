@@ -189,11 +189,11 @@ kbd, samp{
 	font-size: 18px;
 }
 
-.content-divider:after.divide-or {
+.content-divider.divide-or:after {
 	content: 'OR';
 }
 
-.conent-divider:after.divide-no {
+.conent-divider.divide-no:after {
 	content: '';
 	padding: 0;
 }

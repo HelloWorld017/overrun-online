@@ -14,12 +14,12 @@
 	} %>
 
 	<% if(!nohref){ %>
-		<a href="<%= href.replace('%number%', k) %>" class="bot-view collection-item">
+		<a href="<%= href.replace('%number%', k) %>" class="bot-view collection-item" style="<%- v.playable ? "" : "background: #aaa" %>">
 	<% }else{ %>
-		<li class="bot-view collection-item">
+		<li class="bot-view collection-item" style="<% v.playable ? "" : "background: #aaa" %>">
 	<% } %>
 		<img src="/resources/image/skins/<%= v.skin %>.svg" style="width: 64px; height: 64px;">
-		<div style="display: inline-block">
+		<div style="display: inline-block;">
 			<span class="bot-name" style="display: block"><%= v.name %></span>
 			<span class="bot-type" style="display: block"><%= global.translator('bot.type', {
 				type: global.server.gamePool[v.type].getReadableName()

@@ -31,7 +31,7 @@
 			});
 
 			$.validator.addMethod("regex", function(value, element){
-				return (/^[A-Za-z0-9가-힣ㄱ-ㅎ-+_() ]{3,20}$/).test(value);
+				return (/^[A-Za-z0-9가-힣ㄱ-ㅎ-+_()]{3,20}$/).test(value);
 			}, "<%= global.translator('validate.regex') %>");
 
 			var modalHeader = undefined;
@@ -213,8 +213,8 @@
 
 				<textarea id="code" name="code" style="display: none"></textarea>
 				<p>
-					<input type="checkbox" id="playable" name="playable" checked="false"/>
-					<label for="playable"><%= global.translator('build.playable') %></label>
+					<input type="checkbox" id="playable" name="playable" checked="true"/>
+					<label for="playable"><%- global.translator('build.playable') %></label>
 				</p>
 				<button class="btn waves-effect waves-light" type="submit"><%= global.translator('build.create') %></button>
 			</form>
@@ -236,7 +236,7 @@
 					$('#name').val('<%= bot.name %>');
 					$('#skin').val('<%= bot.skin %>');
 					$('#type').val('<%= bot.type %>');
-					$('#playable').checked = <%= bot.playable %>;
+					$('#playable').prop('checked', <%= bot.playable %>);
 
 					editor.setValue($('#bot-code').text(), -1);
 					codeArea.val(editor.getSession().getValue());

@@ -55,6 +55,7 @@
 	"build.api": "API 문서 보기",
 	"build.create": "봇 생성!",
 	"build.unload": "변경사항이 저장되지 않을 수 있습니다.",
+	"build.playable": "완성된 봇으로 표시합니다.<<br>>미완성인 봇은 엔트리가 불가합니다.",
 
 	"command.unknown": "$1알려지지 않은 명령어 : %command%$",
 	"command.translation": "$6번역을 로딩 하였습니다.$",
@@ -90,6 +91,7 @@
 	"error.matchmake.tick": "다음 경기를 진행하기까지 조금만 더 기다려 주세요.",
 	"error.matchmake.noplayer": "경기를 같이 진행할 상대방이 존재하지 않습니다. :(",
 	"error.matchmake.nobot": "해당 봇이 존재하지 않습니다.",
+	"error.matchmake.playable": "봇이 미완성으로 표시되어 있습니다.",
 	"error.passwordnotequal": "유저명과 비밀번호를 다시 한번 확인해주세요.",
 	"error.sameidalreadyjoined": "동일한 유저명이나 이메일이 이미 존재합니다.",
 	"error.internalserver": "서버측에서 오류가 발생하였습니다.",

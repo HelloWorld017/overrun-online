@@ -9,8 +9,8 @@ var NotLoggedInError = errors.NotLoggedInError;
 var ServerError = errors.ServerError;
 var TooManyBotsError = errors.TooManyBotsError;
 
-var testVal = (req) => {
-	if(req.body.name === undefined || req.body.skin === undefined || req.body.code === undefined || req.body.type === undefined || req.body.playable === undefined){
+var testVal = (req, res) => {
+	if(req.body.name === undefined || req.body.skin === undefined || req.body.code === undefined || req.body.type === undefined){
 		return (new InvalidDataError());
 	}
 
@@ -64,7 +64,7 @@ router.all('/edit/:id', (req, res, next) => {
 			return;
 		}
 
-		var tested = testVal(req);
+		var tested = testVal(req, res);
 		if(tested !== undefined){
 			next(tested);
 			return;
@@ -108,8 +108,7 @@ router.all('/', (req, res, next) => {
 	}
 
 	if(req.method === 'POST'){
-
-		var tested = testVal(req);
+		var tested = testVal(req, res);
 		if(tested !== undefined){
 			next(tested);
 			return;

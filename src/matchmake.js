@@ -28,6 +28,13 @@ class MatchMaker{
 			return;
 		}
 
+		if(!bot.playable){
+			response.json({
+				'game-finish': false,
+				err: global.translator('error.matchmake.playable')
+			});
+		}
+
 		player.updateTimer();
 
 		var acceptsBotType = this.game.getOptions().accepts_bot_type;
@@ -40,10 +47,9 @@ class MatchMaker{
 							$elemMatch: {
 								type: {
 									$in: acceptsBotType
-								},
-
-								playable: true
-							}
+								}
+							},
+							playable: true
 						}
 					},
 					{
