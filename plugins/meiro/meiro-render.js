@@ -56,7 +56,13 @@ var particles = [];
 var maze;
 var teleporters;
 var images = {};
-
+Math.sign = Math.sign || function(x) {
+	x = +x; // convert to a number
+	if (x === 0 || isNaN(x)) {
+		return x;
+	}
+	return x > 0 ? 1 : -1;
+}
 handlers['MEIRO'] = startRender;
 
 function recalculateSize(){
@@ -184,9 +190,9 @@ function handleMovement(bot, movementLog, callback, playerLog){
 
 		case 'turn.carve':
 			var v = bot.direction;
-			var targetTile = maze[`x${bot.x + v.x}y${bot.y + v.y}`];
+			var targetTile = maze['x' + (bot.x + v.x) + 'y' + (bot.y + v.y)];
 			if(targetTile !== undefined){
-				maze[`x${bot.x}y${bot.y}`].walls[v.value] = false;
+				maze['x' + bot.x + 'y' + bot.y].walls[v.value] = false;
 				targetTile.walls[v.opposite] = false;
 			}
 
@@ -278,21 +284,26 @@ function startRender(){
 					nCanvas.height = 64;
 					async.each(Array.rangeOf(Object.keys(teleporters).length), function(v, cb){
 						nCtx.drawImage(img, 0, 0, 64, 64);
-						var imgData = nCtx.getImageData(0, 0, img.width, img.height);
-						for(var y = 0; y < imgData.height; y++){
-							for(var x = 0; x < imgData.width; x++){
-								var i = (x * 4) + (y * 4 * img.width);
-								if(imgData.data[i + 3] !== 0){
-									imgData.data[i] = colors.teleporter[v][0];
-									imgData.data[i + 1] = colors.teleporter[v][1];
-									imgData.data[i + 2] = colors.teleporter[v][2];
+						try{
+							var imgData = nCtx.getImageData(0, 0, img.width || 64, img.height || 64);
+							for(var y = 0; y < imgData.height; y++){
+								for(var x = 0; x < imgData.width; x++){
+									var i = (x * 4) + (y * 4 * img.width);
+									if(imgData.data[i + 3] !== 0){
+										imgData.data[i] = colors.teleporter[v][0];
+										imgData.data[i + 1] = colors.teleporter[v][1];
+										imgData.data[i + 2] = colors.teleporter[v][2];
+									}
 								}
 							}
+							nCtx.putImageData(imgData, 0, 0, 0, 0, imgData.width, imgData.height);
+							images['teleporter' + v] = new Image();
+							images['teleporter' + v].onload = cb;
+							images['teleporter' + v].src = nCanvas.toDataURL();
+						}catch(e){
+							images['teleporter' + v] = img;
+							cb();
 						}
-						nCtx.putImageData(imgData, 0, 0, 0, 0, imgData.width, imgData.height);
-						images['teleporter' + v] = new Image();
-						images['teleporter' + v].onload = cb;
-						images['teleporter' + v].src = nCanvas.toDataURL();
 					}, function(){
 						cb();
 					});
@@ -302,8 +313,19 @@ function startRender(){
 			img.src = '/meiro/' + v + '.svg';
 			images[v] = img;
 		}, function(){
+			var ie = false;
 			async.each(roundLog.init.data.players, function(v, cb){
 				var img = new Image();
+				var img2 = new Image();
+
+				bots[v.player] = {
+					player: v.player,
+					skin: img,
+					playerSkin : img2,
+					direction: DIRECTIONS_BY_VALUE.N,
+					x: roundLog.init.data.start.x,
+					y: roundLog.init.data.start.y
+				};
 
 				img.setAttribute('crossOrigin', 'anonymous');
 				img.onload = function(){
@@ -313,27 +335,23 @@ function startRender(){
 					nCanvas.height = 64;
 
 					nCtx.drawImage(img, 0, 0, 64, 64);
-					var img2 = new Image();
 					img2.setAttribute('crossOrigin', 'anonymous');
 					img2.onload = function(){
 						nCtx.drawImage(img2, 32, 32, 32, 32);
-						img.onload = cb;
-						img.src = nCanvas.toDataURL();
-					};
-
-					bots[v.player] = {
-						player: v.player,
-						skin: img,
-						playerSkin : img2,
-						direction: DIRECTIONS_BY_VALUE.N,
-						x: roundLog.init.data.start.x,
-						y: roundLog.init.data.start.y
+						try{
+							img.onload = cb;
+							img.src = nCanvas.toDataURL();
+						}catch(e){
+							ie = true;
+							cb();
+						}
 					};
 
 					img2.src = "https://www.gravatar.com/avatar/" + v.md5 + "?s=200";
 				};
 				img.src = v.skin;
 			}, function(){
+				if(ie) alert(meiroTranslations['update.browser']);
 				recalculateObject();
 				Object.keys(bots).forEach(function(k){
 					copyTargetToObject(k);
@@ -396,7 +414,7 @@ function recalculateObject(removeAnimation){
 	renderTarget = {};
 
 	//Object.values
-	var showMultipleBots = Object.keys(bots).map(k => bots[k]).reduce((prev, curr, index, array) => {
+	var showMultipleBots = Object.keys(bots).map(function(k){return bots[k]}).reduce(function(prev, curr, index, array){
 		if(typeof prev === 'object'){
 			if((prev.x === curr.x) && (prev.y === curr.y)){
 				if(index === array.length - 1) return true;

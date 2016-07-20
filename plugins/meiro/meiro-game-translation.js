@@ -7,8 +7,9 @@ var translationList = [
 	'carve.fail',
 	'already.checked',
 	'save.not.string',
-	'save.too.long'
+	'save.too.long',
 ].map((v) => 'turn.' + v);
+translationList.push('update.browser');
 
 var translations = {};
 

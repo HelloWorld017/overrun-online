@@ -1,12 +1,14 @@
 <% friends.forEach((v) => { %>
 
 	<div class="collection-item" id="friend-<%= v %>">
+		<div>
 		<% if(typeof main_href !== 'undefined'){ %>
 			<a href="<%= main_href.replace('%friend%', v) %>">
 		<% }else{ %>
 			<a href="/user/<%= v %>">
 		<% } %>
-			<%= v %>
+				<%= v %>
+			</a>
 			<a href="<%= href.replace('%friend%', v) %>" class="secondary-content">
 				<% if(typeof href_class !== 'undefined'){ %>
 					<i class="fa <%= href_class %>"></i>
@@ -14,6 +16,6 @@
 					<i class="fa fa-user-times"></i>
 				<% } %>
 			</a>
-		</a>
+		</div>
 	</div>
 <% }); %>

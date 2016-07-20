@@ -113,5 +113,6 @@
 	"plugin.meiro.already.checked": "이번 턴에는 이미 한번 벽을 체크하였습니다.",
 	"plugin.meiro.save.not.string": "세이브 할 내용이 문자열이 아닙니다.",
 	"plugin.meiro.save.too.long": "세이브 할 내용이 너무 깁니다.",
+	"plugin.meiro.update.browser": "지원되지 않는 브라우저 입니다. 텔레포트 색이 똑같이 나온다던지 하는 문제 발생이 가능합니다. 가급적이면 파이어폭스/크롬을 사용해주시기 바랍니다.",
 	"shop.item.pass.meiro": "Meiro 참가패스"
 }
