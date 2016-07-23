@@ -73,6 +73,41 @@ global.cmd = {
 	},
 	'help': () => {
 		console.log(chalk.cyan(Object.keys(global.cmd).sort().join('\n')));
+	},
+	'auth': (input) => {
+		var username = input.split(' ').filter((v, k) => {
+			return k !== 0;
+		}).join(' ');
+
+		if(username === ''){
+			console.log(global.translator('usage.auth'));
+			return;
+		}
+
+		global.mongo
+			.collection(global.config['collection-user'])
+			.find({name: username})
+			.toArray((err, res) => {
+				if(err){
+					console.log(chalk.red(global.translator('error.internalserver')));
+					return;
+				}
+
+				if(res.length <= 0){
+					console.log(chalk.red(global.translator('error.nosuchuser')));
+					return;
+				}
+
+				global.mongo
+					.collection(global.config['collection-user'])
+					.findOneAndUpdate({name: username}, {
+						$set: {
+							emailVerified: true
+						}
+					}).then(() => {
+						console.log(chalk.cyan(global.translator('authenticate.finish.masthead')));
+					});
+			});
 	}
 };
 

@@ -7,7 +7,9 @@ var auth = {
 	domain: global.config['mailgun-domain']
 };
 
-var transporter = require('nodemailer').createTransport();
+var transporter = require('nodemailer').createTransport(mg({
+	auth: auth
+}));
 
 var bodyTemplate = {
 	from: `"${global.config['email-from']}" <${global.config['email-from-address']}>`
