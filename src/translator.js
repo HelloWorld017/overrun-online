@@ -53,7 +53,7 @@ var translate = (key, options) => {
 		return (COLOR_MAPPING[p2])(p3);
 	});
 
-	translation = translation.replace(/\$\$/g, '$$'); //$$ means just $
+	translation = translation.replace(/\$\$/g, '$'); //$$ means just $
 
 	return translation;
 };

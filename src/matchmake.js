@@ -47,9 +47,9 @@ class MatchMaker{
 							$elemMatch: {
 								type: {
 									$in: acceptsBotType
-								}
+								},
+								playable: true
 							},
-							playable: true
 						}
 					},
 					{
@@ -63,6 +63,8 @@ class MatchMaker{
 			})
 			.toArray((err, res) => {
 				if(err){
+					console.error(err.message);
+					console.error(err.stack);
 					response.json({
 						'game-finish': false,
 						err: global.translator('error.internalserver')
