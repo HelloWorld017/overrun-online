@@ -161,7 +161,15 @@
 					return false;
 				}
 
-				Array.remove(bot.metadata.items, bot.metadata.items.indexOf('wallcutter'));
+				//Array.remove(bot.metadata.items, bot.metadata.items.indexOf('wallcutter'));
+				var removed = false;
+				bot.metadata.items = bot.metadata.items.filter((v) => {
+					if(removed) return true;
+					if(v === 'wallcutter'){
+						removed = true;
+						return false;
+					}
+				});
 
 				var v = bot.metadata.direction;
 
@@ -170,11 +178,10 @@
 					//Prevents carving the outermost wall
 					maze[`x${bot.metadata.x}y${bot.metadata.y}`].walls[v.value] = false;
 					targetTile.walls[v.opposite] = false;
+					log('turn.carve');
+					return true;
 				}
-
-				log('turn.carve');
-
-				return true;
+				return false;
 			},
 
 			x: () => {
@@ -236,8 +243,8 @@
 						var placedObject = placedObjects[0];
 
 						var result = {
-							x: match[1],
-							y: match[2],
+							x: parseInt(match[1]),
+							y: parseInt(match[2]),
 							name: placedObject
 						};
 

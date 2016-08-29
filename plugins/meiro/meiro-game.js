@@ -23,7 +23,7 @@ const TRAP_COUNT = 1;
 const TELEPORTER_COUNT = 3;
 const WALLCUTTER_COUNT = 2;
 
-const EVAL_TIMEOUT = 750;
+const EVAL_TIMEOUT = 1500;
 const MAX_SAVE_LENGTH = 10000;
 
 class Direction{
